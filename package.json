@@ -1,5 +1,7 @@
 {
   "name": "tadeas",
+  "author": "Teno Fdio Team",
+  "description": "A to-do list app by Teno Fdio Team",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,9 +14,11 @@
     "@types/react-dom": "^16.9.8",
     "antd": "^4.2.5",
     "firebase": "^7.14.5",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "reactfire": "^2.0.3",
     "typescript": "^3.7.5"
   },
   "scripts": {
