@@ -1,15 +1,13 @@
 import { CaretUpOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Row } from 'antd';
 import React, { ChangeEvent, useState } from 'react';
-import { useFirestore } from 'reactfire';
 
 const AddTodoForm = () => {
-  const tasksRef = useFirestore().collection('todos');
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const createTask = async (title: string) => {
-    await tasksRef.add({ title, finished: false, createdAt: new Date() });
+    console.log('Created new task', title);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

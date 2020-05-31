@@ -1,5 +1,5 @@
-import { Layout, Skeleton } from 'antd';
-import React, { Suspense } from 'react';
+import { Layout } from 'antd';
+import React from 'react';
 import logo from './assets/logo.svg';
 import './App.sass';
 import GeneralMenu from './components/Menu';
@@ -17,16 +17,12 @@ function App() {
             <img src={logo} alt="Todo list" />
             <span>Tadeas</span>
           </div>
-          <Suspense fallback={'...'}>
-            <GeneralMenu />
-          </Suspense>
+          <GeneralMenu />
         </Header>
         <Content>
           <div className="site-layout-content">
-            <Suspense fallback={<Skeleton />}>
-              <ItemsList />
-              <AddTodoForm />
-            </Suspense>
+            <ItemsList />
+            <AddTodoForm />
           </div>
         </Content>
         <Footer>Tadeas © 2020 Teno Fdio Team</Footer>

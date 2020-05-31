@@ -1,26 +1,23 @@
 import { Checkbox, List } from 'antd';
 import React from 'react';
-import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import './ItemsList.sass';
-import { firestore } from 'firebase';
 
 interface Task {
   id: string;
-  createdAt: firestore.Timestamp;
+  createdAt: Date;
   finished: boolean;
   title: string;
 }
 
+const tasks: Task[] = [
+  { id: '1', createdAt: new Date(), finished: false, title: 'Task 1' },
+  { id: '2', createdAt: new Date(), finished: false, title: 'Task 2' },
+  { id: '3', createdAt: new Date(), finished: false, title: 'Task 3' },
+];
+
 const ItemsList = () => {
-  const taskRef = useFirestore().collection('todos');
-
-  const query = taskRef.orderBy('finished').orderBy('createdAt', 'desc');
-
-  const tasks = useFirestoreCollectionData<Task>(query, { idField: 'id' });
-
   const updateTodo = (task: Task) => {
-    console.log('todo', task);
-    taskRef.doc(task.id).update({ finished: !task.finished });
+    task.finished = !task.finished;
   };
 
   return (
