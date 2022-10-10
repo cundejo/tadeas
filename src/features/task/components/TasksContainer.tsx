@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AddTaskButton, Task, TasksList, useTasks } from '@/features/task';
+import React from 'react';
+import { AddTaskButton, TasksList, useTasks } from '@/features/task';
 
 export const TasksContainer: React.FC = () => {
   const { tasks, isLoading } = useTasks();

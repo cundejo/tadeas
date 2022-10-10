@@ -3,11 +3,12 @@ import { Task, TaskDocument } from '@/features/task';
 import { db } from '@/features/common';
 
 const COLLECTION = 'tasks';
+const DEFAULT_DATE = '1970-01-01';
 
 export function presentTask(taskDocument: TaskDocument & { id: string }): Task {
   const { createdAt, ...unchanged } = taskDocument;
 
-  const createdAtIso = createdAt.toDate().toISOString();
+  const createdAtIso = createdAt?.toDate().toISOString() ?? new Date(DEFAULT_DATE).toISOString();
 
   return {
     ...unchanged,

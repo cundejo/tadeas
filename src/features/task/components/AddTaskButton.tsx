@@ -8,8 +8,8 @@ type Props = {
 export const AddTaskButton: React.FC<Props> = ({ onClick }) => {
   return (
     <>
-      <Button auto color="secondary" rounded flat onClick={onClick}>
-        Add task
+      <Button auto color="primary" rounded onClick={onClick}>
+        ADD TASK
       </Button>
     </>
   );
