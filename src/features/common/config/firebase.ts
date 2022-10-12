@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, Timestamp } from 'firebase/firestore';
 import * as environment from './environment';
+import { DateISOString } from '../types';
 
 const firebaseConfig = {
   apiKey: environment.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,3 +16,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export { db };
+
+export const dateToFirestore = (date?: DateISOString): Timestamp | undefined => {
+  if (!date) return undefined;
+  return Timestamp.fromDate(new Date(date));
+};
