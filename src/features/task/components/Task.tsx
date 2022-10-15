@@ -21,25 +21,65 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
 
   return (
     <Container selected={inEdition} onClick={() => onClick(task.id)}>
-      <div>
+      <div className="check">
         <Checkbox aria-label="complete" size="lg" onChange={handleCompletedTask} />
       </div>
-      <div>
-        {inEdition ? (
-          <Input
-            aria-label="title"
-            placeholder="Next UI"
-            value={task.title}
-            onChange={(e) => handleChange('title', e.target.value)}
-          />
-        ) : (
-          <h4>{task.title}</h4>
-        )}
-        <p>{task?.details}</p>
+      <div className="content">
+        <Title task={task} inEdition={inEdition} handleChange={handleChange} onClick={onClick} />
       </div>
     </Container>
   );
 };
+
+type TitleProps = {
+  task: Task;
+  inEdition: boolean;
+  handleChange: (field: 'title' | 'details', value: string) => void;
+  onClick: (taskId: string) => void;
+};
+
+const Title: React.FC<TitleProps> = ({ task, inEdition, handleChange, onClick }) => {
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === 'Enter') onClick(task.id);
+  };
+
+  return (
+    <TitleContainer>
+      {inEdition ? (
+        <Input
+          size="xs"
+          aria-label="title"
+          placeholder="Add task title"
+          value={task.title}
+          fullWidth
+          animated={false}
+          onChange={(e) => handleChange('title', e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+      ) : (
+        <h4>{task.title}</h4>
+      )}
+    </TitleContainer>
+  );
+};
+
+const TitleContainer = styled('div', {
+  fontSize: '$md',
+
+  '& input': {
+    // border: '1px solid red',
+    fontSize: '$md',
+    fontWeight: 'normal',
+    margin: '0 !important',
+  },
+  '& h4': {
+    // border: '1px solid red',
+    fontSize: '$md',
+    fontWeight: 'normal',
+    letterSpacing: 'normal',
+    margin: 0,
+  },
+});
 
 const Container = styled('div', {
   display: 'flex',
@@ -58,6 +98,11 @@ const Container = styled('div', {
     background: '$gray50',
   },
 
-  '& h4': { marginBottom: 0, lineHeight: '1.2em' },
-  '& p': { margin: 0, color: '$gray800' },
+  '& .check': {
+    paddingTop: '2px',
+  },
+
+  '& .content': {
+    flexGrow: 1,
+  },
 });

@@ -20,16 +20,16 @@ export const TasksContainer: React.FC = () => {
   };
 
   const switchSelectedTask = (newTaskId: string) => {
-    // If I click on the selected task do nothing
-    if (taskInEdition && newTaskId === taskInEdition.id) return;
-
-    // Before switch, check if there is changes in current selected task, and save if positive.
+    // Check if there is changes in current selected task, and save if positive.
     if (taskInEdition) {
       const currentTask = find(tasks, { id: taskInEdition.id });
       if (currentTask && taskHasChanges(currentTask, taskInEdition)) updateTask(taskInEdition);
     }
 
-    // Switch to the new task
+    // If I clicked on the selected task do nothing
+    if (taskInEdition && newTaskId === taskInEdition.id) return;
+
+    // If is another task, switch to the new task
     const newTask = find(tasks, { id: newTaskId });
     setTaskInEdition(newTask);
   };
