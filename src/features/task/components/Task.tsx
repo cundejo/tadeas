@@ -14,9 +14,12 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
     console.log('completed', checked);
   };
 
-  const handleChange = (field: 'title' | 'details', value: string) => {
-    if (field === 'title') onChange({ ...task, title: value });
-    else onChange({ ...task, details: value });
+  const handleChange = (title: string) => {
+    onChange({ ...task, title });
+  };
+
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === 'Enter') onClick(task.id);
   };
 
   return (
@@ -25,41 +28,24 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
         <Checkbox aria-label="complete" size="lg" onChange={handleCompletedTask} />
       </div>
       <div className="content">
-        <Title task={task} inEdition={inEdition} handleChange={handleChange} onClick={onClick} />
+        <TitleContainer>
+          {inEdition ? (
+            <Input
+              size="xs"
+              aria-label="title"
+              placeholder="Add task title"
+              value={task.title}
+              fullWidth
+              animated={false}
+              onChange={(e) => handleChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          ) : (
+            <h4>{task.title}</h4>
+          )}
+        </TitleContainer>
       </div>
     </Container>
-  );
-};
-
-type TitleProps = {
-  task: Task;
-  inEdition: boolean;
-  handleChange: (field: 'title' | 'details', value: string) => void;
-  onClick: (taskId: string) => void;
-};
-
-const Title: React.FC<TitleProps> = ({ task, inEdition, handleChange, onClick }) => {
-  const handleKeyDown = (e: { key: string }) => {
-    if (e.key === 'Enter') onClick(task.id);
-  };
-
-  return (
-    <TitleContainer>
-      {inEdition ? (
-        <Input
-          size="xs"
-          aria-label="title"
-          placeholder="Add task title"
-          value={task.title}
-          fullWidth
-          animated={false}
-          onChange={(e) => handleChange('title', e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-      ) : (
-        <h4>{task.title}</h4>
-      )}
-    </TitleContainer>
   );
 };
 
@@ -68,13 +54,13 @@ const TitleContainer = styled('div', {
 
   '& input': {
     // border: '1px solid red',
-    fontSize: '$md',
+    fontSize: '$lg',
     fontWeight: 'normal',
     margin: '0 !important',
   },
   '& h4': {
     // border: '1px solid red',
-    fontSize: '$md',
+    fontSize: '$lg',
     fontWeight: 'normal',
     letterSpacing: 'normal',
     margin: 0,
