@@ -44,8 +44,6 @@ export const TasksContainer: React.FC = () => {
     setTasksCompletedRecently(undefined);
   };
 
-  console.log('tasksCompletedRecently', tasksCompletedRecently);
-
   return (
     <>
       <AddTaskButton onClick={handleAddTask} loading={isLoading} />
