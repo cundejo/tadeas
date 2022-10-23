@@ -9,9 +9,11 @@ type TaskCore = {
 
 export type TaskDocument = TaskCore & {
   createdAt: Timestamp;
+  completedAt?: Timestamp;
 };
 
 export type Task = TaskCore & {
   id: string;
   createdAt: DateISOString;
+  completedAt?: DateISOString;
 };

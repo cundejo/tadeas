@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Task, getTasksListener, updateTask as updateTaskApi } from '@/features/task';
+import {
+  completeTask as completeTaskApi,
+  getTasksListener,
+  Task,
+  undoCompleteTask as undoCompleteTaskApi,
+  updateTask as updateTaskApi,
+} from '@/features/task';
 
 type HookDto = {
   tasks: Task[];
   isLoading: boolean;
   updateTask: (task: Task) => void;
+  completeTask: (task: Task) => void;
+  undoCompleteTask: (task: Task) => void;
 };
 
 export const useTasks = (): HookDto => {
@@ -12,7 +20,8 @@ export const useTasks = (): HookDto => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const onTasksReceived = (tasks: Task[]) => {
-    setTasks(tasks);
+    // Filter out tasks that has been completed
+    setTasks(tasks.filter((task) => !task.completedAt));
     setIsLoading(false);
   };
 
@@ -28,5 +37,17 @@ export const useTasks = (): HookDto => {
     setIsLoading(false);
   };
 
-  return { tasks, isLoading, updateTask };
+  const completeTask = async (task: Task) => {
+    setIsLoading(true);
+    await completeTaskApi(task);
+    setIsLoading(false);
+  };
+
+  const undoCompleteTask = async (task: Task) => {
+    setIsLoading(true);
+    await undoCompleteTaskApi(task);
+    setIsLoading(false);
+  };
+
+  return { tasks, isLoading, updateTask, completeTask, undoCompleteTask };
 };

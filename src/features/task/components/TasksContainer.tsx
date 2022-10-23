@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { AddTaskButton, Task, taskHasChanges, TasksList, useTasks } from '@/features/task';
 import { find } from 'lodash';
+import { CompletedNotification } from '@/features/task/components/CompletedNotification';
 
 export const TasksContainer: React.FC = () => {
-  const { tasks, isLoading, updateTask } = useTasks();
+  const { tasks, isLoading, updateTask, completeTask, undoCompleteTask } = useTasks();
   const [taskInEdition, setTaskInEdition] = useState<Task>();
+  const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
 
   const handleAddTask = () => {
-    console.log('adding task');
-
     const newTask: Task = {
       id: nanoid(),
       title: '',
@@ -34,6 +34,18 @@ export const TasksContainer: React.FC = () => {
     setTaskInEdition(newTask);
   };
 
+  const handleComplete = async (task: Task) => {
+    completeTask(task);
+    setTasksCompletedRecently(task);
+  };
+
+  const handleUndoComplete = (task: Task) => {
+    undoCompleteTask(task);
+    setTasksCompletedRecently(undefined);
+  };
+
+  console.log('tasksCompletedRecently', tasksCompletedRecently);
+
   return (
     <>
       <AddTaskButton onClick={handleAddTask} loading={isLoading} />
@@ -42,7 +54,9 @@ export const TasksContainer: React.FC = () => {
         taskInEdition={taskInEdition}
         switchTaskSelected={switchSelectedTask}
         onChangeTask={setTaskInEdition}
+        onComplete={handleComplete}
       />
+      <CompletedNotification tasksCompletedRecently={tasksCompletedRecently} onUndo={handleUndoComplete} />
     </>
   );
 };

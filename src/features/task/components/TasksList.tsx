@@ -7,9 +7,10 @@ type Props = {
   taskInEdition: Task | undefined;
   switchTaskSelected: (taskId: string) => void;
   onChangeTask: (task: Task) => void;
+  onComplete: (task: Task) => void;
 };
 
-export const TasksList: React.FC<Props> = ({ tasks, taskInEdition, switchTaskSelected, onChangeTask }) => {
+export const TasksList: React.FC<Props> = ({ tasks, taskInEdition, switchTaskSelected, onChangeTask, onComplete }) => {
   return (
     <Container>
       {tasks.map((task) => (
@@ -19,6 +20,7 @@ export const TasksList: React.FC<Props> = ({ tasks, taskInEdition, switchTaskSel
           inEdition={task.id === taskInEdition?.id}
           onClick={switchTaskSelected}
           onChange={onChangeTask}
+          onComplete={onComplete}
         />
       ))}
     </Container>

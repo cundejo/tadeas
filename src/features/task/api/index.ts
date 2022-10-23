@@ -1,4 +1,15 @@
-import { collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, Unsubscribe } from 'firebase/firestore';
+import {
+  collection,
+  deleteField,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  Unsubscribe,
+  updateDoc,
+} from 'firebase/firestore';
 import { Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, db, removeUndefined } from '@/features/common';
 
@@ -6,22 +17,25 @@ const COLLECTION = 'tasks';
 const DEFAULT_DATE = '1970-01-01';
 
 function fromFirestore(taskDocument: TaskDocument & { id: string }): Task {
-  const { createdAt, ...unchanged } = taskDocument;
+  const { createdAt, completedAt, ...unchanged } = taskDocument;
 
   const createdAtIso = createdAt?.toDate().toISOString() ?? new Date(DEFAULT_DATE).toISOString();
+  const completedAtIso = completedAt?.toDate().toISOString();
 
   return {
     ...unchanged,
     createdAt: createdAtIso,
+    completedAt: completedAtIso,
   };
 }
 
 function toFirestore<T>(task: Task): TaskDocument {
-  const { id, createdAt, ...unchanged } = task;
+  const { id, createdAt, completedAt, ...unchanged } = task;
 
   return removeUndefined({
     ...unchanged,
     createdAt: dateToFirestore(createdAt),
+    completedAt: dateToFirestore(completedAt),
   } as TaskDocument);
 }
 
@@ -45,13 +59,30 @@ export const getTasksListener = (onTasksReceived: (tasks: Task[]) => void): Unsu
   );
 };
 
-export const updateTask = async (task: Task): Promise<Task> => {
+export const updateTask = async (task: Task): Promise<void> => {
   try {
     await setDoc(doc(db, COLLECTION, task.id), toFirestore(task));
-    return getTask(task.id);
   } catch (e) {
     console.log('ERROR', e);
-    return {} as Task;
+  }
+};
+
+export const completeTask = async (task: Task): Promise<void> => {
+  try {
+    await setDoc(doc(db, COLLECTION, task.id), toFirestore({ ...task, completedAt: new Date().toISOString() }));
+  } catch (e) {
+    console.log('ERROR', e);
+  }
+};
+
+export const undoCompleteTask = async (task: Task): Promise<void> => {
+  try {
+    const taskRef = doc(db, COLLECTION, task.id);
+    await updateDoc(taskRef, {
+      completedAt: deleteField(),
+    });
+  } catch (e) {
+    console.log('ERROR', e);
   }
 };
 

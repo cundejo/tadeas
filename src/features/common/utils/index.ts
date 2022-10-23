@@ -1,5 +1,9 @@
 import { isUndefined, negate, pickBy } from 'lodash';
 
-export function removeUndefined<Type>(obj: Type): Type {
-  return pickBy(obj, negate(isUndefined)!) as Type;
+export function removeUndefined<T extends object>(obj: T): T {
+  return pickBy(obj, negate(isUndefined)!) as T;
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
