@@ -39,13 +39,6 @@ function toFirestore<T>(task: Task): TaskDocument {
   } as TaskDocument);
 }
 
-export const getTask = async (taskId: string): Promise<Task> => {
-  const docRef = doc(db, COLLECTION, taskId);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) throw new Error(`Task with id ${taskId} doesn't exist`);
-  return fromFirestore({ id: taskId, ...(docSnap.data() as TaskDocument) });
-};
-
 export const getTasksListener = (onTasksReceived: (tasks: Task[]) => void): Unsubscribe => {
   return onSnapshot(
     query(collection(db, COLLECTION), orderBy('createdAt', 'desc')),

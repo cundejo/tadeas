@@ -62,6 +62,7 @@ const Container = styled('div', {
   margin: '0 auto',
   borderRadius: '$md',
   padding: '$sm',
+  pb: '6px',
   gap: '$md',
   variants: {
     selected: {
@@ -83,7 +84,7 @@ const TitleContainer = styled('div', {
   '& input': {
     fontSize: '$lg',
     fontWeight: 'normal',
-    margin: '0 !important',
+    margin: '2px 0 0 !important',
   },
   '& h4': {
     fontSize: '$lg',

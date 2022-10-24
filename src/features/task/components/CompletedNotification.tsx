@@ -16,7 +16,7 @@ export const CompletedNotification: React.FC<Props> = ({ tasksCompletedRecently,
       <Card>
         <Card.Body>
           <Row align="center" css={{ justifyContent: 'space-between' }}>
-            <h4>Task completed</h4>
+            <h4 style={{ margin: 0 }}>Task completed</h4>
             <Button auto flat onClick={() => onUndo(tasksCompletedRecently)}>
               Undo
             </Button>
