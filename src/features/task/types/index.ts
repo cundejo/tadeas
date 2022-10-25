@@ -3,8 +3,8 @@ import { DateISOString } from '@/features/common';
 import Timestamp = firebase.firestore.Timestamp;
 
 type TaskCore = {
+  id: string;
   title: string;
-  details?: string;
 };
 
 export type TaskDocument = TaskCore & {
@@ -13,7 +13,6 @@ export type TaskDocument = TaskCore & {
 };
 
 export type Task = TaskCore & {
-  id: string;
   createdAt: DateISOString;
   completedAt?: DateISOString;
 };

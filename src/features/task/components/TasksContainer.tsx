@@ -1,11 +1,11 @@
 import React from 'react';
-import { AddTaskButton, TasksList, useTasks } from '@/features/task';
-import { CompletedNotification } from '@/features/task/components/CompletedNotification';
+import { AddTaskButton, TasksList, useTasks, CompletedNotification } from '@/features/task';
+import { useList } from '@/features/list';
 
 export const TasksContainer: React.FC = () => {
+  const { list, isLoading: isLoadingList } = useList();
   const {
-    tasks,
-    isLoading,
+    isLoading: isLoadingTasks,
     completeTask,
     undoCompleteTask,
     addTask,
@@ -13,13 +13,14 @@ export const TasksContainer: React.FC = () => {
     taskInEdition,
     setTaskInEdition,
     tasksCompletedRecently,
-  } = useTasks();
+    getTasks,
+  } = useTasks(list);
 
   return (
     <>
-      <AddTaskButton onClick={addTask} loading={isLoading} />
+      <AddTaskButton onClick={addTask} loading={isLoadingList || isLoadingTasks} />
       <TasksList
-        tasks={tasks}
+        tasks={getTasks()}
         taskInEdition={taskInEdition}
         switchTaskSelected={switchSelectedTask}
         onChangeTask={setTaskInEdition}

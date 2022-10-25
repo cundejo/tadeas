@@ -1,49 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   completeTask as completeTaskApi,
-  getTasksListener,
   Task,
   taskHasChanges,
   undoCompleteTask as undoCompleteTaskApi,
-  updateTask as updateTaskApi,
+  upsertTask,
 } from '@/features/task';
 import { find } from 'lodash';
 import { nanoid } from 'nanoid';
+import { List } from '@/features/list';
+import { stringSort } from '@/features/common';
 
 type HookDto = {
   addTask: () => void;
   completeTask: (task: Task) => void;
+  getTasks: () => Task[];
   isLoading: boolean;
   setTaskInEdition: (task?: Task) => void;
   switchSelectedTask: (taskId: string) => void;
   taskInEdition?: Task;
-  tasks: Task[];
   tasksCompletedRecently?: Task;
   undoCompleteTask: (task: Task) => void;
 };
 
-export const useTasks = (): HookDto => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([]);
+export const useTasks = (list?: List): HookDto => {
+  const [isLoading, setIsLoading] = useState(!!list);
   const [taskInEdition, setTaskInEdition] = useState<Task>();
   const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
-
-  const onTasksReceived = (tasks: Task[]) => {
-    // Filter out tasks that has been completed
-    setTasks(tasks.filter((task) => !task.completedAt));
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    const taskListenerUnsubscribe = getTasksListener(onTasksReceived);
-    return () => taskListenerUnsubscribe();
-  }, []);
 
   const saveTaskInEdition = () => {
     // Check if there is changes in current selected task, and save if positive.
     if (taskInEdition) {
-      const currentTask = find(tasks, { id: taskInEdition.id });
+      const currentTask = find(list?.tasks, { id: taskInEdition.id });
       if (currentTask && taskHasChanges(currentTask, taskInEdition)) updateTask(taskInEdition);
     }
   };
@@ -67,38 +55,43 @@ export const useTasks = (): HookDto => {
     if (taskInEdition && newTaskId === taskInEdition.id) return;
 
     // If is another task, switch to the new task
-    const newTask = find(tasks, { id: newTaskId });
+    const newTask = find(list?.tasks, { id: newTaskId });
     setTaskInEdition(newTask);
   };
 
   const updateTask = async (task: Task) => {
     setIsLoading(true);
-    await updateTaskApi(task);
+    await upsertTask(task, list!);
     setIsLoading(false);
   };
 
   const completeTask = async (task: Task) => {
     setIsLoading(true);
-    await completeTaskApi(task);
+    await completeTaskApi(task.id, list!);
     setTasksCompletedRecently(task);
     setIsLoading(false);
   };
 
   const undoCompleteTask = async (task: Task) => {
     setIsLoading(true);
-    await undoCompleteTaskApi(task);
+    await undoCompleteTaskApi(task.id, list!);
     setTasksCompletedRecently(undefined);
     setIsLoading(false);
+  };
+
+  const getTasks = (): Task[] => {
+    if (!list) return [];
+    return list.tasks.filter((task) => !task.completedAt).sort((a, b) => stringSort(b.createdAt, a.createdAt));
   };
 
   return {
     addTask,
     completeTask,
+    getTasks,
     isLoading,
     setTaskInEdition,
     switchSelectedTask,
     taskInEdition,
-    tasks,
     tasksCompletedRecently,
     undoCompleteTask,
   };
