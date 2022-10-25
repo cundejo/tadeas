@@ -20,7 +20,7 @@ type HookDto = {
   switchSelectedTask: (taskId: string) => void;
   taskInEdition?: Task;
   tasksCompletedRecently?: Task;
-  undoCompleteTask: (task: Task) => void;
+  undoCompleteTask: (task?: Task) => void;
 };
 
 export const useTasks = (list?: List): HookDto => {
@@ -72,7 +72,8 @@ export const useTasks = (list?: List): HookDto => {
     setIsLoading(false);
   };
 
-  const undoCompleteTask = async (task: Task) => {
+  const undoCompleteTask = async (task?: Task) => {
+    if (!task) return;
     setIsLoading(true);
     await undoCompleteTaskApi(task.id, list!);
     setTasksCompletedRecently(undefined);
