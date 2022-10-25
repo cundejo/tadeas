@@ -9,7 +9,7 @@ type Props = {
 export const AddTaskButton: React.FC<Props> = ({ onClick, loading }) => {
   return (
     <>
-      <Button auto color="primary" rounded onClick={onClick} loading={loading}>
+      <Button auto color="primary" rounded onClick={onClick} loading={loading} noLoadingIcon>
         ADD TASK
       </Button>
     </>
