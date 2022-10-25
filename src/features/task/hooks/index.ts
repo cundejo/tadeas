@@ -4,7 +4,7 @@ import {
   Task,
   taskHasChanges,
   undoCompleteTask as undoCompleteTaskApi,
-  upsertTask,
+  upsertTasks as upsertTasksApi,
 } from '@/features/task';
 import { find } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -28,40 +28,42 @@ export const useTasks = (list?: List): HookDto => {
   const [taskInEdition, setTaskInEdition] = useState<Task>();
   const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
 
-  const saveTaskInEdition = () => {
-    // Check if there is changes in current selected task, and save if positive.
+  const taskInEditionWithChanges = (): Task | undefined => {
     if (taskInEdition) {
       const currentTask = find(list?.tasks, { id: taskInEdition.id });
-      if (currentTask && taskHasChanges(currentTask, taskInEdition)) updateTask(taskInEdition);
+      if (currentTask && taskHasChanges(currentTask, taskInEdition)) return taskInEdition;
     }
+    return undefined;
   };
 
   const addTask = () => {
-    saveTaskInEdition();
+    // If there is changes in current selected task, get it to posterior save.
+    const currentTask = taskInEditionWithChanges();
 
     const newTask: Task = {
       id: nanoid(),
       title: '',
       createdAt: new Date().toISOString(),
     };
-    updateTask(newTask);
+    upsertTasks([currentTask, newTask]);
     setTaskInEdition(newTask);
   };
 
   const switchSelectedTask = (newTaskId: string) => {
-    saveTaskInEdition();
+    // Update in edition task if there is changes.
+    upsertTasks([taskInEditionWithChanges()]);
 
-    // If I clicked on the selected task do nothing
+    // If I clicked on the same selected task do nothing.
     if (taskInEdition && newTaskId === taskInEdition.id) return;
 
-    // If is another task, switch to the new task
+    // If is another task, select this new one.
     const newTask = find(list?.tasks, { id: newTaskId });
     setTaskInEdition(newTask);
   };
 
-  const updateTask = async (task: Task) => {
+  const upsertTasks = async (tasks: Array<Task | undefined>) => {
     setIsLoading(true);
-    await upsertTask(task, list!);
+    await upsertTasksApi(tasks, list!);
     setIsLoading(false);
   };
 

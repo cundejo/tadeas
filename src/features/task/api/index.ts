@@ -1,7 +1,7 @@
 import { Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, removeUndefined } from '@/features/common';
 import { List, upsertList } from '@/features/list';
-import { find, findIndex } from 'lodash';
+import { compact, find, findIndex, forEach } from 'lodash';
 
 const DEFAULT_DATE = '1970-01-01';
 
@@ -29,11 +29,16 @@ export const toFirestore = (task: Task): TaskDocument => {
   } as TaskDocument);
 };
 
-export const upsertTask = async (updatedTask: Task, list: List): Promise<void> => {
+/**
+ * Update several tasks at once in a list
+ */
+export const upsertTasks = async (updatedTasks: Array<Task | undefined>, list: List): Promise<void> => {
   const tasks = [...list.tasks];
-  const taskIndex = findIndex(list.tasks, { id: updatedTask.id });
-  if (taskIndex >= 0) tasks.splice(taskIndex, 1, updatedTask);
-  else tasks.push(updatedTask);
+  forEach(compact(updatedTasks), (task) => {
+    const taskIndex = findIndex(tasks, { id: task.id });
+    if (taskIndex >= 0) tasks.splice(taskIndex, 1, task);
+    else tasks.push(task);
+  });
   await upsertList({ ...list, tasks });
 };
 
