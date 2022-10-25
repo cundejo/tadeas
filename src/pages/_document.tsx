@@ -20,12 +20,12 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-          <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1890ff" />
-          <meta name="msapplication-TileColor" content="#2d89ef" />
+          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e0978" />
+          <meta name="msapplication-TileColor" content="#2b5797" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
-          <meta name="theme-color" content="#000000" />
+          <meta name="theme-color" content="#2c2131" />
+          <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="mobile-web-app-capable" content="yes" />
         </Head>
         <body>
