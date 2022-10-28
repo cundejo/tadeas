@@ -1,7 +1,8 @@
-import { doc, onSnapshot, setDoc, Unsubscribe, collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot, query, setDoc, Unsubscribe, where } from 'firebase/firestore';
 import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
-import { db, removeUndefined, stringSort } from '@/features/common';
+import { db, removeUndefined } from '@/features/common';
 import { List, ListDocument } from '@/features/list';
+import { orderBy } from 'lodash';
 
 const COLLECTION = 'lists';
 
@@ -45,7 +46,8 @@ export const upsertList = async (list: List): Promise<void> => {
 export const getListsByUser = async (userEmail: string): Promise<List[]> => {
   const q = query(collection(db, COLLECTION), where('owner', '==', userEmail));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs
-    .map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) }))
-    .sort((...args) => stringSort(...args)('name'));
+  return orderBy(
+    querySnapshot.docs.map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
+    ['name']
+  );
 };

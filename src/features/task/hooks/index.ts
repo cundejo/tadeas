@@ -6,10 +6,9 @@ import {
   undoCompleteTask as undoCompleteTaskApi,
   upsertTasks as upsertTasksApi,
 } from '@/features/task';
-import { find } from 'lodash';
+import { find, orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 import { List } from '@/features/list';
-import { stringSort } from '@/features/common';
 
 type HookDto = {
   addTask: () => void;
@@ -84,7 +83,11 @@ export const useTasks = (list?: List): HookDto => {
 
   const getTasks = (): Task[] => {
     if (!list) return [];
-    return list.tasks.filter((task) => !task.completedAt).sort((a, b) => stringSort(b.createdAt, a.createdAt));
+    return orderBy(
+      list.tasks.filter((task) => !task.completedAt),
+      ['createdAt'],
+      ['desc']
+    );
   };
 
   return {
