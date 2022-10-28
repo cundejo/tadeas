@@ -13,4 +13,4 @@ export const booleanSort = (booleanA?: boolean, booleanB?: boolean): number => {
   return booleanA ? -1 : 1;
 };
 
-export const stringSort = (stringA?: string, stringB?: string): number => (stringA || '').localeCompare(stringB || '');
+export const stringSort = (objA: any, objB: any) => (attr: string) => objA[attr].localeCompare(objB[attr]);
