@@ -1,8 +1,8 @@
 import React from 'react';
-import NextLink from 'next/link';
-import { Button, Col, Link, Row, styled, Text } from '@nextui-org/react';
+import { Button, Col, Row, styled } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { HiOutlineCog } from 'react-icons/hi';
+import { ListDropdown } from '@/features/list';
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
@@ -12,13 +12,7 @@ export const Navbar: React.FC = () => {
       <Content>
         <Col>
           <Row justify="flex-start">
-            <NextLink href="/">
-              <Link>
-                <Text h2 css={{ textGradient: '45deg, $blue500 -20%, $pink500 50%' }}>
-                  Tadeas
-                </Text>
-              </Link>
-            </NextLink>
+            <ListDropdown />
           </Row>
         </Col>
         <Col>
