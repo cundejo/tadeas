@@ -1,30 +1,20 @@
 import React from 'react';
-import { Button, Col, Row, styled } from '@nextui-org/react';
-import { useRouter } from 'next/router';
-import { HiOutlineCog } from 'react-icons/hi';
-import { ListDropdown } from '@/features/list';
+import { Col, Row, styled } from '@nextui-org/react';
+import { ListsDropdown } from '@/features/list';
+import { AppDropdown } from '@/features/common';
 
 export const Navbar: React.FC = () => {
-  const router = useRouter();
-
   return (
     <Container>
       <Content>
         <Col>
           <Row justify="flex-start">
-            <ListDropdown />
+            <ListsDropdown />
           </Row>
         </Col>
         <Col>
           <Row justify="flex-end">
-            <Button
-              onClick={() => router.push('/profile')}
-              light
-              auto
-              color="primary"
-              css={{ fontSize: '$md' }}
-              icon={<HiOutlineCog />}
-            />
+            <AppDropdown />
           </Row>
         </Col>
       </Content>
