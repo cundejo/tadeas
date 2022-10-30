@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@/features/common';
+import { MdAddTask } from 'react-icons/md';
 
 type Props = {
   onClick: () => void;
@@ -9,8 +10,8 @@ type Props = {
 export const AddTaskButton: React.FC<Props> = ({ onClick, loading }) => {
   return (
     <>
-      <Button auto color="primary" rounded onClick={onClick} loading={loading} noLoadingIcon>
-        ADD TASK
+      <Button icon={<MdAddTask />} auto color="primary" rounded onClick={onClick} loading={loading} noLoadingIcon>
+        Add Task
       </Button>
     </>
   );
