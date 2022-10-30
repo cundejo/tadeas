@@ -7,7 +7,7 @@ const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
 type Props = {};
 
-export const ListDropdown: React.FC<Props> = () => {
+export const ListsDropdown: React.FC<Props> = () => {
   const [isAddingList, setIsAddingList] = useState(false);
   const { lists, listSelected, selectList, addList } = useUserLists('owner@email.com');
 
@@ -27,7 +27,7 @@ export const ListDropdown: React.FC<Props> = () => {
         <h3>Tasks</h3>
         <Dropdown>
           <Dropdown.Button light>{listSelected?.name}</Dropdown.Button>
-          <Dropdown.Menu aria-label="List Actions" onAction={handleMenuAction} disabledKeys={[listSelected?.id as Key]}>
+          <Dropdown.Menu aria-label="My Lists" onAction={handleMenuAction} disabledKeys={[listSelected?.id as Key]}>
             <Dropdown.Section title="All my lists" items={lists}>
               {(list) => (
                 <Dropdown.Item icon={listSelected?.id === list.id ? <MdCheck /> : <EmptyIcon />} key={list.id}>

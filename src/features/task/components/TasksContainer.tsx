@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddTaskButton, TasksList, useTasks, CompletedNotification } from '@/features/task';
+import { AddTaskButton, CompletedNotification, TasksList, useTasks } from '@/features/task';
 import { useList } from '@/features/list';
 
 export const TasksContainer: React.FC = () => {

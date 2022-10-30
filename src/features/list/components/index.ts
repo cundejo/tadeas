@@ -1,2 +1,2 @@
-export * from './ListDropdown';
+export * from './ListsDropdown';
 export * from './ModalAddList';
