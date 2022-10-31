@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, onSnapshot, query, setDoc, Unsubscribe, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query, setDoc, Unsubscribe, where } from 'firebase/firestore';
 import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
 import { db, removeUndefined } from '@/features/common';
 import { List, ListDocument } from '@/features/list';
@@ -38,6 +38,14 @@ export const getListListener = (listId: string, onListReceived: (list: List) => 
 export const upsertList = async (list: List): Promise<void> => {
   try {
     await setDoc(doc(db, COLLECTION, list.id), toFirestore(list));
+  } catch (e) {
+    console.log('ERROR', e);
+  }
+};
+
+export const deleteList = async (list: List): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, COLLECTION, list.id));
   } catch (e) {
     console.log('ERROR', e);
   }

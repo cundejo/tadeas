@@ -14,7 +14,7 @@ type HookDto = {
   addTask: () => void;
   completeTask: (task: Task) => void;
   getTasks: () => Task[];
-  isLoading: boolean;
+  isSaving: boolean;
   setTaskInEdition: (task?: Task) => void;
   switchSelectedTask: (taskId: string) => void;
   taskInEdition?: Task;
@@ -23,7 +23,7 @@ type HookDto = {
 };
 
 export const useTasks = (list?: List): HookDto => {
-  const [isLoading, setIsLoading] = useState(!!list);
+  const [isSaving, setIsSaving] = useState(!!list);
   const [taskInEdition, setTaskInEdition] = useState<Task>();
   const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
 
@@ -61,24 +61,24 @@ export const useTasks = (list?: List): HookDto => {
   };
 
   const upsertTasks = async (tasks: Array<Task | undefined>) => {
-    setIsLoading(true);
+    setIsSaving(true);
     await upsertTasksApi(tasks, list!);
-    setIsLoading(false);
+    setIsSaving(false);
   };
 
   const completeTask = async (task: Task) => {
-    setIsLoading(true);
+    setIsSaving(true);
     await completeTaskApi(task.id, list!);
     setTasksCompletedRecently(task);
-    setIsLoading(false);
+    setIsSaving(false);
   };
 
   const undoCompleteTask = async (task?: Task) => {
     if (!task) return;
-    setIsLoading(true);
+    setIsSaving(true);
     await undoCompleteTaskApi(task.id, list!);
     setTasksCompletedRecently(undefined);
-    setIsLoading(false);
+    setIsSaving(false);
   };
 
   const getTasks = (): Task[] => {
@@ -94,7 +94,7 @@ export const useTasks = (list?: List): HookDto => {
     addTask,
     completeTask,
     getTasks,
-    isLoading,
+    isSaving,
     setTaskInEdition,
     switchSelectedTask,
     taskInEdition,

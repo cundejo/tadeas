@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { getListsByUser, List, upsertList } from '@/features/list';
+import { getListsByUser, List, upsertList, deleteList as deleteListApi } from '@/features/list';
 import { AppContext, LOCAL_STORAGE_SELECTED_LIST_ID, useLocalStorage } from '@/features/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
 
 type HookDto = {
   addList: (name: string) => Promise<void>;
+  deleteList: (list: List) => Promise<void>;
   editList: (list: List) => Promise<void>;
   isLoading: boolean;
   listSelected?: List;
@@ -68,6 +69,18 @@ export const useUserLists = (ownerEmail: string): HookDto => {
     setIsLoading(false);
   };
 
+  const deleteList = async (list: List) => {
+    // Avoid deleting the list that is created by default with new users.
+    if (list.isDefault) return;
+
+    setIsLoading(true);
+    const lists = userLists.filter(({ id }) => id !== list.id);
+    setItem(lists[0].id);
+    setAppContext({ userLists: lists, selectedListId: lists[0].id });
+    await deleteListApi(list);
+    setIsLoading(false);
+  };
+
   const selectList = (list: List) => {
     setAppContext((prev) => ({ ...prev, selectedListId: list.id }));
     setItem(list.id);
@@ -75,6 +88,7 @@ export const useUserLists = (ownerEmail: string): HookDto => {
 
   return {
     addList,
+    deleteList,
     editList,
     isLoading: isLoading || isEmpty(userLists),
     listSelected: find(userLists, { id: selectedListId }),

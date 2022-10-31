@@ -4,6 +4,7 @@ type ListCore = {
   name: string;
   owner: string;
   sharedWith: string[];
+  isDefault?: boolean;
 };
 
 export type ListDocument = ListCore & {

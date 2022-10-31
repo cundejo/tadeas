@@ -21,8 +21,8 @@ export const ModalEditList: React.FC<Props> = ({ list, visible, onClose, onChang
       } as List;
       onChange(newList).then((r) => {
         setSubmitting(false);
+        formik.setFieldValue('name', values.name);
         onClose();
-        formik.resetForm();
       });
     },
   });
@@ -44,7 +44,7 @@ export const ModalEditList: React.FC<Props> = ({ list, visible, onClose, onChang
           />
           <Spacer />
           <Button type="submit" auto color="primary" loading={formik.isSubmitting} css={{ w: '100%' }}>
-            Add
+            {list ? 'Save' : 'Add'}
           </Button>
         </form>
       </>

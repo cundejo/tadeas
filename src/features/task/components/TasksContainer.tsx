@@ -5,7 +5,7 @@ import { useList } from '@/features/list';
 export const TasksContainer: React.FC = () => {
   const { list, isLoading: isLoadingList } = useList();
   const {
-    isLoading: isLoadingTasks,
+    isSaving,
     completeTask,
     undoCompleteTask,
     addTask,
@@ -16,9 +16,11 @@ export const TasksContainer: React.FC = () => {
     getTasks,
   } = useTasks(list);
 
+  if (!list || isLoadingList) return null;
+
   return (
     <>
-      <AddTaskButton onClick={addTask} loading={isLoadingList || isLoadingTasks} />
+      <AddTaskButton onClick={addTask} loading={isSaving} />
       <TasksList
         tasks={getTasks()}
         taskInEdition={taskInEdition}

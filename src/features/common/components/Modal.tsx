@@ -8,7 +8,7 @@ type Props = Partial<ModalProps> & {
 
 export const Modal: React.FC<Props> = ({ title, visible, children, ...rest }) => {
   return (
-    <NextUiModal closeButton blur aria-labelledby="title" open={visible} preventClose {...rest}>
+    <NextUiModal closeButton blur aria-labelledby={title} open={visible} preventClose {...rest}>
       <NextUiModal.Header>
         <Text h4 id="title">
           {title}
