@@ -1,6 +1,6 @@
 import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
-import { ModalAddList, useUserLists } from '@/features/list';
+import { ModalEditList, useUserLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
@@ -8,8 +8,8 @@ const ADD_NEW_LIST = 'ADD_NEW_LIST';
 type Props = {};
 
 export const ListsDropdown: React.FC<Props> = () => {
+  const { lists, listSelected, selectList, addList, isLoading } = useUserLists('owner@email.com');
   const [isAddingList, setIsAddingList] = useState(false);
-  const { lists, listSelected, selectList, addList } = useUserLists('owner@email.com');
 
   const handleMenuAction = (key: Key) => {
     if (key === ADD_NEW_LIST) {
@@ -42,7 +42,13 @@ export const ListsDropdown: React.FC<Props> = () => {
         </Dropdown>
       </Container>
 
-      <ModalAddList onClose={() => setIsAddingList(false)} visible={isAddingList} onAdd={addList} />
+      {!isLoading && (
+        <ModalEditList
+          onClose={() => setIsAddingList(false)}
+          visible={isAddingList}
+          onChange={(list) => addList(list.name)}
+        />
+      )}
     </>
   );
 };

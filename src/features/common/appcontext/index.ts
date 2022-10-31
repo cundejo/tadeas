@@ -1,4 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
+import { List } from '@/features/list';
 
 export type AppContextType = {
   appContext: ContextObject;
@@ -7,10 +8,12 @@ export type AppContextType = {
 
 export type ContextObject = {
   selectedListId?: string;
+  userLists: List[];
 };
 
 export const appContextDefault = {
   selectedListId: undefined,
+  userLists: [],
 };
 
 export const AppContext = createContext<AppContextType>({

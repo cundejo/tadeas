@@ -1,4 +1,4 @@
-import React, { Key } from 'react';
+import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import {
   MdMenu,
@@ -9,10 +9,16 @@ import {
   MdOutlineRemoveDone,
   MdSettings,
 } from 'react-icons/md';
+import { ModalEditList, useUserLists } from '@/features/list';
 
 export const AppDropdown: React.FC = () => {
+  const { editList, listSelected } = useUserLists('owner@email.com');
+  const [isEditingList, setIsEditingList] = useState(false);
+
   const handleMenuAction = (key: Key) => {
-    console.log('clicked action', key);
+    if (key === 'rename') {
+      setIsEditingList(true);
+    }
   };
 
   return (
@@ -46,6 +52,16 @@ export const AppDropdown: React.FC = () => {
           </Dropdown.Menu>
         </Dropdown>
       </Container>
+
+      {listSelected && (
+        <ModalEditList
+          key={listSelected.id}
+          list={listSelected}
+          onClose={() => setIsEditingList(false)}
+          visible={isEditingList}
+          onChange={(list) => editList(list)}
+        />
+      )}
     </>
   );
 };

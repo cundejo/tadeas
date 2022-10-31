@@ -2,18 +2,24 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { Input, Spacer, Text } from '@nextui-org/react';
 import { Button, Modal } from '@/features/common';
+import { List } from '@/features/list';
 
 interface Props {
-  onAdd: (name: string) => Promise<void>;
+  list?: List;
+  onChange: (list: List) => Promise<void>;
   onClose: () => void;
   visible: boolean;
 }
 
-export const ModalAddList: React.FC<Props> = ({ visible, onClose, onAdd }) => {
+export const ModalEditList: React.FC<Props> = ({ list, visible, onClose, onChange }) => {
   const formik = useFormik({
-    initialValues: { name: '' },
+    initialValues: { name: list ? list.name : '' },
     onSubmit: (values, { setSubmitting }) => {
-      onAdd(values.name).then((r) => {
+      const newList = {
+        ...(list || {}),
+        name: values.name,
+      } as List;
+      onChange(newList).then((r) => {
         setSubmitting(false);
         onClose();
         formik.resetForm();
@@ -22,13 +28,13 @@ export const ModalAddList: React.FC<Props> = ({ visible, onClose, onAdd }) => {
   });
 
   return (
-    <Modal title="New List" onClose={onClose} visible={visible}>
+    <Modal title={list ? 'Edit List' : 'New List'} onClose={onClose} visible={visible}>
       <>
         <form onSubmit={formik.handleSubmit}>
           <Input
             type="text"
             name="name"
-            placeholder="New list name"
+            placeholder="List name"
             bordered
             rounded
             required
