@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, Timestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import * as environment from './environment';
 import { DateISOString } from '../types';
 
@@ -14,8 +15,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { db };
+export { auth, db };
 
 export const dateToFirestore = (date?: DateISOString): Timestamp | undefined => {
   if (!date) return undefined;
