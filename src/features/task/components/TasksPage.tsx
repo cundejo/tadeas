@@ -2,7 +2,7 @@ import React from 'react';
 import { AddTaskButton, CompletedNotification, TasksList, useTasks } from '@/features/task';
 import { useList } from '@/features/list';
 
-export const TasksContainer: React.FC = () => {
+export const TasksPage: React.FC = () => {
   const { list, isLoading: isLoadingList } = useList();
   const {
     isSaving,

@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Col, Row, styled } from '@nextui-org/react';
-import { ListsDropdown } from '@/features/list';
-import { AppDropdown } from '@/features/common';
 
-export const Navbar: React.FC = () => {
+type Props = {
+  leftContent: ReactNode;
+  rightContent?: ReactNode;
+};
+
+export const Navbar: React.FC<Props> = ({ leftContent, rightContent }) => {
   return (
     <Container>
       <Content>
         <Col>
-          <Row justify="flex-start">
-            <ListsDropdown />
-          </Row>
+          <Row justify="flex-start">{leftContent}</Row>
         </Col>
         <Col>
-          <Row justify="flex-end">
-            <AppDropdown />
-          </Row>
+          <Row justify="flex-end">{rightContent ?? null}</Row>
         </Col>
       </Content>
     </Container>
@@ -35,7 +34,7 @@ const Container = styled('nav', {
 const Content = styled('div', {
   maxWidth: '650px',
   height: '100%',
-  padding: '0 1.5em',
+  padding: '0',
   margin: '0 auto',
   display: 'flex',
   alignItems: 'center',

@@ -11,7 +11,7 @@ interface Props {
   visible: boolean;
 }
 
-export const ModalEditList: React.FC<Props> = ({ list, visible, onClose, onChange }) => {
+export const ListEditModal: React.FC<Props> = ({ list, visible, onClose, onChange }) => {
   const formik = useFormik({
     initialValues: { name: list ? list.name : '' },
     onSubmit: (values, { setSubmitting }) => {

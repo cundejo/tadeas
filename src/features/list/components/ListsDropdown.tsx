@@ -1,13 +1,11 @@
 import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
-import { ModalEditList, useUserLists } from '@/features/list';
+import { ListEditModal, useUserLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
-type Props = {};
-
-export const ListsDropdown: React.FC<Props> = () => {
+export const ListsDropdown: React.FC = () => {
   const { lists, listSelected, selectList, addList, isLoading } = useUserLists('owner@email.com');
   const [isAddingList, setIsAddingList] = useState(false);
 
@@ -43,7 +41,7 @@ export const ListsDropdown: React.FC<Props> = () => {
       </Container>
 
       {!isLoading && (
-        <ModalEditList
+        <ListEditModal
           onClose={() => setIsAddingList(false)}
           visible={isAddingList}
           onChange={(list) => addList(list.name)}

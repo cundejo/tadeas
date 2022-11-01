@@ -1,18 +1,17 @@
 import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import {
+  MdInfoOutline,
   MdMenu,
-  MdOutlineCoffee,
   MdOutlineDeleteSweep,
   MdOutlineEditNote,
-  MdOutlineFeedback,
   MdOutlineRemoveDone,
   MdSettings,
 } from 'react-icons/md';
-import { ModalEditList, useUserLists } from '@/features/list';
+import { ListEditModal, useUserLists } from '@/features/list';
 import { ConfirmationModal } from '@/features/common';
 
-export const AppDropdown: React.FC = () => {
+export const ListMenu: React.FC = () => {
   const { deleteList, editList, listSelected } = useUserLists('owner@email.com');
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
@@ -68,6 +67,9 @@ export const AppDropdown: React.FC = () => {
               <Dropdown.Item key="settings" icon={<MdSettings />}>
                 Settings
               </Dropdown.Item>
+              <Dropdown.Item key="about" icon={<MdInfoOutline />}>
+                About
+              </Dropdown.Item>
             </Dropdown.Section>
           </Dropdown.Menu>
         </Dropdown>
@@ -75,7 +77,7 @@ export const AppDropdown: React.FC = () => {
 
       {listSelected && (
         <>
-          <ModalEditList
+          <ListEditModal
             key={listSelected.id}
             list={listSelected}
             onClose={() => setIsEditingList(false)}
