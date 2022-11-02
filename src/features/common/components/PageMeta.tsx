@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 const appName = 'Tadeas';
 const defaultDescription = 'A to-do list app by Teno Fdio Team';
-const defaultUrl = 'https://tadeas.pages.dev/';
+const defaultUrl = 'https://tadeas.oliversosa.com/';
 const defaultImage = '/apple-touch-icon.png';
 
 type Props = {
