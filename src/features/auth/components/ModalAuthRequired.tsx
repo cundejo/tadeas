@@ -15,12 +15,11 @@ const Error: React.FC<ErrorProps> = ({ touched, error }) => {
 };
 
 interface Props {
-  message?: string;
   visible: boolean;
   onClose: () => void;
 }
 
-export const ModalAuthRequired: React.FC<Props> = ({ message, visible, onClose }) => {
+export const ModalAuthRequired: React.FC<Props> = ({ visible, onClose }) => {
   const [emailAccount, setEmailAccount] = useState('');
   const formik = useFormik({
     initialValues: { email: '' },
@@ -54,13 +53,13 @@ export const ModalAuthRequired: React.FC<Props> = ({ message, visible, onClose }
         </>
       ) : (
         <>
-          <Text>{message ?? 'To continue please signup by entering your email!'}</Text>
+          <Text>To continue please signup by entering your email!</Text>
 
           <form onSubmit={formik.handleSubmit}>
             <Input
               type="email"
               name="email"
-              labelPlaceholder="Your email"
+              placeholder="Your email"
               bordered
               rounded
               required

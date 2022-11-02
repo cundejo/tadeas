@@ -10,7 +10,7 @@ export const Signout: React.FC = () => {
   useEffect(() => {
     (async () => {
       await signOut();
-      router.push('/profile');
+      router.push('/');
     })();
   }, [router]);
 

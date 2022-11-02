@@ -1,20 +1,21 @@
-import React from 'react';
-import { Button, Description, List, ListItem } from '@/features/common';
+import React, { useState } from 'react';
+import { Button, ConfirmationModal, Description, List, ListItem } from '@/features/common';
 import { MdLogin, MdLogout } from 'react-icons/md';
-import { useAuth } from '@/features/auth';
+import { ModalAuthRequired, useAuth } from '@/features/auth';
+import { useRouter } from 'next/router';
 
 export const SettingsPage: React.FC = () => {
+  const router = useRouter();
   const { user, isLoading } = useAuth();
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isConfirmingSignout, setIsConfirmingSignout] = useState(false);
 
   const handleSignIn = async () => {
-    // setAuthModal({
-    //   visible: true,
-    //   message: 'We only need your email.',
-    // });
+    setIsSigningIn(true);
   };
 
   const handleSignOut = async () => {
-    // setSignoutConfirmModal(true);
+    setIsConfirmingSignout(true);
   };
 
   return (
@@ -59,22 +60,15 @@ export const SettingsPage: React.FC = () => {
         {/*</ListItem>*/}
       </List>
 
-      {/*<ModalAuthRequired*/}
-      {/*  message={authModal.message}*/}
-      {/*  onClose={() => setAuthModal({ visible: false, message: '' })}*/}
-      {/*  visible={authModal.visible}*/}
-      {/*/>*/}
+      <ModalAuthRequired onClose={() => setIsSigningIn(false)} visible={isSigningIn} />
 
-      {/*<Modal title="Are you sure?" visible={signoutConfirmModal} onClose={() => setSignoutConfirmModal(false)}>*/}
-      {/*  <Container display="flex" alignItems="center" justify="space-between">*/}
-      {/*    <Button auto onClick={() => setSignoutConfirmModal(false)}>*/}
-      {/*      Cancel*/}
-      {/*    </Button>*/}
-      {/*    <Button auto color="error" onClick={() => router.push(`/auth/signout`)}>*/}
-      {/*      Yes, sign off*/}
-      {/*    </Button>*/}
-      {/*  </Container>*/}
-      {/*</Modal>*/}
+      <ConfirmationModal
+        title="Are you sure?"
+        confirmButtonText="Yes, sign off"
+        visible={isConfirmingSignout}
+        onConfirm={() => router.push(`/auth/signout`)}
+        onCancel={() => setIsConfirmingSignout(false)}
+      />
     </>
   );
 };
