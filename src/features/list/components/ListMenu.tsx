@@ -10,8 +10,10 @@ import {
 } from 'react-icons/md';
 import { ListEditModal, useUserLists } from '@/features/list';
 import { ConfirmationModal } from '@/features/common';
+import { useRouter } from 'next/router';
 
 export const ListMenu: React.FC = () => {
+  const router = useRouter();
   const { deleteList, editList, listSelected } = useUserLists('owner@email.com');
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
@@ -27,6 +29,10 @@ export const ListMenu: React.FC = () => {
         break;
       case 'deleteList':
         setIsDeletingList(true);
+        break;
+      case 'settings':
+      case 'about':
+        router.push(`/${key}`);
         break;
       default:
         break;

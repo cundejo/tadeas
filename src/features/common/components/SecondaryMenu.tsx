@@ -1,11 +1,13 @@
 import React, { Key } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import { MdInfoOutline, MdMenu, MdSettings } from 'react-icons/md';
+import { useRouter } from 'next/router';
 
 export const SecondaryMenu: React.FC = () => {
+  const router = useRouter();
+
   const handleMenuAction = (key: Key) => {
-    if (key === 'settings') console.log('Settings clicked');
-    if (key === 'about') console.log('About clicked');
+    router.push(`/${key}`);
   };
 
   return (

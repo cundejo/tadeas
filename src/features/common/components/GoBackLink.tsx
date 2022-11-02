@@ -1,12 +1,16 @@
 import React from 'react';
 import { styled, Text } from '@nextui-org/react';
 import { MdOutlineArrowBack } from 'react-icons/md';
+import { useRouter } from 'next/router';
 
 export const GoBackLink: React.FC = () => {
+  const router = useRouter();
+
   return (
-    <Container onClick={() => null}>
+    <Container onClick={() => router.push('/')}>
       <Text h2>
-        <MdOutlineArrowBack /> Go back
+        <MdOutlineArrowBack />
+        &nbsp;&nbsp;Go back
       </Text>
     </Container>
   );
