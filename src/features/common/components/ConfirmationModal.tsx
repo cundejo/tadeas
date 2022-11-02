@@ -3,15 +3,25 @@ import { Container, ModalProps, Row, Text } from '@nextui-org/react';
 import { Button, Modal } from '@/features/common';
 
 type Props = Partial<ModalProps> & {
-  visible: boolean;
+  confirmButtonText?: string;
   message?: string | ReactNode;
   onCancel: () => void;
   onConfirm: () => void;
+  title?: string;
+  visible: boolean;
 };
 
-export const ConfirmationModal: React.FC<Props> = ({ visible, message, onCancel, onConfirm, ...rest }) => {
+export const ConfirmationModal: React.FC<Props> = ({
+  confirmButtonText,
+  message,
+  onCancel,
+  onConfirm,
+  title,
+  visible,
+  ...rest
+}) => {
   return (
-    <Modal title="Confirm" visible={visible} closeButton={false} onClose={onCancel} {...rest}>
+    <Modal title={title ?? 'Confirm'} visible={visible} closeButton={false} onClose={onCancel} {...rest}>
       <Container display="flex" alignItems="center" justify="space-evenly">
         {message && (
           <Row justify="center" css={{ mb: '$lg' }}>
@@ -22,7 +32,7 @@ export const ConfirmationModal: React.FC<Props> = ({ visible, message, onCancel,
           Cancel
         </Button>
         <Button auto color="error" onClick={onConfirm}>
-          Yes
+          {confirmButtonText ?? 'Yes'}
         </Button>
       </Container>
     </Modal>
