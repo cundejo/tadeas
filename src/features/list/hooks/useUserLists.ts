@@ -26,7 +26,7 @@ export const useUserLists = (ownerEmail: string): HookDto => {
     setIsLoading(true);
     let cleaning = false;
 
-    const fetchUserLists = async () => {
+    (async () => {
       const lists = await getListsByUser(ownerEmail);
       if (cleaning) return;
       // The selected list comes from the local storage, if it's empty we set the first list in the array.
@@ -35,8 +35,7 @@ export const useUserLists = (ownerEmail: string): HookDto => {
       setItem(list.id);
       setAppContext({ userLists: lists, selectedListId: list.id });
       setIsLoading(false);
-    };
-    fetchUserLists();
+    })();
 
     return () => {
       cleaning = true;

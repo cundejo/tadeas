@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import { GoBackLink, Navbar, SecondaryMenu } from '@/features/common';
-import { SettingsPage } from '@/features/settings';
+import { Settings } from '@/features/settings';
 import { useRouter } from 'next/router';
 
-const Settings: NextPage = () => {
+const SettingsPage: NextPage = () => {
   const router = useRouter();
 
   if (!router.isReady) return null;
@@ -11,9 +11,9 @@ const Settings: NextPage = () => {
   return (
     <>
       <Navbar leftContent={<GoBackLink />} rightContent={<SecondaryMenu />} />
-      <SettingsPage />
+      <Settings />
     </>
   );
 };
 
-export default Settings;
+export default SettingsPage;

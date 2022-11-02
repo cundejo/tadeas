@@ -1,8 +1,9 @@
 import React from 'react';
+import { NextPage } from 'next';
 import { Signout } from '@/features/auth';
 import { useRouter } from 'next/router';
 
-const SignoutPage: React.FC = () => {
+const SignoutPage: NextPage = () => {
   const router = useRouter();
 
   if (!router.isReady) return null;

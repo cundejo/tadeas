@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@nextui-org/react';
 
-export const AboutPage: React.FC = () => {
+export const About: React.FC = () => {
   return (
     <>
       <Text>

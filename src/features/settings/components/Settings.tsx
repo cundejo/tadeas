@@ -4,7 +4,7 @@ import { MdLogin, MdLogout } from 'react-icons/md';
 import { ModalAuthRequired, useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';
 
-export const SettingsPage: React.FC = () => {
+export const Settings: React.FC = () => {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
