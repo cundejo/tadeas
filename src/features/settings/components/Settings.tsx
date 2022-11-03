@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Button, ConfirmationModal, Description, List, ListItem } from '@/features/common';
 import { MdLogin, MdLogout } from 'react-icons/md';
-import { ModalAuthRequired, useAuth } from '@/features/auth';
+import { useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';
 
 export const Settings: React.FC = () => {
   const router = useRouter();
   const { user, isLoading } = useAuth();
-  const [isSigningIn, setIsSigningIn] = useState(false);
   const [isConfirmingSignout, setIsConfirmingSignout] = useState(false);
 
   const handleSignIn = async () => {
-    setIsSigningIn(true);
+    router.push('/auth/login-form');
   };
 
   const handleSignOut = async () => {
@@ -59,8 +58,6 @@ export const Settings: React.FC = () => {
         {/*  <Description title="Feedback" subTitle="If you find an issue, or have a good idea, please let us know" />*/}
         {/*</ListItem>*/}
       </List>
-
-      <ModalAuthRequired onClose={() => setIsSigningIn(false)} visible={isSigningIn} />
 
       <ConfirmationModal
         title="Are you sure?"

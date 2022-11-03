@@ -1,15 +1,24 @@
 import type { NextPage } from 'next';
-import { TasksPage } from '@/features/task';
-import { Navbar } from '@/features/common';
+import { Tasks } from '@/features/task';
+import { Navbar, PageLoading } from '@/features/common';
 import { ListMenu, ListsDropdown } from '@/features/list';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/features/auth';
 
-const Home: NextPage = () => {
+const IndexPage: NextPage = () => {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) return <PageLoading />;
+
+  if (!user) router.push('/auth/login-form');
+
   return (
     <>
       <Navbar leftContent={<ListsDropdown />} rightContent={<ListMenu />} />
-      <TasksPage />
+      <Tasks />
     </>
   );
 };
 
-export default Home;
+export default IndexPage;

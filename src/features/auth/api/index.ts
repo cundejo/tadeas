@@ -13,7 +13,7 @@ export const getUser = (): Promise<User> =>
 export const sendAuthLinkToUserEmail = async (email: string): Promise<void> => {
   try {
     const actionCodeSettings = {
-      url: `${window.location.origin}/auth/signing?redirectTo=${window.location.href}`,
+      url: `${window.location.origin}/auth/signing?redirectTo=${window.location.origin}`,
       handleCodeInApp: true,
     };
 
