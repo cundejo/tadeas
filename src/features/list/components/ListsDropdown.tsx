@@ -2,11 +2,16 @@ import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import { ListEditModal, useUserLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
+import { User } from 'firebase/auth';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
-export const ListsDropdown: React.FC = () => {
-  const { lists, listSelected, selectList, addList, isLoading } = useUserLists('owner@email.com');
+type Props = {
+  user: User;
+};
+
+export const ListsDropdown: React.FC<Props> = ({ user }) => {
+  const { lists, listSelected, selectList, addList, isLoading } = useUserLists(user.email!);
   const [isAddingList, setIsAddingList] = useState(false);
 
   const handleMenuAction = (key: Key) => {

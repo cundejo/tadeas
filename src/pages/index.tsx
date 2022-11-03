@@ -11,11 +11,14 @@ const IndexPage: NextPage = () => {
 
   if (isLoading) return <PageLoading />;
 
-  if (!user) router.push('/auth/login-form');
+  if (!user) {
+    router.push('/auth/login-form');
+    return null;
+  }
 
   return (
     <>
-      <Navbar leftContent={<ListsDropdown />} rightContent={<ListMenu />} />
+      <Navbar leftContent={<ListsDropdown user={user!} />} rightContent={<ListMenu user={user!} />} />
       <Tasks />
     </>
   );

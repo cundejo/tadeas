@@ -11,10 +11,15 @@ import {
 import { ListEditModal, useUserLists } from '@/features/list';
 import { ConfirmationModal } from '@/features/common';
 import { useRouter } from 'next/router';
+import { User } from 'firebase/auth';
 
-export const ListMenu: React.FC = () => {
+type Props = {
+  user: User;
+};
+
+export const ListMenu: React.FC<Props> = ({ user }) => {
   const router = useRouter();
-  const { deleteList, editList, listSelected } = useUserLists('owner@email.com');
+  const { deleteList, editList, listSelected } = useUserLists(user.email!);
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
 
