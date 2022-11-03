@@ -3,6 +3,7 @@ import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } fr
 import { db, removeUndefined } from '@/features/common';
 import { List, ListDocument } from '@/features/list';
 import { orderBy } from 'lodash';
+import { nanoid } from 'nanoid';
 
 const COLLECTION = 'lists';
 
@@ -58,4 +59,20 @@ export const getListsByUser = async (userEmail: string): Promise<List[]> => {
     querySnapshot.docs.map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
     ['name']
   );
+};
+
+export const createDefaultListForNewUser = async (userEmail: string): Promise<void> => {
+  const q = query(collection(db, COLLECTION), where('owner', '==', userEmail));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    const newList: List = {
+      id: nanoid(),
+      isDefault: true,
+      name: 'My List',
+      owner: userEmail,
+      sharedWith: [],
+      tasks: [],
+    };
+    await upsertList(newList);
+  }
 };

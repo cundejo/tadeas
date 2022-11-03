@@ -1,6 +1,7 @@
-import { sendAuthLinkToUserEmail } from '../api';
 import { useState } from 'react';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
+import { createDefaultListForNewUser } from '@/features/list';
+import { sendAuthLinkToUserEmail } from '@/features/auth';
 
 type Values = {
   email: string;
@@ -22,6 +23,8 @@ export const useLoginForm = (): HookDto => {
     sendAuthLinkToUserEmail(values.email).then(() => {
       setWasEmailSent(true);
       setSubmitting(false);
+      // Every user should have a default list, so we create it here if user is signing for the fist time.
+      createDefaultListForNewUser(values.email);
     });
   };
 
