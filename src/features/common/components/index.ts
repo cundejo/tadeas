@@ -6,6 +6,7 @@ export * from './GoBackLink';
 export * from './List';
 export * from './Modal';
 export * from './Navbar';
+export * from './Note';
 export * from './PageLoading';
 export * from './PageMeta';
 export * from './SecondaryMenu';
