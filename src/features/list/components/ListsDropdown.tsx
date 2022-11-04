@@ -1,17 +1,12 @@
 import React, { Key, useState } from 'react';
-import { Dropdown, styled } from '@nextui-org/react';
-import { ListEditModal, useUserLists } from '@/features/list';
+import { Dropdown, Loading, styled } from '@nextui-org/react';
+import { ListAddModal, ListEditModal, useLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
-import { User } from 'firebase/auth';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
-type Props = {
-  user: User;
-};
-
-export const ListsDropdown: React.FC<Props> = ({ user }) => {
-  const { lists, listSelected, selectList, addList, isLoading } = useUserLists(user.email!);
+export const ListsDropdown: React.FC = () => {
+  const { lists, listSelected, selectList, addList, isLoading } = useLists();
   const [isAddingList, setIsAddingList] = useState(false);
 
   const handleMenuAction = (key: Key) => {
@@ -23,6 +18,8 @@ export const ListsDropdown: React.FC<Props> = ({ user }) => {
       selectList(list);
     }
   };
+
+  if (isLoading) return <Loading size="sm" />;
 
   return (
     <>
@@ -45,13 +42,7 @@ export const ListsDropdown: React.FC<Props> = ({ user }) => {
         </Dropdown>
       </Container>
 
-      {!isLoading && (
-        <ListEditModal
-          onClose={() => setIsAddingList(false)}
-          visible={isAddingList}
-          onChange={(list) => addList(list.name)}
-        />
-      )}
+      {isAddingList && <ListAddModal onClose={() => setIsAddingList(false)} />}
     </>
   );
 };

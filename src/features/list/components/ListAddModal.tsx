@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import { Input, Spacer } from '@nextui-org/react';
 import { Button, Modal } from '@/features/common';
-import { List, useLists } from '@/features/list';
+import { useLists } from '@/features/list';
 
 interface Props {
   onClose: () => void;
 }
 
-export const ListEditModal: React.FC<Props> = ({ onClose }) => {
-  const { listSelected: list, editList } = useLists();
+export const ListAddModal: React.FC<Props> = ({ onClose }) => {
+  const { addList } = useLists();
 
   const formik = useFormik({
-    initialValues: { name: list!.name },
+    initialValues: { name: '' },
     onSubmit: (values, { setSubmitting }) => {
-      const newList = { ...list, name: values.name } as List;
-      editList(newList).then(() => {
+      addList(values.name).then(() => {
         setSubmitting(false);
         formik.resetForm();
         onClose();
@@ -24,7 +23,7 @@ export const ListEditModal: React.FC<Props> = ({ onClose }) => {
   });
 
   return (
-    <Modal title="Edit List" onClose={onClose} visible>
+    <Modal title="New List" onClose={onClose} visible>
       <>
         <form onSubmit={formik.handleSubmit}>
           <Input
@@ -40,7 +39,7 @@ export const ListEditModal: React.FC<Props> = ({ onClose }) => {
           />
           <Spacer />
           <Button type="submit" auto color="primary" loading={formik.isSubmitting} css={{ w: '100%' }}>
-            Save
+            Add
           </Button>
         </form>
       </>

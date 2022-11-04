@@ -3,6 +3,7 @@ import { getListsByUser, List, upsertList, deleteList as deleteListApi } from '@
 import { AppContext, LOCAL_STORAGE_SELECTED_LIST_ID, useLocalStorage } from '@/features/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
+import { useAuth } from '@/features/auth';
 
 type HookDto = {
   addList: (name: string) => Promise<void>;
@@ -13,76 +14,69 @@ type HookDto = {
   lists: List[];
   selectList: (list: List) => void;
 };
-
-export const useUserLists = (ownerEmail: string): HookDto => {
+/**
+ * This hook depends on useListsLoader to load the data in the app context.
+ */
+export const useLists = (): HookDto => {
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const {
     appContext: { selectedListId, userLists },
     setAppContext,
   } = useContext(AppContext);
-  const { item, setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
-
-  useEffect(() => {
-    setIsLoading(true);
-    let cleaning = false;
-
-    (async () => {
-      const lists = await getListsByUser(ownerEmail);
-      if (cleaning) return;
-      // The selected list comes from the local storage, if it's empty we set the first list in the array.
-      let list = lists.find((l) => l.id === item);
-      if (!list) list = lists[0];
-      setItem(list.id);
-      setAppContext({ userLists: lists, selectedListId: list.id });
-      setIsLoading(false);
-    })();
-
-    return () => {
-      cleaning = true;
-    };
-  }, []);
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
 
   const addList = async (name: string) => {
+    if (!user) throw new Error('User not signed in');
+
     setIsLoading(true);
 
     const newList: List = {
       id: nanoid(),
       tasks: [],
       name,
-      owner: ownerEmail,
+      owner: user.email!,
       sharedWith: [],
     };
 
     await upsertList(newList);
-    const lists = await getListsByUser(ownerEmail);
-    setAppContext({ userLists: lists, selectedListId: newList.id });
-    setItem(newList.id);
+    const lists = await getListsByUser(user.email!);
+    set({ selectedList: newList, lists });
     setIsLoading(false);
   };
 
   const editList = async (list: List) => {
+    if (!user) throw new Error('User not signed in');
     setIsLoading(true);
     await upsertList(list);
-    const lists = await getListsByUser(ownerEmail);
-    setAppContext((prev) => ({ ...prev, userLists: lists }));
+    const lists = await getListsByUser(user.email!);
+    set({ lists });
     setIsLoading(false);
   };
 
   const deleteList = async (list: List) => {
-    // Avoid deleting the list that is created by default with new users.
+    // Avoid deleting the user default list.
     if (list.isDefault) return;
 
     setIsLoading(true);
     const lists = userLists.filter(({ id }) => id !== list.id);
-    setItem(lists[0].id);
-    setAppContext({ userLists: lists, selectedListId: lists[0].id });
+    set({ selectedList: lists[0], lists });
     await deleteListApi(list);
     setIsLoading(false);
   };
 
-  const selectList = (list: List) => {
-    setAppContext((prev) => ({ ...prev, selectedListId: list.id }));
-    setItem(list.id);
+  const selectList = (list: List) => set({ selectedList: list });
+
+  /**
+   * Set in local storage and app context the lists and the selected list.
+   */
+  const set = ({ lists, selectedList }: { lists?: List[]; selectedList?: List }) => {
+    if (selectedList) setItem(selectedList.id);
+    setAppContext((prev) => ({
+      ...prev,
+      selectedListId: selectedList ? selectedList.id : prev.selectedListId,
+      userLists: lists ?? prev.userLists,
+    }));
   };
 
   return {

@@ -5,32 +5,26 @@ import {
   MdMenu,
   MdOutlineDeleteSweep,
   MdOutlineEditNote,
-  MdOutlineRemoveDone,
+  MdOutlineShare,
   MdSettings,
 } from 'react-icons/md';
-import { ListEditModal, useUserLists } from '@/features/list';
+import { ListEditModal, useLists } from '@/features/list';
 import { ConfirmationModal } from '@/features/common';
 import { useRouter } from 'next/router';
-import { User } from 'firebase/auth';
 
-type Props = {
-  user: User;
-};
-
-export const ListMenu: React.FC<Props> = ({ user }) => {
+export const ListMenu: React.FC = () => {
   const router = useRouter();
-  const { deleteList, editList, listSelected } = useUserLists(user.email!);
+  const { deleteList, listSelected } = useLists();
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
 
   const handleMenuAction = (key: Key) => {
-    if (key === 'rename') {
-      setIsEditingList(true);
-    }
-
     switch (key) {
       case 'rename':
         setIsEditingList(true);
+        break;
+      case 'share':
+        router.push(`/list/share`);
         break;
       case 'deleteList':
         setIsDeletingList(true);
@@ -61,18 +55,21 @@ export const ListMenu: React.FC<Props> = ({ user }) => {
           >
             <Dropdown.Section title="Current List Actions">
               <Dropdown.Item key="rename" icon={<MdOutlineEditNote />}>
-                Rename list
+                Rename
+              </Dropdown.Item>
+              <Dropdown.Item key="share" icon={<MdOutlineShare />}>
+                Share
               </Dropdown.Item>
               <Dropdown.Item
                 key="deleteList"
                 icon={<MdOutlineDeleteSweep />}
                 description={listSelected?.isDefault ? "Default list can't be deleted" : undefined}
               >
-                Delete list
+                Delete
               </Dropdown.Item>
-              <Dropdown.Item key="deleteCompletedTasks" icon={<MdOutlineRemoveDone />}>
-                Delete completed tasks
-              </Dropdown.Item>
+              {/*<Dropdown.Item key="deleteCompletedTasks" icon={<MdOutlineRemoveDone />}>*/}
+              {/*  Delete completed tasks*/}
+              {/*</Dropdown.Item>*/}
             </Dropdown.Section>
             <Dropdown.Section title="Application">
               <Dropdown.Item key="settings" icon={<MdSettings />}>
@@ -86,27 +83,19 @@ export const ListMenu: React.FC<Props> = ({ user }) => {
         </Dropdown>
       </Container>
 
-      {listSelected && (
-        <>
-          <ListEditModal
-            key={listSelected.id}
-            list={listSelected}
-            onClose={() => setIsEditingList(false)}
-            visible={isEditingList}
-            onChange={(list) => editList(list)}
-          />
-          <ConfirmationModal
-            visible={isDeletingList}
-            message={
-              <>
-                Deleting list <code>{listSelected.name}</code> will also delete all the tasks on the list. Are you sure?
-              </>
-            }
-            onConfirm={handleDeleteList}
-            onCancel={() => setIsDeletingList(false)}
-          />
-        </>
-      )}
+      {isEditingList && <ListEditModal onClose={() => setIsEditingList(false)} />}
+
+      <ConfirmationModal
+        visible={isDeletingList}
+        message={
+          <>
+            Deleting list <code>{listSelected?.name}</code> will also delete all the tasks on the list. Are you sure?
+          </>
+        }
+        onConfirm={handleDeleteList}
+        onCancel={() => setIsDeletingList(false)}
+        confirmButtonText="Yes, delete"
+      />
     </>
   );
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 import { AddTaskButton, CompletedNotification, TasksList, useTasks } from '@/features/task';
-import { useList } from '@/features/list';
+import { useListListener } from '@/features/list';
 
 export const Tasks: React.FC = () => {
-  const { list, isLoading: isLoadingList } = useList();
+  const { list, isLoading: isLoadingList } = useListListener();
   const {
     isSaving,
     completeTask,

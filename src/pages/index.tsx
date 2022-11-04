@@ -1,24 +1,16 @@
 import type { NextPage } from 'next';
 import { Tasks } from '@/features/task';
 import { Navbar, PageLoading } from '@/features/common';
-import { ListMenu, ListsDropdown } from '@/features/list';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/features/auth';
+import { ListMenu, ListsDropdown, useListsLoader } from '@/features/list';
 
 const IndexPage: NextPage = () => {
-  const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { isLoading } = useListsLoader();
 
   if (isLoading) return <PageLoading />;
 
-  if (!user) {
-    router.push('/auth/login-form');
-    return null;
-  }
-
   return (
     <>
-      <Navbar leftContent={<ListsDropdown user={user!} />} rightContent={<ListMenu user={user!} />} />
+      <Navbar leftContent={<ListsDropdown />} rightContent={<ListMenu />} />
       <Tasks />
     </>
   );
