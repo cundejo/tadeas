@@ -26,6 +26,8 @@ export const useLists = (): HookDto => {
   } = useContext(AppContext);
   const { setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
 
+  if (isEmpty(userLists)) throw new Error(`Hook useLists is being called without calling first useListsLoader.`);
+
   const addList = async (name: string) => {
     if (!user) throw new Error('User not signed in');
 
@@ -83,7 +85,7 @@ export const useLists = (): HookDto => {
     addList,
     deleteList,
     editList,
-    isLoading: isLoading || isEmpty(userLists),
+    isLoading,
     listSelected: find(userLists, { id: selectedListId }),
     lists: userLists,
     selectList,
