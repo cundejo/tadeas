@@ -50,7 +50,8 @@ export const useTasks = (list?: List): HookDto => {
 
   const switchSelectedTask = (newTaskId: string) => {
     // Update in edition task if there is changes.
-    upsertTasks([taskInEditionWithChanges()]);
+    const taskWithChanges = taskInEditionWithChanges();
+    if (taskWithChanges) upsertTasks([taskWithChanges]);
 
     // If I clicked on the same selected task do nothing.
     if (taskInEdition && newTaskId === taskInEdition.id) return;
