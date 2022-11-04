@@ -10,3 +10,4 @@ export * from './Note';
 export * from './PageLoading';
 export * from './PageMeta';
 export * from './SecondaryMenu';
+export * from './TextColorful';
