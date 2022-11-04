@@ -1,11 +1,12 @@
 import type { NextPage } from 'next';
-import { GoBackLink, Navbar, SecondaryMenu } from '@/features/common';
+import { Navbar, PageTitle, SecondaryMenu } from '@/features/common';
 import { About } from '@/features/about';
+import React from 'react';
 
 const AboutPage: NextPage = () => {
   return (
     <>
-      <Navbar leftContent={<GoBackLink />} rightContent={<SecondaryMenu />} />
+      <Navbar leftContent={<PageTitle title="About" goBack />} rightContent={<SecondaryMenu />} />
       <About />
     </>
   );

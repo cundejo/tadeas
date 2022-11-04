@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ConfirmationModal, Description, List, ListItem } from '@/features/common';
+import { Button, ConfirmationModal, Description, List, ListItem, TextColorful } from '@/features/common';
 import { MdLogin, MdLogout } from 'react-icons/md';
 import { useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';

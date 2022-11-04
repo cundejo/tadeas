@@ -1,17 +1,12 @@
 import React from 'react';
 import { Text } from '@nextui-org/react';
 import { useLists } from '@/features/list';
-import { Description, TextColorful } from '@/features/common';
 
 export const ListShare: React.FC = () => {
   const { listSelected } = useLists();
 
   return (
     <>
-      <Description
-        title={<TextColorful css={{ fs: '1.2em' }}>{listSelected?.name}</TextColorful>}
-        superTitle="Sharing list"
-      />
       <Text>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin porta, arcu non placerat feugiat, sem justo
         pretium est, eget sodales velit nisi tristique augue. Aliquam erat volutpat. Fusce pulvinar commodo auctor.

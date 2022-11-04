@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
-import { GoBackLink, Navbar, PageLoading, SecondaryMenu } from '@/features/common';
+import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/features/common';
 import { ListShare, useListsLoader } from '@/features/list';
+import React from 'react';
 
 const ShareListPage: NextPage = () => {
   const { isLoading } = useListsLoader();
@@ -9,7 +10,7 @@ const ShareListPage: NextPage = () => {
 
   return (
     <>
-      <Navbar leftContent={<GoBackLink />} rightContent={<SecondaryMenu />} />
+      <Navbar leftContent={<PageTitle title="Share list" goBack />} rightContent={<SecondaryMenu />} />
       <ListShare />
     </>
   );
