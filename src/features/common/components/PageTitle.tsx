@@ -18,9 +18,7 @@ export const PageTitle: React.FC<Props> = ({ title, subTitle, superTitle, goBack
     <Container>
       {goBack && (
         <Link onClick={() => router.push('/')}>
-          <Text h2>
-            <MdOutlineArrowBack />
-          </Text>
+          <MdOutlineArrowBack />
         </Link>
       )}
 
@@ -41,14 +39,12 @@ const Container = styled('div', {
 
 const Link = styled('a', {
   display: 'flex',
-  marginRight: '0.5em',
-  '& h2': {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: 'normal',
-    margin: 0,
-  },
-  '& h2:hover': {
-    color: '$primary',
+  alignItems: 'center',
+  paddingRight: '0.5em',
+  opacity: 0.5,
+  fs: '2rem',
+  '&:hover': {
+    color: '$white',
+    opacity: 0.9,
   },
 });
