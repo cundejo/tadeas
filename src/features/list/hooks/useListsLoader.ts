@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { getListsByUser } from '@/features/list';
+import { createDefaultListForNewUser, getListsByUser } from '@/features/list';
 import { AppContext, LOCAL_STORAGE_SELECTED_LIST_ID, useLocalStorage } from '@/features/common';
 import { isEmpty } from 'lodash';
 import { useAuth } from '@/features/auth';
@@ -31,7 +31,7 @@ export const useListsLoader = (): HookDto => {
     let cleaning = false;
 
     (async () => {
-      const lists = await getListsByUser(user.email!);
+      const lists = await getUserLists(user.email!);
       if (cleaning) return;
       // The selected list comes from the local storage, if it's empty we set the first list in the array.
       let list = lists.find(({ id }) => id === item);
@@ -45,6 +45,15 @@ export const useListsLoader = (): HookDto => {
       cleaning = true;
     };
   }, [user]);
+
+  const getUserLists = async (userEmail: string) => {
+    const lists = await getListsByUser(userEmail);
+    if (!isEmpty(lists)) return lists;
+
+    // Every user should have a default list, so we create it here if the user hasn't any list.
+    await createDefaultListForNewUser(userEmail);
+    return getListsByUser(userEmail);
+  };
 
   // The user is not signed in, so let's redirect him to login form
   if (!isLoadingUser && !user) {
