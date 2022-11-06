@@ -1,12 +1,7 @@
 import React from 'react';
 import { Input, Spacer, styled, Text } from '@nextui-org/react';
 import { useLoginForm } from '@/features/auth';
-import { Button, Note } from '@/features/common';
-
-interface ErrorProps {
-  touched: any;
-  error: any;
-}
+import { Button, InputError, Note } from '@/features/common';
 
 export const LoginForm: React.FC = () => {
   const { wasEmailSent, formik } = useLoginForm();
@@ -41,7 +36,7 @@ export const LoginForm: React.FC = () => {
           onChange={formik.handleChange}
           fullWidth
         />
-        <Error error={formik.errors.email} touched={formik.touched.email} />
+        <InputError error={formik.errors.email} touched={formik.touched.email} />
         <Spacer />
         <Button type="submit" auto color="primary" loading={formik.isSubmitting} css={{ w: '100%' }}>
           Sign in
@@ -51,11 +46,6 @@ export const LoginForm: React.FC = () => {
       <Note>Note: We need your email to associate the lists and tasks you will create with you, that is it!</Note>
     </Container>
   );
-};
-
-const Error: React.FC<ErrorProps> = ({ touched, error }) => {
-  if (!touched || !error) return null;
-  return <Text css={{ margin: '0  0 1em 1em', color: '$error' }}>{error}</Text>;
 };
 
 const Container = styled('div', {
