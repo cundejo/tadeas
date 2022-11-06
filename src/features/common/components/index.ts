@@ -2,6 +2,7 @@ export * from './Button';
 export * from './ConfirmationModal';
 export * from './Description';
 export * from './GeneralLayout';
+export * from './InputError';
 export * from './List';
 export * from './Modal';
 export * from './Navbar';

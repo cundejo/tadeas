@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { getListsByUser, List, upsertList, deleteList as deleteListApi } from '@/features/list';
+import { useContext, useState } from 'react';
+import { deleteList as deleteListApi, getListsByUser, List, upsertList } from '@/features/list';
 import { AppContext, LOCAL_STORAGE_SELECTED_LIST_ID, useLocalStorage } from '@/features/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
@@ -10,7 +10,7 @@ type HookDto = {
   deleteList: (list: List) => Promise<void>;
   editList: (list: List) => Promise<void>;
   isLoading: boolean;
-  listSelected?: List;
+  listSelected: List;
   lists: List[];
   selectList: (list: List) => void;
 };
@@ -26,7 +26,8 @@ export const useLists = (): HookDto => {
   } = useContext(AppContext);
   const { setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
 
-  if (isEmpty(userLists)) throw new Error(`Hook useLists is being called without calling first useListsLoader.`);
+  if (isEmpty(userLists) || !selectedListId)
+    throw new Error(`Hook useLists is being called without calling first useListsLoader.`);
 
   const addList = async (name: string) => {
     if (!user) throw new Error('User not signed in');
@@ -81,12 +82,15 @@ export const useLists = (): HookDto => {
     }));
   };
 
+  const listSelected = find(userLists, { id: selectedListId });
+  if (!listSelected) throw new Error(`List with id ${selectedListId} not found.`);
+
   return {
     addList,
     deleteList,
     editList,
     isLoading,
-    listSelected: find(userLists, { id: selectedListId }),
+    listSelected,
     lists: userLists,
     selectList,
   };

@@ -12,7 +12,7 @@ export const ListItem: React.FC<ListItemProps> = ({ children, extra }) => {
       wrap="nowrap"
       alignItems="center"
       justify="space-between"
-      css={{ padding: 0, borderBottom: '1px solid $accents2' }}
+      css={{ padding: 0, borderBottom: '1px solid rgba(255,255,255, 0.1)' }}
     >
       <div>{children}</div>
       {extra && <div>{extra}</div>}
