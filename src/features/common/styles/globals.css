@@ -36,3 +36,7 @@ a {
     background-repeat: no-repeat;
   }
 }
+
+.Toastify__toast{
+  border-radius: 20px;
+}
