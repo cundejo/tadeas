@@ -34,10 +34,9 @@ export const Settings: React.FC = () => {
             </Button>
           }
         >
-          <Description
-            title={user ? 'Signed in' : 'Signed off'}
-            subTitle={user ? `You are signed in as ${user.email}` : `Please sign in`}
-          />
+          <Description subTitle={user ? `You are signed in as ${user.email}` : `Please sign in`}>
+            {user ? 'Signed in' : 'Signed off'}
+          </Description>
         </ListItem>
         {/*<ListItem*/}
         {/*  key="theme"*/}

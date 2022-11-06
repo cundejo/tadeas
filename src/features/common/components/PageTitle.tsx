@@ -22,12 +22,9 @@ export const PageTitle: React.FC<Props> = ({ title, subTitle, superTitle, goBack
         </Link>
       )}
 
-      <Description
-        css={{ margin: 0 }}
-        title={<TextColorful css={{ fs: '1.2em' }}>{title}</TextColorful>}
-        superTitle={superTitle ?? 'page'}
-        subTitle={subTitle}
-      />
+      <Description css={{ margin: 0 }} superTitle={superTitle ?? 'page'} subTitle={subTitle}>
+        <TextColorful css={{ fs: '1.2em' }}>{title}</TextColorful>
+      </Description>
     </Container>
   );
 };
