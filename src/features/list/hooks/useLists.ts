@@ -10,7 +10,7 @@ type HookDto = {
   deleteList: (list: List) => Promise<void>;
   editList: (list: List) => Promise<void>;
   isLoading: boolean;
-  listSelected: List;
+  listSelected?: List;
   lists: List[];
   selectList: (list: List) => void;
 };
@@ -77,20 +77,17 @@ export const useLists = (): HookDto => {
     if (selectedList) setItem(selectedList.id);
     setAppContext((prev) => ({
       ...prev,
-      selectedListId: selectedList ? selectedList.id : prev.selectedListId,
+      selectedListId: selectedList?.id ?? prev.selectedListId,
       userLists: lists ?? prev.userLists,
     }));
   };
-
-  const listSelected = find(userLists, { id: selectedListId });
-  if (!listSelected) throw new Error(`List with id ${selectedListId} not found.`);
 
   return {
     addList,
     deleteList,
     editList,
     isLoading,
-    listSelected,
+    listSelected: find(userLists, { id: selectedListId }),
     lists: userLists,
     selectList,
   };

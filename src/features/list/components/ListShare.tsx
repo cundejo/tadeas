@@ -7,6 +7,8 @@ import { Button, Description, InputError, List as ListComponent, ListItem, TextC
 export const ListShare: React.FC = () => {
   const { listSelected, editList } = useLists();
 
+  if (!listSelected) throw new Error(`List not found.`);
+
   return (
     <>
       <Description subTitle="Here you can control who access to your list.">
