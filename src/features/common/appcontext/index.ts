@@ -9,11 +9,13 @@ export type AppContextType = {
 export type ContextObject = {
   selectedListId?: string;
   userLists: List[];
+  userSharedLists: List[];
 };
 
 export const appContextDefault = {
   selectedListId: undefined,
   userLists: [],
+  userSharedLists: [],
 };
 
 export const AppContext = createContext<AppContextType>({

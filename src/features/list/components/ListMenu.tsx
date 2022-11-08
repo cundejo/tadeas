@@ -1,20 +1,34 @@
-import React, { Key, useState } from 'react';
+import React, { Key, ReactNode, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import {
   MdInfoOutline,
   MdMenu,
   MdOutlineDeleteSweep,
   MdOutlineEditNote,
+  MdOutlineRemoveDone,
   MdOutlineShare,
   MdSettings,
 } from 'react-icons/md';
 import { ListEditModal, useLists } from '@/features/list';
 import { ConfirmationModal } from '@/features/common';
 import { useRouter } from 'next/router';
+import { compact } from 'lodash';
 
-export const ListMenu: React.FC = () => {
+type MenuSection = {
+  title: string;
+  children: MenuItem[];
+};
+
+type MenuItem = {
+  key: string;
+  title: string;
+  icon: ReactNode;
+  description?: string | boolean;
+};
+
+const useListMenu = () => {
   const router = useRouter();
-  const { deleteList, listSelected } = useLists();
+  const { deleteList, listSelected, isSelectedListMine } = useLists();
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
 
@@ -43,6 +57,55 @@ export const ListMenu: React.FC = () => {
     setIsDeletingList(false);
   };
 
+  const listSection: MenuSection = {
+    title: 'Current List Actions',
+    children: [
+      { key: 'rename', title: 'Rename', icon: <MdOutlineEditNote /> },
+      { key: 'share', title: 'Share', icon: <MdOutlineShare /> },
+      {
+        key: 'deleteList',
+        title: 'Delete',
+        icon: <MdOutlineDeleteSweep />,
+        description: listSelected?.isDefault && "Default list can't be deleted",
+      },
+      { key: 'deleteCompletedTasks', title: 'Delete completed tasks', icon: <MdOutlineRemoveDone /> },
+    ],
+  };
+
+  const appSection: MenuSection = {
+    title: 'Application',
+    children: [
+      { key: 'settings', title: 'Settings', icon: <MdSettings /> },
+      { key: 'about', title: 'About', icon: <MdInfoOutline /> },
+    ],
+  };
+
+  const sections: MenuSection[] = compact([isSelectedListMine && listSection, appSection]);
+
+  return {
+    handleDeleteList,
+    handleMenuAction,
+    isDeletingList,
+    isEditingList,
+    listSelected,
+    sections,
+    setIsDeletingList,
+    setIsEditingList,
+  };
+};
+
+export const ListMenu: React.FC = () => {
+  const {
+    handleDeleteList,
+    handleMenuAction,
+    isDeletingList,
+    isEditingList,
+    listSelected,
+    sections,
+    setIsDeletingList,
+    setIsEditingList,
+  } = useListMenu();
+
   return (
     <>
       <Container>
@@ -52,33 +115,13 @@ export const ListMenu: React.FC = () => {
             aria-label="App Actions"
             onAction={handleMenuAction}
             disabledKeys={listSelected?.isDefault ? ['deleteList'] : []}
+            items={sections}
           >
-            <Dropdown.Section title="Current List Actions">
-              <Dropdown.Item key="rename" icon={<MdOutlineEditNote />}>
-                Rename
-              </Dropdown.Item>
-              <Dropdown.Item key="share" icon={<MdOutlineShare />}>
-                Share
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="deleteList"
-                icon={<MdOutlineDeleteSweep />}
-                description={listSelected?.isDefault ? "Default list can't be deleted" : undefined}
-              >
-                Delete
-              </Dropdown.Item>
-              {/*<Dropdown.Item key="deleteCompletedTasks" icon={<MdOutlineRemoveDone />}>*/}
-              {/*  Delete completed tasks*/}
-              {/*</Dropdown.Item>*/}
-            </Dropdown.Section>
-            <Dropdown.Section title="Application">
-              <Dropdown.Item key="settings" icon={<MdSettings />}>
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item key="about" icon={<MdInfoOutline />}>
-                About
-              </Dropdown.Item>
-            </Dropdown.Section>
+            {({ title, children }: any) => (
+              <Dropdown.Section key={title} title={title} items={children}>
+                {(item: any) => <Dropdown.Item {...item} />}
+              </Dropdown.Section>
+            )}
           </Dropdown.Menu>
         </Dropdown>
       </Container>

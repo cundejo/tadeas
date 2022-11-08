@@ -61,6 +61,15 @@ export const getListsByUser = async (userEmail: string): Promise<List[]> => {
   );
 };
 
+export const getSharedListsByUser = async (userEmail: string): Promise<List[]> => {
+  const q = query(collection(db, COLLECTION), where('sharedWith', 'array-contains', userEmail));
+  const querySnapshot = await getDocs(q);
+  return orderBy(
+    querySnapshot.docs.map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
+    ['name']
+  );
+};
+
 export const createDefaultListForNewUser = async (userEmail: string): Promise<void> => {
   const q = query(collection(db, COLLECTION), where('owner', '==', userEmail));
   const querySnapshot = await getDocs(q);

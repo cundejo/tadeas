@@ -1,20 +1,20 @@
 import React, { Key, useState } from 'react';
 import { Dropdown, Loading, styled } from '@nextui-org/react';
-import { ListAddModal, ListEditModal, useLists } from '@/features/list';
+import { ListAddModal, useLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
 import { TextColorful } from '@/features/common';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
 export const ListsDropdown: React.FC = () => {
-  const { lists, listSelected, selectList, addList, isLoading } = useLists();
+  const { lists, listsSharedWithMe, listSelected, selectList, isLoading } = useLists();
   const [isAddingList, setIsAddingList] = useState(false);
 
   const handleMenuAction = (key: Key) => {
     if (key === ADD_NEW_LIST) {
       setIsAddingList(true);
     } else {
-      const list = lists.find((l) => l.id === key);
+      const list = [...lists, ...listsSharedWithMe].find(({ id }) => id === key);
       if (!list) throw new Error(`List with id ${key} not found`);
       selectList(list);
     }
@@ -32,6 +32,13 @@ export const ListsDropdown: React.FC = () => {
           <Dropdown.Button light>{listSelected?.name}</Dropdown.Button>
           <Dropdown.Menu aria-label="My Lists" onAction={handleMenuAction} disabledKeys={[listSelected?.id as Key]}>
             <Dropdown.Section title="All my lists" items={lists}>
+              {(list) => (
+                <Dropdown.Item icon={listSelected?.id === list.id ? <MdCheck /> : <EmptyIcon />} key={list.id}>
+                  {list.name}
+                </Dropdown.Item>
+              )}
+            </Dropdown.Section>
+            <Dropdown.Section title="Shared with me" items={listsSharedWithMe}>
               {(list) => (
                 <Dropdown.Item icon={listSelected?.id === list.id ? <MdCheck /> : <EmptyIcon />} key={list.id}>
                   {list.name}

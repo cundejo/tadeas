@@ -10,8 +10,10 @@ type HookDto = {
   deleteList: (list: List) => Promise<void>;
   editList: (list: List) => Promise<void>;
   isLoading: boolean;
+  isSelectedListMine: boolean;
   listSelected?: List;
   lists: List[];
+  listsSharedWithMe: List[];
   selectList: (list: List) => void;
 };
 /**
@@ -21,7 +23,7 @@ export const useLists = (): HookDto => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const {
-    appContext: { selectedListId, userLists },
+    appContext: { selectedListId, userLists, userSharedLists },
     setAppContext,
   } = useContext(AppContext);
   const { setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
@@ -82,13 +84,18 @@ export const useLists = (): HookDto => {
     }));
   };
 
+  const listSelected = find(userLists, { id: selectedListId });
+  const isSelectedListMine = listSelected ? user?.email === listSelected.owner : false;
+
   return {
     addList,
     deleteList,
     editList,
     isLoading,
-    listSelected: find(userLists, { id: selectedListId }),
+    isSelectedListMine,
+    listSelected,
     lists: userLists,
+    listsSharedWithMe: userSharedLists,
     selectList,
   };
 };
