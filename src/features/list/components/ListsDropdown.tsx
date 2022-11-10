@@ -1,13 +1,16 @@
 import React, { Key, useState } from 'react';
-import { Dropdown, Loading, styled } from '@nextui-org/react';
+import { Dropdown, styled } from '@nextui-org/react';
 import { ListAddModal, useLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
-import { TextColorful } from '@/features/common';
+import { log, RootState, TextColorful } from '@/features/common';
+import { useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 const ADD_NEW_LIST = 'ADD_NEW_LIST';
 
-export const ListsDropdown: React.FC = () => {
-  const { lists, listsSharedWithMe, listSelected, selectList, isLoading } = useLists();
+const useListsDropdown = () => {
+  const { listsSharedWithMe, listSelected, selectList } = useLists();
+  const lists = useSelector((state: RootState) => state.lists.userLists);
   const [isAddingList, setIsAddingList] = useState(false);
 
   const handleMenuAction = (key: Key) => {
@@ -20,7 +23,14 @@ export const ListsDropdown: React.FC = () => {
     }
   };
 
-  if (isLoading) return <Loading size="sm" />;
+  return { listSelected, handleMenuAction, lists, listsSharedWithMe, isAddingList, setIsAddingList };
+};
+
+export const ListsDropdown: React.FC = () => {
+  const { listSelected, handleMenuAction, lists, listsSharedWithMe, isAddingList, setIsAddingList } =
+    useListsDropdown();
+
+  log('Re-rendering ListsDropdown');
 
   return (
     <>
@@ -38,13 +48,16 @@ export const ListsDropdown: React.FC = () => {
                 </Dropdown.Item>
               )}
             </Dropdown.Section>
-            <Dropdown.Section title="Shared with me" items={listsSharedWithMe}>
-              {(list) => (
-                <Dropdown.Item icon={listSelected?.id === list.id ? <MdCheck /> : <EmptyIcon />} key={list.id}>
-                  {list.name}
-                </Dropdown.Item>
-              )}
-            </Dropdown.Section>
+            {!isEmpty(listsSharedWithMe) &&
+              ((
+                <Dropdown.Section title="Shared with me" items={listsSharedWithMe}>
+                  {(list) => (
+                    <Dropdown.Item icon={listSelected?.id === list.id ? <MdCheck /> : <EmptyIcon />} key={list.id}>
+                      {list.name}
+                    </Dropdown.Item>
+                  )}
+                </Dropdown.Section>
+              ) as any)}
             <Dropdown.Item key={ADD_NEW_LIST} icon={<MdPlaylistAdd />} withDivider>
               Create new list
             </Dropdown.Item>

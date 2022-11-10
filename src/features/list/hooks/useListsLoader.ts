@@ -1,46 +1,40 @@
-import { useContext, useEffect, useState } from 'react';
-import { createDefaultListForNewUser, getListsByUser, getSharedListsByUser } from '@/features/list';
-import { AppContext, LOCAL_STORAGE_SELECTED_LIST_ID, useLocalStorage } from '@/features/common';
+import { useEffect } from 'react';
+import { getListsByUserThunk, getSharedListsByUserThunk, setSelectedListIdFromLocalStorage } from '@/features/list';
+import { LOCAL_STORAGE_SELECTED_LIST_ID, RootState, useDispatch, useLocalStorage } from '@/features/common';
 import { isEmpty } from 'lodash';
 import { useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 type HookDto = {
   isLoading: boolean;
 };
+
 /**
- * - It will load the user lists
- * - It will load the user shared lists if loadSharedLists is true
- * - Save in the application context: user lists, user shared lists, and the selected list
+ * - It will load the user lists, and user shared lists
  * - To define the selected list first check in the local storage, if there is nothing, get the first item in user lists
- * - Set in local storage the id of the selected list
+ * - Set in local storage the id of the selected list if exists, if not it will set the id of the first list
  */
-export const useListsLoader = (loadSharedLists = true): HookDto => {
+export const useListsLoader = (): HookDto => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { user, isLoading: isLoadingUser } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const {
-    appContext: { userLists },
-    setAppContext,
-  } = useContext(AppContext);
-  const { item, setItem } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
+  const { item: selectedListIdLocalStorage } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
+  const userLists = useSelector((state: RootState) => state.lists.userLists);
+  const selectedListId = useSelector((state: RootState) => state.lists.selectedListId);
 
   useEffect(() => {
-    setIsLoading(true);
+    dispatch(setSelectedListIdFromLocalStorage({ selectedListIdLocalStorage }));
+  }, []);
+
+  useEffect(() => {
     if (!user) return;
 
     let cleaning = false;
 
     (async () => {
-      const lists = await getUserLists(user.email!);
-      const sharedLists = loadSharedLists ? await getUserSharedLists(user.email!) : [];
-      if (cleaning) return;
-      // The selected list comes from the local storage, if it's empty we set the first list in the array.
-      let list = [...lists, ...sharedLists].find(({ id }) => id === item);
-      if (!list) list = lists[0];
-      setItem(list.id);
-      setAppContext({ userLists: lists, userSharedLists: sharedLists, selectedListId: list.id });
-      setIsLoading(false);
+      dispatch(getListsByUserThunk(user.email!));
+      dispatch(getSharedListsByUserThunk(user.email!));
     })();
 
     return () => {
@@ -48,26 +42,13 @@ export const useListsLoader = (loadSharedLists = true): HookDto => {
     };
   }, [user]);
 
-  const getUserLists = async (userEmail: string) => {
-    const lists = await getListsByUser(userEmail);
-    if (!isEmpty(lists)) return lists;
-
-    // Every user should have a default list, so we create it here if the user hasn't any list.
-    await createDefaultListForNewUser(userEmail);
-    return getListsByUser(userEmail);
-  };
-
-  const getUserSharedLists = async (userEmail: string) => {
-    return getSharedListsByUser(userEmail);
-  };
-
   // The user is not signed in, so let's redirect him to login form
   if (!isLoadingUser && !user) {
     router.push('/auth/login-form');
   }
 
   return {
-    // Every user has at least one list
-    isLoading: isLoadingUser || isLoading || isEmpty(userLists),
+    // Every user has at least one list, and one list need to be selected.
+    isLoading: !selectedListId || isEmpty(userLists),
   };
 };

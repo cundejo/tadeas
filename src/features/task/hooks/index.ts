@@ -23,7 +23,7 @@ type HookDto = {
 };
 
 export const useTasks = (list?: List): HookDto => {
-  const [isSaving, setIsSaving] = useState(!!list);
+  const [isSaving, setIsSaving] = useState(false);
   const [taskInEdition, setTaskInEdition] = useState<Task>();
   const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
 
