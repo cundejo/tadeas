@@ -1,5 +1,5 @@
 import { auth } from '@/features/common';
-import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, User, signOut } from 'firebase/auth';
+import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut, User } from 'firebase/auth';
 
 export const getUser = (): Promise<User> =>
   new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export const sendAuthLinkToUserEmail = async (email: string): Promise<void> => {
   }
 };
 
-export const signIn = async (): Promise<string | undefined> => {
+export const signIn = async (): Promise<string> => {
   try {
     const currentUrl = window.location.href;
     if (isSignInWithEmailLink(auth, currentUrl)) {
@@ -37,8 +37,10 @@ export const signIn = async (): Promise<string | undefined> => {
       const url = new URL(currentUrl);
       return url.searchParams.get('redirectTo') ?? '/';
     }
+    return '/';
   } catch (e) {
     console.error(e);
+    return '/';
   }
 };
 
