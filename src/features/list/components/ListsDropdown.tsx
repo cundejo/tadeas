@@ -2,7 +2,7 @@ import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import { ListAddModal, useLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
-import { log, RootState, TextColorful } from '@/features/common';
+import { RootState, TextColorful } from '@/features/common';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -29,8 +29,6 @@ const useListsDropdown = () => {
 export const ListsDropdown: React.FC = () => {
   const { listSelected, handleMenuAction, lists, listsSharedWithMe, isAddingList, setIsAddingList } =
     useListsDropdown();
-
-  log('Re-rendering ListsDropdown');
 
   return (
     <>

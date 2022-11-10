@@ -20,7 +20,7 @@ export const sendAuthLinkToUserEmail = async (email: string): Promise<void> => {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem('emailForSignIn', email);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
@@ -38,7 +38,7 @@ export const signIn = async (): Promise<string | undefined> => {
       return url.searchParams.get('redirectTo') ?? '/';
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
@@ -46,6 +46,6 @@ export const signOff = async (): Promise<void> => {
   try {
     await signOut(auth);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
