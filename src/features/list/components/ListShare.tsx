@@ -33,28 +33,26 @@ const ListShareForm: React.FC<ListShareFormProps> = ({ list, saveList }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormContainer>
-        <Grid xs={8}>
-          <div style={{ width: '100%' }}>
-            <Input
-              bordered
-              color="default"
-              fullWidth
-              name="email"
-              onChange={formik.handleChange}
-              placeholder="Email"
-              required
-              rounded
-              type="email"
-              value={formik.values.email}
-            />
-            <InputError error={formik.errors.email} touched={formik.touched.email} />
-          </div>
-        </Grid>
-        <Grid>
-          <Button type="submit" loading={formik.isSubmitting}>
+        <div style={{ flexGrow: 1 }}>
+          <Input
+            bordered
+            color="default"
+            fullWidth
+            name="email"
+            onChange={formik.handleChange}
+            placeholder="Email"
+            required
+            rounded
+            type="email"
+            value={formik.values.email}
+          />
+          <InputError error={formik.errors.email} touched={formik.touched.email} />
+        </div>
+        <div>
+          <Button type="submit" loading={formik.isSubmitting} auto>
             Invite
           </Button>
-        </Grid>
+        </div>
       </FormContainer>
     </form>
   );
