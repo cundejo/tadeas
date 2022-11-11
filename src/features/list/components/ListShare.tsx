@@ -45,6 +45,7 @@ const ListShareForm: React.FC<ListShareFormProps> = ({ list, saveList }) => {
             rounded
             type="email"
             value={formik.values.email}
+            autoComplete="email"
           />
           <InputError error={formik.errors.email} touched={formik.touched.email} />
         </div>
