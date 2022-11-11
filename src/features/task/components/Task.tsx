@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, Input, styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
 import { sleep } from '@/features/common';
+import { toast } from 'react-toastify';
 
 type Props = {
   task: Task;
@@ -15,10 +16,13 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
   const [markAsCompleted, setMarkAsCompleted] = useState(false);
 
   const handleCheckTask = (checked: boolean) => {
-    setMarkAsCompleted(true);
+    if (checked) setMarkAsCompleted(true);
     // Wait some millis to represent the deletion UI effect before call complete
     sleep(700).then(() => {
-      if (checked) onComplete(task);
+      if (checked) {
+        toast.success('Task completed');
+        onComplete(task);
+      }
     });
   };
 

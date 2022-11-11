@@ -49,7 +49,6 @@ export const completeTask = async (taskId: string, list: List): Promise<void> =>
   if (!task) throw new Error(`Task with id ${taskId} doesn't exist`);
   task.completedAt = new Date().toISOString();
   await upsertList({ ...list, tasks });
-  toast.success('Task completed');
 };
 
 export const undoCompleteTask = async (taskId: string, list: List): Promise<void> => {
