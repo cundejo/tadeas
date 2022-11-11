@@ -31,7 +31,7 @@ export const About: React.FC = () => {
       <Text>
         This is a pet project that we love to maintain when we have time. We don&apos;t want to monetize it and we hate
         ads, if you found it useful,{' '}
-        <a target="_blank" href="https://www.buymeacoffee.com/oliversosa" rel="noreferrer">
+        <a target="_blank" href="https://buy.stripe.com/9AQeWO4hd9zi40M5kk" rel="noreferrer">
           buy us a coffee
         </a>{' '}
         ☕️ .
