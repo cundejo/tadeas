@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { getListsByUserThunk, getSharedListsByUserThunk, setSelectedListIdFromLocalStorage } from '@/features/list';
-import { LOCAL_STORAGE_SELECTED_LIST_ID, RootState, useDispatch, useLocalStorage } from '@/features/common';
+import { getAllUserListsThunk, setSelectedListIdFromLocalStorage } from '@/features/list';
+import { RootState, useDispatch } from '@/features/common';
 import { isEmpty } from 'lodash';
 import { useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';
@@ -19,12 +19,11 @@ export const useListsLoader = (): HookDto => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user, isLoading: isLoadingUser } = useAuth();
-  const { item: selectedListIdLocalStorage } = useLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
   const userLists = useSelector((state: RootState) => state.lists.userLists);
   const selectedListId = useSelector((state: RootState) => state.lists.selectedListId);
 
   useEffect(() => {
-    dispatch(setSelectedListIdFromLocalStorage({ selectedListIdLocalStorage }));
+    dispatch(setSelectedListIdFromLocalStorage());
   }, []);
 
   useEffect(() => {
@@ -33,8 +32,7 @@ export const useListsLoader = (): HookDto => {
     let cleaning = false;
 
     (async () => {
-      dispatch(getListsByUserThunk(user.email!));
-      dispatch(getSharedListsByUserThunk(user.email!));
+      dispatch(getAllUserListsThunk(user.email!));
     })();
 
     return () => {

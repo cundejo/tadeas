@@ -15,14 +15,9 @@ const initialState: ListSliceState = {
   userSharedLists: [],
 };
 
-export const getListsByUserThunk = createAsyncThunk('lists/getListsByUser', async (userEmail: string) =>
-  getListsByUser(userEmail)
+export const getAllUserListsThunk = createAsyncThunk('lists/getAllUserLists', async (userEmail: string) =>
+  Promise.all([getListsByUser(userEmail), getSharedListsByUser(userEmail)])
 );
-
-export const getSharedListsByUserThunk = createAsyncThunk('lists/getSharedListsByUser', async (userEmail: string) =>
-  getSharedListsByUser(userEmail)
-);
-
 export const upsertListThunk = createAsyncThunk('lists/upsertList', async (list: List) => upsertList(list));
 
 export const renameListThunk = createAsyncThunk(
@@ -36,41 +31,42 @@ export const listsSlice = createSlice({
   name: 'lists',
   initialState,
   reducers: {
-    setSelectedListIdFromLocalStorage(state, action) {
-      const { selectedListIdLocalStorage } = action.payload;
-      state.selectedListId = selectedListIdLocalStorage;
+    setSelectedListIdFromLocalStorage(state) {
+      const selectedListId = window.localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID);
+      if (selectedListId && state.selectedListId !== selectedListId) state.selectedListId = selectedListId;
     },
 
     setSelectedListId(state, action) {
       const { selectedListId } = action.payload;
-      state.selectedListId = selectedListId;
-      window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, selectedListId);
+      if (selectedListId && state.selectedListId !== selectedListId) {
+        state.selectedListId = selectedListId;
+        window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, selectedListId);
+      }
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(getListsByUserThunk.fulfilled, (state, action) => {
+      .addCase(getAllUserListsThunk.fulfilled, (state, action) => {
+        const userLists = action.payload[0];
+        const userSharedLists = action.payload[1];
+
         // If there is a selected list but it doesn't exist in the user lists, we set the first user list.
         if (state.selectedListId) {
-          const list = find(action.payload, { id: state.selectedListId });
+          const list = find([...userLists, ...userSharedLists], { id: state.selectedListId });
           if (!list) {
-            state.selectedListId = action.payload[0].id;
-            window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, action.payload[0].id);
+            state.selectedListId = userLists[0].id;
+            window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
           }
         }
 
         // If there is no selected list, we set the first list in the array.
         if (!state.selectedListId) {
-          const lists = [...action.payload, ...state.userSharedLists];
-          state.selectedListId = lists[0].id;
-          window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, lists[0].id);
+          state.selectedListId = userLists[0].id;
+          window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
         }
 
-        state.userLists = action.payload;
-      })
-
-      .addCase(getSharedListsByUserThunk.fulfilled, (state, action) => {
-        state.userSharedLists = action.payload;
+        state.userLists = userLists;
+        state.userSharedLists = userSharedLists;
       })
 
       .addCase(upsertListThunk.fulfilled, (state, action) => {
