@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
 import { useAuth } from '@/features/auth';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 type HookDto = {
   addList: (name: string) => Promise<void>;
@@ -52,6 +53,7 @@ export const useLists = (): HookDto => {
     // Avoid deleting the user default list.
     if (list.isDefault) return;
     await dispatch(deleteListThunk(list));
+    toast.success(`List ${list.name} deleted`);
   };
 
   const selectList = async (list: List) => await dispatch(setSelectedListId({ selectedListId: list.id }));
