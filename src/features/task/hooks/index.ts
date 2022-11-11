@@ -1,11 +1,5 @@
 import { useState } from 'react';
-import {
-  completeTask as completeTaskApi,
-  Task,
-  taskHasChanges,
-  undoCompleteTask as undoCompleteTaskApi,
-  upsertTasks as upsertTasksApi,
-} from '@/features/task';
+import { completeTask as completeTaskApi, Task, taskHasChanges, upsertTasks as upsertTasksApi } from '@/features/task';
 import { find, orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 import { List } from '@/features/list';
@@ -18,18 +12,15 @@ type HookDto = {
   setTaskInEdition: (task?: Task) => void;
   switchSelectedTask: (taskId: string) => void;
   taskInEdition?: Task;
-  tasksCompletedRecently?: Task;
-  undoCompleteTask: (task?: Task) => void;
 };
 
-export const useTasks = (list?: List): HookDto => {
+export const useTasks = (list: List): HookDto => {
   const [isSaving, setIsSaving] = useState(false);
   const [taskInEdition, setTaskInEdition] = useState<Task>();
-  const [tasksCompletedRecently, setTasksCompletedRecently] = useState<Task>();
 
   const taskInEditionWithChanges = (): Task | undefined => {
     if (taskInEdition) {
-      const currentTask = find(list?.tasks, { id: taskInEdition.id });
+      const currentTask = find(list.tasks, { id: taskInEdition.id });
       if (currentTask && taskHasChanges(currentTask, taskInEdition)) return taskInEdition;
     }
     return undefined;
@@ -57,33 +48,23 @@ export const useTasks = (list?: List): HookDto => {
     if (taskInEdition && newTaskId === taskInEdition.id) return;
 
     // If is another task, select this new one.
-    const newTask = find(list?.tasks, { id: newTaskId });
+    const newTask = find(list.tasks, { id: newTaskId });
     setTaskInEdition(newTask);
   };
 
   const upsertTasks = async (tasks: Array<Task | undefined>) => {
     setIsSaving(true);
-    await upsertTasksApi(tasks, list!);
+    await upsertTasksApi(tasks, list);
     setIsSaving(false);
   };
 
   const completeTask = async (task: Task) => {
     setIsSaving(true);
-    await completeTaskApi(task.id, list!);
-    setTasksCompletedRecently(task);
-    setIsSaving(false);
-  };
-
-  const undoCompleteTask = async (task?: Task) => {
-    if (!task) return;
-    setIsSaving(true);
-    await undoCompleteTaskApi(task.id, list!);
-    setTasksCompletedRecently(undefined);
+    await completeTaskApi(task.id, list);
     setIsSaving(false);
   };
 
   const getTasks = (): Task[] => {
-    if (!list) return [];
     return orderBy(
       list.tasks.filter((task) => !task.completedAt),
       ['createdAt'],
@@ -99,7 +80,5 @@ export const useTasks = (list?: List): HookDto => {
     setTaskInEdition,
     switchSelectedTask,
     taskInEdition,
-    tasksCompletedRecently,
-    undoCompleteTask,
   };
 };

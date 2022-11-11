@@ -1,22 +1,14 @@
 import React from 'react';
-import { AddTaskButton, CompletedNotification, TasksList, useTasks } from '@/features/task';
+import { AddTaskButton, TasksList, useTasks } from '@/features/task';
 import { useListListener } from '@/features/list';
 
 export const Tasks: React.FC = () => {
-  const { list, isLoading: isLoadingList } = useListListener();
-  const {
-    isSaving,
-    completeTask,
-    undoCompleteTask,
-    addTask,
-    switchSelectedTask,
-    taskInEdition,
-    setTaskInEdition,
-    tasksCompletedRecently,
-    getTasks,
-  } = useTasks(list);
+  const { list } = useListListener();
+  const { isSaving, completeTask, addTask, switchSelectedTask, taskInEdition, setTaskInEdition, getTasks } = useTasks(
+    list!
+  );
 
-  if (!list || isLoadingList) return null;
+  if (!list) return null;
 
   return (
     <>
@@ -28,7 +20,6 @@ export const Tasks: React.FC = () => {
         onChangeTask={setTaskInEdition}
         onComplete={completeTask}
       />
-      <CompletedNotification tasksCompletedRecently={tasksCompletedRecently} onUndo={undoCompleteTask} />
     </>
   );
 };

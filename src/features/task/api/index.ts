@@ -2,6 +2,7 @@ import { Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, removeUndefined } from '@/features/common';
 import { List, upsertList } from '@/features/list';
 import { compact, find, findIndex, forEach } from 'lodash';
+import { toast } from 'react-toastify';
 
 const DEFAULT_DATE = '1970-01-01';
 
@@ -48,6 +49,7 @@ export const completeTask = async (taskId: string, list: List): Promise<void> =>
   if (!task) throw new Error(`Task with id ${taskId} doesn't exist`);
   task.completedAt = new Date().toISOString();
   await upsertList({ ...list, tasks });
+  toast.success('Task completed');
 };
 
 export const undoCompleteTask = async (taskId: string, list: List): Promise<void> => {

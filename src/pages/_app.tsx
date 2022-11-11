@@ -25,7 +25,15 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
     >
       <NextUIProvider>
         <CssBaseline />
-        <ToastContainer position="bottom-center" theme="dark" />
+        <ToastContainer
+          autoClose={2000}
+          position="bottom-center"
+          theme="dark"
+          hideProgressBar
+          closeOnClick
+          pauseOnHover
+          closeButton={false}
+        />
         <Provider store={store}>
           <Layout>
             <Component {...pageProps} />
