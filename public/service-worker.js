@@ -4,6 +4,9 @@ const OFFLINE_URL = 'offline.html';
 self.addEventListener('install', function (event) {
   // console.log('[ServiceWorker] Install');
 
+  // Kick out the old service worker
+  self.skipWaiting();
+
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
@@ -12,8 +15,6 @@ self.addEventListener('install', function (event) {
       await cache.add(new Request(OFFLINE_URL, { cache: 'reload' }));
     })()
   );
-
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
