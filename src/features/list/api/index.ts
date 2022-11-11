@@ -8,6 +8,7 @@ import {
   query,
   setDoc,
   Unsubscribe,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
@@ -60,8 +61,18 @@ export const getListListener = (listId: string, onListReceived: (list: List) => 
  */
 export const upsertList = async (list: List): Promise<List> => {
   try {
-    await setDoc(doc(db, COLLECTION, list.id), toFirestore(list), { merge: true });
+    await setDoc(doc(db, COLLECTION, list.id), toFirestore(list));
     return list;
+  } catch (e) {
+    console.error(e);
+    return {} as List;
+  }
+};
+
+export const renameList = async (listId: string, name: string): Promise<List> => {
+  try {
+    await updateDoc(doc(db, COLLECTION, listId), { name });
+    return getList(listId);
   } catch (e) {
     console.error(e);
     return {} as List;

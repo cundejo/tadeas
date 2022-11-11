@@ -1,4 +1,4 @@
-import { deleteListThunk, List, setSelectedListId, upsertListThunk } from '@/features/list';
+import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
 import { RootState, useDispatch } from '@/features/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
@@ -13,6 +13,7 @@ type HookDto = {
   listSelected?: List;
   lists: List[];
   listsSharedWithMe: List[];
+  renameList: (listId: string, name: string) => Promise<void>;
   selectList: (list: List) => void;
 };
 /**
@@ -29,20 +30,22 @@ export const useLists = (): HookDto => {
     throw new Error(`Hook useLists is being called without calling first useListsLoader.`);
 
   const addList = async (name: string) => {
-    if (!user) throw new Error('User not signed in');
     const newList = {
       id: nanoid(),
       tasks: [],
       name,
-      owner: user.email!,
+      owner: user!.email!,
       sharedWith: [],
     };
     await dispatch(upsertListThunk(newList));
   };
 
   const editList = async (list: List) => {
-    if (!user) throw new Error('User not signed in');
     await dispatch(upsertListThunk(list));
+  };
+
+  const renameList = async (listId: string, name: string) => {
+    await dispatch(renameListThunk({ listId, name }));
   };
 
   const deleteList = async (list: List) => {
@@ -64,6 +67,7 @@ export const useLists = (): HookDto => {
     listSelected,
     lists: userLists,
     listsSharedWithMe: userSharedLists,
+    renameList,
     selectList,
   };
 };

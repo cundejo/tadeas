@@ -9,15 +9,14 @@ interface Props {
 }
 
 export const ListEditModal: React.FC<Props> = ({ onClose }) => {
-  const { listSelected: list, editList } = useLists();
+  const { listSelected: list, renameList } = useLists();
 
   if (!list) throw new Error(`List not found.`);
 
   const formik = useFormik({
     initialValues: { name: list.name },
     onSubmit: (values, { setSubmitting }) => {
-      const newList = { ...list, name: values.name } as List;
-      editList(newList).then(() => {
+      renameList(list.id, values.name).then(() => {
         setSubmitting(false);
         formik.resetForm();
         onClose();

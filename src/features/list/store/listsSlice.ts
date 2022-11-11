@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteList, getListsByUser, getSharedListsByUser, List, upsertList } from '@/features/list';
+import { deleteList, getListsByUser, getSharedListsByUser, List, renameList, upsertList } from '@/features/list';
 import { LOCAL_STORAGE_SELECTED_LIST_ID } from '@/features/common';
 import { find, findIndex } from 'lodash';
 
@@ -24,6 +24,11 @@ export const getSharedListsByUserThunk = createAsyncThunk('lists/getSharedListsB
 );
 
 export const upsertListThunk = createAsyncThunk('lists/upsertList', async (list: List) => upsertList(list));
+
+export const renameListThunk = createAsyncThunk(
+  'lists/renameList',
+  async ({ listId, name }: { listId: string; name: string }) => renameList(listId, name)
+);
 
 export const deleteListThunk = createAsyncThunk('lists/deleteList', async (list: List) => deleteList(list));
 
@@ -78,6 +83,12 @@ export const listsSlice = createSlice({
           state.selectedListId = newList.id;
           window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, newList.id);
         }
+      })
+
+      .addCase(renameListThunk.fulfilled, (state, action) => {
+        const newList = action.payload;
+        const listIndex = findIndex(state.userLists, { id: newList.id });
+        if (listIndex >= 0) state.userLists.splice(listIndex, 1, newList);
       })
 
       .addCase(deleteListThunk.fulfilled, (state, action) => {
