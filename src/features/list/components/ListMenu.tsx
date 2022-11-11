@@ -5,7 +5,6 @@ import {
   MdMenu,
   MdOutlineDeleteSweep,
   MdOutlineEditNote,
-  MdOutlineRemoveDone,
   MdOutlineShare,
   MdSettings,
 } from 'react-icons/md';
@@ -60,15 +59,15 @@ const useListMenu = () => {
   const listSection: MenuSection = {
     title: 'Current List Actions',
     children: [
-      { key: 'rename', title: 'Rename', icon: <MdOutlineEditNote /> },
       { key: 'share', title: 'Share', icon: <MdOutlineShare /> },
+      { key: 'rename', title: 'Rename', icon: <MdOutlineEditNote /> },
       {
         key: 'deleteList',
         title: 'Delete',
         icon: <MdOutlineDeleteSweep />,
         description: listSelected?.isDefault && "Default list can't be deleted",
       },
-      { key: 'deleteCompletedTasks', title: 'Delete completed tasks', icon: <MdOutlineRemoveDone /> },
+      // { key: 'deleteCompletedTasks', title: 'Delete completed tasks', icon: <MdOutlineRemoveDone /> },
     ],
   };
 
