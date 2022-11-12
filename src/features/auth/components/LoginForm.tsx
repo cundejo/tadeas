@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Spacer, styled, Text } from '@nextui-org/react';
-import { useLoginForm } from '@/features/auth';
+import { EmailFormValues, sendAuthLinkToUserEmail, validateForm } from '@/features/auth';
 import { Button, InputError, Note } from '@/features/common';
+import { FormikHelpers, FormikProps, useFormik } from 'formik';
+
+type HookDto = {
+  wasEmailSent: boolean;
+  formik: FormikProps<EmailFormValues>;
+};
+
+const useLoginForm = (): HookDto => {
+  const [wasEmailSent, setWasEmailSent] = useState(false);
+
+  const handleSubmit = (values: EmailFormValues, { setSubmitting }: FormikHelpers<EmailFormValues>) => {
+    sendAuthLinkToUserEmail(values.email).then(() => {
+      setWasEmailSent(true);
+      setSubmitting(false);
+    });
+  };
+
+  const formik = useFormik({
+    initialValues: { email: '' },
+    validate: validateForm,
+    onSubmit: handleSubmit,
+  });
+
+  return { wasEmailSent, formik };
+};
 
 export const LoginForm: React.FC = () => {
   const { wasEmailSent, formik } = useLoginForm();
@@ -25,13 +50,14 @@ export const LoginForm: React.FC = () => {
 
       <form onSubmit={formik.handleSubmit}>
         <Input
+          aria-label="email"
           type="email"
           name="email"
           placeholder="Your email"
           bordered
           rounded
           required
-          autoComplete="on"
+          autoComplete="email"
           value={formik.values.email}
           onChange={formik.handleChange}
           fullWidth

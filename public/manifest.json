@@ -4,7 +4,7 @@
   "description": "A to-do list app by Teno Fdio Team",
   "theme_color": "#000000",
   "background_color": "#000000",
-  "display": "minimal-ui",
+  "display": "standalone",
   "id": "/?source=pwa",
   "start_url": "/?source=pwa",
   "scope": "/",

@@ -1,4 +1,4 @@
-import { auth } from '@/features/common';
+import { auth, LOCAL_STORAGE_EMAIL_FOR_SIGNING, removeLocalStorage, setLocalStorage } from '@/features/common';
 import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut, User } from 'firebase/auth';
 
 export const getUser = (): Promise<User> =>
@@ -18,22 +18,18 @@ export const sendAuthLinkToUserEmail = async (email: string): Promise<void> => {
     };
 
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-    window.localStorage.setItem('emailForSignIn', email);
+    setLocalStorage(LOCAL_STORAGE_EMAIL_FOR_SIGNING, email);
   } catch (e) {
     console.error(e);
   }
 };
 
-export const signIn = async (): Promise<string> => {
+export const signIn = async (email: string): Promise<string> => {
   try {
     const currentUrl = window.location.href;
     if (isSignInWithEmailLink(auth, currentUrl)) {
-      let email = window.localStorage.getItem('emailForSignIn');
-      if (!email) {
-        email = window.prompt('Please provide your email for confirmation') as string;
-      }
       await signInWithEmailLink(auth, email, currentUrl);
-      window.localStorage.removeItem('emailForSignIn');
+      removeLocalStorage(LOCAL_STORAGE_EMAIL_FOR_SIGNING);
       const url = new URL(currentUrl);
       return url.searchParams.get('redirectTo') ?? '/';
     }

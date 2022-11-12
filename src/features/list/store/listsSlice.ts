@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteList, getListsByUser, getSharedListsByUser, List, renameList, upsertList } from '@/features/list';
-import { LOCAL_STORAGE_SELECTED_LIST_ID } from '@/features/common';
+import { getLocalStorage, LOCAL_STORAGE_SELECTED_LIST_ID, setLocalStorage } from '@/features/common';
 import { find, findIndex } from 'lodash';
 
 export interface ListSliceState {
@@ -32,7 +32,7 @@ export const listsSlice = createSlice({
   initialState,
   reducers: {
     setSelectedListIdFromLocalStorage(state) {
-      const selectedListId = window.localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID);
+      const selectedListId = getLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID);
       if (selectedListId && state.selectedListId !== selectedListId) state.selectedListId = selectedListId;
     },
 
@@ -40,7 +40,7 @@ export const listsSlice = createSlice({
       const { selectedListId } = action.payload;
       if (selectedListId && state.selectedListId !== selectedListId) {
         state.selectedListId = selectedListId;
-        window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, selectedListId);
+        setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, selectedListId);
       }
     },
   },
@@ -55,14 +55,14 @@ export const listsSlice = createSlice({
           const list = find([...userLists, ...userSharedLists], { id: state.selectedListId });
           if (!list) {
             state.selectedListId = userLists[0].id;
-            window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
+            setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
           }
         }
 
         // If there is no selected list, we set the first list in the array.
         if (!state.selectedListId) {
           state.selectedListId = userLists[0].id;
-          window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
+          setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, userLists[0].id);
         }
 
         state.userLists = userLists;
@@ -77,7 +77,7 @@ export const listsSlice = createSlice({
         // Checking that the list selected is the one added/changed
         if (state.selectedListId !== newList.id) {
           state.selectedListId = newList.id;
-          window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, newList.id);
+          setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, newList.id);
         }
       })
 
@@ -92,7 +92,7 @@ export const listsSlice = createSlice({
         const lists = state.userLists.filter(({ id }) => id !== deletedList.id);
         state.userLists = lists;
         state.selectedListId = lists[0].id;
-        window.localStorage.setItem(LOCAL_STORAGE_SELECTED_LIST_ID, lists[0].id);
+        setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, lists[0].id);
       });
   },
 });
