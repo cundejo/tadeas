@@ -2,7 +2,6 @@ import { Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, removeUndefined } from '@/features/common';
 import { List, upsertList } from '@/features/list';
 import { compact, find, findIndex, forEach } from 'lodash';
-import { toast } from 'react-toastify';
 
 const DEFAULT_DATE = '1970-01-01';
 
