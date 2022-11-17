@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Input, Spacer, styled, Text } from '@nextui-org/react';
 import { EmailFormValues, sendAuthLinkToUserEmail, validateForm } from '@/features/auth';
-import { Button, InputError, Note } from '@/features/common';
+import { Button, Description, InputError, Note } from '@/features/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
+import { MdOutlineMarkEmailRead } from 'react-icons/md';
 
 type HookDto = {
   wasEmailSent: boolean;
@@ -46,7 +47,7 @@ export const LoginForm: React.FC = () => {
 
   return (
     <Container>
-      <Text h3>To continue please sign in by entering your email</Text>
+      <Description>Sign in by entering your email</Description>
 
       <form onSubmit={formik.handleSubmit}>
         <Input
@@ -64,8 +65,15 @@ export const LoginForm: React.FC = () => {
         />
         <InputError error={formik.errors.email} touched={formik.touched.email} />
         <Spacer />
-        <Button type="submit" auto color="primary" loading={formik.isSubmitting} css={{ w: '100%' }}>
-          Sign in
+        <Button
+          icon={<MdOutlineMarkEmailRead />}
+          type="submit"
+          auto
+          color="primary"
+          loading={formik.isSubmitting}
+          css={{ w: '100%' }}
+        >
+          Get Code
         </Button>
       </form>
 
@@ -77,3 +85,30 @@ export const LoginForm: React.FC = () => {
 const Container = styled('div', {
   margin: '$lg 0',
 });
+
+/**
+ *
+
+ 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
+
+ curl --request POST \
+ --url https://api.sendinblue.com/v3/smtp/email \
+ --header 'accept: application/json' \
+ --header 'api-key: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' \
+ --header 'content-type: application/json' \
+ --data '{
+   "sender":{
+      "name":"Tadeas App",
+      "email":"noreply@tadeas.app"
+   },
+   "to":[
+      {
+         "email":"cundejo85@gmail.com",
+      }
+   ],
+   "subject":"Tadeas sign in code",
+   "htmlContent":"<html><head></head><body><p>Hello,</p>This is your code for Tadeas App: 1234.</p></body></html>"
+}'
+
+
+ */
