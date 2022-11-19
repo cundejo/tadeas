@@ -1,6 +1,13 @@
 import { onRequest } from '../../utils';
 import { getAuthCode, saveAuthCode } from './auth.service';
-import { AuthCode } from './auth.types';
+import {
+  AuthCode,
+  GenerateAuthCodeBody,
+  generateAuthCodeBody,
+  validateAuthCodeBody,
+  ValidateAuthCodeBody,
+} from './auth.types';
+import { admin } from '../../config';
 
 /**
  * AUTH PROCESS
@@ -40,38 +47,38 @@ import { AuthCode } from './auth.types';
  */
 
 export const generateAuthCode = onRequest(async (req, res) => {
-  console.log('request.body', req.body);
-  const { email } = req.body;
+  generateAuthCodeBody.parse(req.body);
+
+  const { email } = req.body as GenerateAuthCodeBody;
   const code = generateSixDigitNumber();
   // Send Email with the code
   await saveAuthCode(email, code);
-  res.send();
+  res.send({ code: 'AUTH_CODE_GENERATED' });
 });
 
 export const validateAuthCode = onRequest(async (req, res) => {
-  console.log('request.body', req.body);
-  const { email, code } = req.body;
+  validateAuthCodeBody.parse(req.body);
+
+  const { code, email } = req.body as ValidateAuthCodeBody;
   const codeObject = await getAuthCode(email);
-  if (isValidCode(code, codeObject)) console.log('Code Valid');
+  if (isValidCode(code, codeObject)) {
+    console.log('Code Valid');
+    admin
+      .auth()
+      .createCustomToken(email)
+      .then((customToken) => {
+        res.send({ code: 'AUTH_SUCCESSFUL', data: customToken });
+      })
+      .catch((error) => {
+        console.log('Error creating custom token:', error);
+      });
+  }
 
   // const code = generateSixDigitNumber();
   // // Send Email with the code
   // await saveAuthCode(email, code);
-  res.send();
+  res.status(500).send({ code: 'AUTH_FAILED', data: 'Authentication code incorrect' });
 });
-
-// export const generateAuthToken = functions.https.onRequest((request, response) => {
-//   admin
-//     .auth()
-//     .createCustomToken(uid)
-//     .then((customToken) => {
-//       // Send token back to client
-//     })
-//     .catch((error) => {
-//       console.log('Error creating custom token:', error);
-//     });
-//   response.send('Generating codeee');
-// });
 
 const generateSixDigitNumber = () => Math.floor(100000 + Math.random() * 900000).toString();
 

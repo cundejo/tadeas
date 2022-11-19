@@ -10,6 +10,7 @@ const ALLOWED_ORIGINS = [
   'https://tadeas.app',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
+  'http://127.0.0.1:5001',
   'http://192.168.0.20:3000',
 ];
 
