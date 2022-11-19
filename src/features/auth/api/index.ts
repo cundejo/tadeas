@@ -1,5 +1,18 @@
-import { auth, LOCAL_STORAGE_EMAIL_FOR_SIGNING, removeLocalStorage, setLocalStorage } from '@/features/common';
+import {
+  auth,
+  LOCAL_STORAGE_EMAIL_FOR_SIGNING,
+  NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH,
+  removeLocalStorage,
+  setLocalStorage,
+} from '@/features/common';
 import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut, User } from 'firebase/auth';
+import axios from 'axios';
+
+export const generateAuthCode = async (email: string): Promise<any> => {
+  const response = await axios.post(`${NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH}/generateAuthCode`, { email });
+  console.log('response.data', response.data);
+  return response.data;
+};
 
 export const getUser = (): Promise<User> =>
   new Promise((resolve, reject) => {

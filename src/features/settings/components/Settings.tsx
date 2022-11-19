@@ -10,7 +10,7 @@ export const Settings: React.FC = () => {
   const [isConfirmingSignout, setIsConfirmingSignout] = useState(false);
 
   const handleSignIn = async () => {
-    router.push('/auth/login-form');
+    router.push('/auth/email');
   };
 
   const handleSignOut = async () => {

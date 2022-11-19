@@ -42,7 +42,7 @@ export const useListsLoader = (): HookDto => {
 
   // The user is not signed in, so let's redirect him to login form
   if (!isLoadingUser && !user) {
-    router.push('/auth/login-form');
+    router.push('/auth/email');
   }
 
   return {
