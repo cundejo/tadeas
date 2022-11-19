@@ -2,7 +2,11 @@ import * as functions from 'firebase-functions';
 import * as cors from 'cors';
 import { ALLOWED_ORIGINS } from '../config';
 
-const isAllowedOrigin = (req: any): boolean => ALLOWED_ORIGINS.indexOf(req.header('Origin')) !== -1;
+const isAllowedOrigin = (req: any): boolean => {
+  const origin = req.header('Origin');
+  if (!origin) return true;
+  return ALLOWED_ORIGINS.indexOf(origin) !== -1;
+};
 
 const corsOptionsDelegate = (req: any, callback: any) => {
   callback(null, { origin: isAllowedOrigin(req) });
@@ -25,7 +29,7 @@ export const onRequest = (code: (req: functions.https.Request, res: functions.Re
         if (isAllowedOrigin(req)) await code(req, res);
         else {
           console.log('Request cancelled, origin denied');
-          res.send();
+          res.status(404).send();
         }
       });
     }
