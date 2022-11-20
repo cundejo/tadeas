@@ -1,6 +1,6 @@
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { List } from '@/features/list';
-import { useAuth } from '@/features/auth';
+import { useUser } from '@/features/auth';
 import { User } from 'firebase/auth';
 
 type Values = {
@@ -16,7 +16,7 @@ type HookDto = {
 };
 
 export const useShareListForm = (list: List, saveList: (list: List) => Promise<void>): HookDto => {
-  const { user } = useAuth();
+  const { user } = useUser();
 
   const handleSubmit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
     const newList = { ...list };

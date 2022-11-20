@@ -14,7 +14,7 @@ export const validateCodeForm = (values: CodeFormValues) => {
   const errors: CodeFormErrors = {};
   if (!values.code) {
     errors.code = 'Required';
-  } else if (!/^[0-9]{6}$/i.test(values.code)) {
+  } else if (!/^[0-9]{6}$/i.test(values.code.toString())) {
     errors.code = 'The code is a six-digit number';
   }
   return errors;

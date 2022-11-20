@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, Popover, Spacer, styled, Text } from '@nextui-org/react';
-import { CodeFormValues, validateCodeForm } from '@/features/auth';
+import { Input, Spacer, styled } from '@nextui-org/react';
+import { CodeFormValues, useAuth, validateCodeForm } from '@/features/auth';
 import { Button, Description, InputError, Note } from '@/features/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { MdOutlineCheckCircleOutline } from 'react-icons/md';
@@ -10,11 +10,10 @@ type HookDto = {
 };
 
 const useAuthCodeValidationForm = (): HookDto => {
+  const { validateAuthCode } = useAuth();
+
   const handleSubmit = (values: CodeFormValues, { setSubmitting }: FormikHelpers<CodeFormValues>) => {
-    // sendAuthLinkToUserEmail(values.email).then(() => {
-    //   setSubmitting(false);
-    // });
-    console.log('values', values);
+    validateAuthCode(values.code, setSubmitting);
   };
 
   const formik = useFormik({
@@ -38,14 +37,15 @@ export const AuthCodeValidationForm: React.FC = () => {
       <form onSubmit={formik.handleSubmit}>
         <Input
           aria-label="code"
-          type="number"
-          name="code"
           bordered
-          rounded
-          required
-          value={formik.values.code}
-          onChange={formik.handleChange}
           fullWidth
+          name="code"
+          onChange={formik.handleChange}
+          placeholder="enter code"
+          required
+          rounded
+          type="text"
+          value={formik.values.code}
         />
         <InputError error={formik.errors.code} touched={formik.touched.code} />
         <Spacer />
@@ -56,7 +56,7 @@ export const AuthCodeValidationForm: React.FC = () => {
           color="primary"
           loading={formik.isSubmitting}
           css={{ w: '100%' }}
-          disabled={!!formik.errors.code}
+          disabled={formik.isSubmitting || !!formik.errors.code}
         >
           Validate
         </Button>

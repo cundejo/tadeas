@@ -1,12 +1,12 @@
 import React from 'react';
-import { AuthEmailForm, useAuth } from '@/features/auth';
+import { AuthEmailForm, useUser } from '@/features/auth';
 import { NextPage } from 'next';
 import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/features/common';
 import { useRouter } from 'next/router';
 
 const AuthEmailFormPage: NextPage = () => {
   const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { user, isLoading } = useUser();
 
   if (isLoading) return <PageLoading />;
 

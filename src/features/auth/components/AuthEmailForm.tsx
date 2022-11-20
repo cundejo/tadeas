@@ -1,23 +1,19 @@
 import React from 'react';
 import { Input, Spacer, styled } from '@nextui-org/react';
-import { EmailFormValues, generateAuthCode, validateEmailForm } from '@/features/auth';
+import { EmailFormValues, useAuth, validateEmailForm } from '@/features/auth';
 import { Button, Description, InputError, Note } from '@/features/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
-import { useRouter } from 'next/router';
 
 type HookDto = {
   formik: FormikProps<EmailFormValues>;
 };
 
 const useAuthEmailForm = (): HookDto => {
-  const router = useRouter();
+  const { generateAuthCode } = useAuth();
 
   const handleSubmit = (values: EmailFormValues, { setSubmitting }: FormikHelpers<EmailFormValues>) => {
-    generateAuthCode(values.email).then(() => {
-      setSubmitting(false);
-      router.push('/auth/code-validation');
-    });
+    generateAuthCode(values.email, setSubmitting);
   };
 
   const formik = useFormik({

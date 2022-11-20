@@ -21,7 +21,7 @@ export const onRequest = (code: (req: functions.https.Request, res: functions.Re
   functions.https.onRequest((req, res) => {
     if (req.method === 'OPTIONS') {
       console.log('pre-flight request');
-      // Allowing all CORS in complex requests like pre-flight, https://www.npmjs.com/package/cors#enabling-cors-pre-flight
+      // Allowing CORS in complex requests like pre-flight, https://www.npmjs.com/package/cors#enabling-cors-pre-flight
       cors({ origin: true })(req, res, () => null);
     } else {
       console.log('common request');
@@ -34,3 +34,6 @@ export const onRequest = (code: (req: functions.https.Request, res: functions.Re
       });
     }
   });
+
+// Response helpers
+export const send = (res: functions.Response, code: string, data: string) => res.send({ code, data });

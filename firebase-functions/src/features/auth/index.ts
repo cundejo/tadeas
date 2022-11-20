@@ -1,13 +1,13 @@
-import { onRequest } from '../../utils';
-import { getAuthCode, saveAuthCode } from './auth.service';
-import {
-  AuthCode,
-  GenerateAuthCodeBody,
-  generateAuthCodeBody,
-  validateAuthCodeBody,
-  ValidateAuthCodeBody,
-} from './auth.types';
 import { admin } from '../../config';
+import { onRequest, send } from '../../utils';
+import { AuthCode, generateAuthCodeBody, validateAuthCodeBody } from './auth.types';
+import {
+  decreaseAuthCodeAttempt,
+  deleteAuthCode,
+  getAuthCode,
+  saveAuthCode,
+  validateUserExistence,
+} from './auth.service';
 
 /**
  * AUTH PROCESS
@@ -17,10 +17,9 @@ import { admin } from '../../config';
  *    - Generates a random six-digit code
  *    - Save the code and the email in the DB (collection authCodes).
  *        object should look like:
- *        {
- *          email: "johndoe@example.com",
- *          authCode: "123456",
- *          authAttempts: 0
+ *        "johndoe@example.com": {
+ *          code: "123456",
+ *          attempts: 3
  *        }
  *    - If there is another code already generated for this client (resend several emails without login with any of it),
  *      remove it
@@ -47,37 +46,41 @@ import { admin } from '../../config';
  */
 
 export const generateAuthCode = onRequest(async (req, res) => {
-  generateAuthCodeBody.parse(req.body);
-
-  const { email } = req.body as GenerateAuthCodeBody;
-  const code = generateSixDigitNumber();
-  // Send Email with the code
-  await saveAuthCode(email, code);
-  res.send({ code: 'AUTH_CODE_GENERATED' });
+  try {
+    const { email } = generateAuthCodeBody.parse(req.body);
+    const code = generateSixDigitNumber();
+    // ToDo Send Email with the code
+    await saveAuthCode(email, code);
+    send(res, 'AUTH_CODE_GENERATED', 'true');
+  } catch (e: any) {
+    send(res, 'AUTH_CODE_ERROR', e.message);
+  }
 });
 
 export const validateAuthCode = onRequest(async (req, res) => {
-  validateAuthCodeBody.parse(req.body);
-
-  const { code, email } = req.body as ValidateAuthCodeBody;
-  const codeObject = await getAuthCode(email);
-  if (isValidCode(code, codeObject)) {
-    console.log('Code Valid');
-    admin
-      .auth()
-      .createCustomToken(email)
-      .then((customToken) => {
-        res.send({ code: 'AUTH_SUCCESSFUL', data: customToken });
-      })
-      .catch((error) => {
-        console.log('Error creating custom token:', error);
-      });
+  try {
+    const { code, email } = validateAuthCodeBody.parse(req.body);
+    const codeObject = await getAuthCode(email);
+    if (isValidCode(code, codeObject)) {
+      const userRecord = await validateUserExistence(email);
+      if (!userRecord) throw new Error('Error getting user record');
+      const authToken = await admin.auth().createCustomToken(userRecord.uid);
+      await deleteAuthCode(email);
+      send(res, 'AUTH_VALIDATION_SUCCESSFUL', authToken);
+    } else {
+      const attempts = await decreaseAuthCodeAttempt(email);
+      // After 3 attempts failed, delete the auth code and raise an error to send failed auth.
+      if (attempts === 0) {
+        await deleteAuthCode(email);
+        throw new Error('Authentication failed');
+      }
+      const message = `Incorrect code, try again.`;
+      send(res, 'AUTH_VALIDATION_FAILED', message);
+    }
+  } catch (e: any) {
+    console.error(e);
+    send(res, 'AUTH_VALIDATION_ERROR', e.message);
   }
-
-  // const code = generateSixDigitNumber();
-  // // Send Email with the code
-  // await saveAuthCode(email, code);
-  res.status(500).send({ code: 'AUTH_FAILED', data: 'Authentication code incorrect' });
 });
 
 const generateSixDigitNumber = () => Math.floor(100000 + Math.random() * 900000).toString();
