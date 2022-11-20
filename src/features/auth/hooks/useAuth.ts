@@ -51,6 +51,7 @@ export const useAuth = (): HookDto => {
     if (code === 'AUTH_VALIDATION_SUCCESSFUL') {
       await signIn(data);
       dispatch(removeEmailForSigning());
+      router.push('/');
     } else if (code === 'AUTH_VALIDATION_FAILED') {
       toast.error(data, { autoClose: 5000, hideProgressBar: false });
     } else {
