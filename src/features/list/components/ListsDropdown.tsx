@@ -2,7 +2,7 @@ import React, { Key, useState } from 'react';
 import { Dropdown, styled } from '@nextui-org/react';
 import { ListAddModal, useLists } from '@/features/list';
 import { MdCheck, MdPlaylistAdd } from 'react-icons/md';
-import { RootState } from '@/features/common';
+import { RootState } from '@/common';
 import { useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 

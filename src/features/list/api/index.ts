@@ -12,7 +12,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
-import { db, removeUndefined } from '@/features/common';
+import { db, removeUndefined } from '@/common';
 import { List, ListDocument } from '@/features/list';
 import { orderBy } from 'lodash';
 import { nanoid } from 'nanoid';

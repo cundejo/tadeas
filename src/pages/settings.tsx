@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { Navbar, PageTitle, SecondaryMenu } from '@/features/common';
+import { Navbar, PageTitle, SecondaryMenu } from '@/common';
 import { Settings } from '@/features/settings';
 import React from 'react';
 

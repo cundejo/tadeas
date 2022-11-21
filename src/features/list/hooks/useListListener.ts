@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getListListener, List } from '@/features/list';
-import { RootState } from '@/features/common';
+import { RootState } from '@/common';
 import { useSelector } from 'react-redux';
 
 type HookDto = {

@@ -1,5 +1,5 @@
 import { Task, TaskDocument } from '@/features/task';
-import { dateToFirestore, removeUndefined } from '@/features/common';
+import { dateToFirestore, removeUndefined } from '@/common';
 import { List, upsertList } from '@/features/list';
 import { compact, find, findIndex, forEach } from 'lodash';
 

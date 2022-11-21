@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, Text } from '@nextui-org/react';
-import { TextColorful } from '@/features/common';
+import { TextColorful } from '@/common';
 
 export const About: React.FC = () => {
   return (

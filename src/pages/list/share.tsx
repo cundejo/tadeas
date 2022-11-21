@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/features/common';
+import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/common';
 import { ListShare, useListsLoader } from '@/features/list';
 import React from 'react';
 

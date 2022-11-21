@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/features/common';
+import { Button } from '@/common';
 import { MdAddTask } from 'react-icons/md';
 
 type Props = {

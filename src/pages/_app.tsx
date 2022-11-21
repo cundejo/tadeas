@@ -1,11 +1,11 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { CssBaseline, NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ToastContainer } from 'react-toastify';
-import { Provider } from 'react-redux';
-import { darkTheme, GeneralLayout, lightTheme, store, WithChildren } from '@/features/common';
 import 'react-toastify/dist/ReactToastify.css';
-import '../features/common/styles/globals.css';
+import { darkTheme, GeneralLayout, lightTheme, store, WithChildren } from '@/common';
+import '../common/styles/globals.css';
 
 type Props = {
   Component: React.FC & { layout: React.FC<WithChildren> };

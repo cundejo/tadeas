@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { LOCAL_STORAGE_EMAIL_FOR_SIGNING, removeLocalStorage, setLocalStorage } from '@/features/common';
+import { LOCAL_STORAGE_EMAIL_FOR_SIGNING, removeLocalStorage, setLocalStorage } from '@/common';
 
 export interface AuthSliceState {
   emailForSigning?: string;

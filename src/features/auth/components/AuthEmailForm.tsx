@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Spacer, styled } from '@nextui-org/react';
 import { EmailFormValues, useAuth, validateEmailForm } from '@/features/auth';
-import { Button, Description, InputError, Note } from '@/features/common';
+import { Button, Description, InputError, Note } from '@/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 

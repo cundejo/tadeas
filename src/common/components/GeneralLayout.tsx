@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@nextui-org/react';
-import { APP_VERSION, PageMeta, WithChildren } from '@/features/common';
+import { APP_VERSION, PageMeta, WithChildren } from '@/common';
 
 export type GeneralLayoutProps = WithChildren;
 

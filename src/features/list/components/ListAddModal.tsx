@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { Input, Spacer } from '@nextui-org/react';
-import { Button, Modal } from '@/features/common';
+import { Button, Modal } from '@/common';
 import { useLists } from '@/features/list';
 
 interface Props {

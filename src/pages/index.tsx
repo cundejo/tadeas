@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { Tasks } from '@/features/task';
-import { Navbar, PageLoading } from '@/features/common';
+import { Navbar, PageLoading } from '@/common';
 import { ListMenu, ListsDropdown, useListsLoader } from '@/features/list';
 
 const IndexPage: NextPage = () => {

@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat';
-import { DateISOString } from '@/features/common';
+import { DateISOString } from '@/common';
 import Timestamp = firebase.firestore.Timestamp;
 
 type TaskCore = {

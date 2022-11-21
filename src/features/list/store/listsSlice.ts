@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteList, getListsByUser, getSharedListsByUser, List, renameList, upsertList } from '@/features/list';
-import { getLocalStorage, LOCAL_STORAGE_SELECTED_LIST_ID, setLocalStorage } from '@/features/common';
+import { getLocalStorage, LOCAL_STORAGE_SELECTED_LIST_ID, setLocalStorage } from '@/common';
 import { find, findIndex } from 'lodash';
 
 export interface ListSliceState {

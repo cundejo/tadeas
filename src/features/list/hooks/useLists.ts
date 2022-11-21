@@ -1,5 +1,5 @@
 import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
-import { RootState, useDispatch } from '@/features/common';
+import { RootState, useDispatch } from '@/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
 import { useUser } from '@/features/auth';

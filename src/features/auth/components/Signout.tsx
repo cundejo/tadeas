@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '@/features/auth';
 import { useRouter } from 'next/router';
-import { PageLoading } from '@/features/common';
+import { PageLoading } from '@/common';
 
 export const Signout: React.FC = () => {
   const router = useRouter();
