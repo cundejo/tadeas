@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "dev": "tsc --watch",
-    "build": "pnpm lint && tsc",
+    "build": "rm -rf dist/ && pnpm lint && tsc",
     "serve": "pnpm run build && firebase emulators:start --only functions",
     "shell": "pnpm run build && firebase functions:shell",
     "start": "pnpm run shell",

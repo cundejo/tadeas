@@ -1,16 +1,17 @@
 import React from 'react';
 import { Input, Spacer, styled } from '@nextui-org/react';
 import { CodeFormValues, useAuth, validateCodeForm } from '@/features/auth';
-import { Button, Description, InputError, Note } from '@/features/common';
+import { Button, Description, InputError, Note, TextColorful } from '@/features/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { MdOutlineCheckCircleOutline } from 'react-icons/md';
 
 type HookDto = {
+  emailForSigning?: string;
   formik: FormikProps<CodeFormValues>;
 };
 
 const useAuthCodeValidationForm = (): HookDto => {
-  const { validateAuthCode } = useAuth();
+  const { emailForSigning, validateAuthCode } = useAuth();
 
   const handleSubmit = (values: CodeFormValues, { setSubmitting }: FormikHelpers<CodeFormValues>) => {
     validateAuthCode(values.code, setSubmitting);
@@ -22,15 +23,22 @@ const useAuthCodeValidationForm = (): HookDto => {
     onSubmit: handleSubmit,
   });
 
-  return { formik };
+  return { formik, emailForSigning };
 };
 
 export const AuthCodeValidationForm: React.FC = () => {
-  const { formik } = useAuthCodeValidationForm();
+  const { formik, emailForSigning } = useAuthCodeValidationForm();
 
   return (
     <Container>
-      <Description subTitle="Check your email account and paste here the code we sent you.">
+      <Description
+        subTitle={
+          <>
+            Check your email account <TextColorful yellow>{emailForSigning}</TextColorful> and paste here the code we
+            sent you.
+          </>
+        }
+      >
         Check your inbox
       </Description>
 
@@ -63,7 +71,7 @@ export const AuthCodeValidationForm: React.FC = () => {
       </form>
 
       <Note>
-        Note: If you don&apos;t find the email in your inbox, please check in your <strong>spam</strong> folder.
+        Note: If you can&apos;t find the email in your inbox, please check in your <strong>spam</strong> folder.
       </Note>
     </Container>
   );
