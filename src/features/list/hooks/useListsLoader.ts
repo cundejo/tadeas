@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { getAllUserListsThunk, setSelectedListIdFromLocalStorage } from '@/features/list';
 import { RootState, useDispatch } from '@/features/common';
 import { isEmpty } from 'lodash';
-import { useAuth } from '@/features/auth';
+import { useUser } from '@/features/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ type HookDto = {
 export const useListsLoader = (): HookDto => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user, isLoading: isLoadingUser } = useAuth();
+  const { user, isLoading: isLoadingUser } = useUser();
   const userLists = useSelector((state: RootState) => state.lists.userLists);
   const selectedListId = useSelector((state: RootState) => state.lists.selectedListId);
 
@@ -42,7 +42,7 @@ export const useListsLoader = (): HookDto => {
 
   // The user is not signed in, so let's redirect him to login form
   if (!isLoadingUser && !user) {
-    router.push('/auth/login-form');
+    router.push('/auth/email');
   }
 
   return {

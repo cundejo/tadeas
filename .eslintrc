@@ -1,0 +1,6 @@
+{
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": [
+    "/firebase-functions/**/*" // Ignore functions project
+  ]
+}

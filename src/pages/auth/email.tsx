@@ -1,16 +1,16 @@
 import React from 'react';
-import { LoginForm, useAuth } from '@/features/auth';
+import { AuthEmailForm, useUser } from '@/features/auth';
 import { NextPage } from 'next';
 import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/features/common';
 import { useRouter } from 'next/router';
 
-const LoginFormPage: NextPage = () => {
+const AuthEmailFormPage: NextPage = () => {
   const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { user, isLoading } = useUser();
 
   if (isLoading) return <PageLoading />;
 
-  // The user is signed in, so let's redirect they to home
+  // If the user is signed in, redirect it to home
   if (!isLoading && user) {
     router.push('/');
     return null;
@@ -19,9 +19,9 @@ const LoginFormPage: NextPage = () => {
   return (
     <>
       <Navbar leftContent={<PageTitle title="Sign in" superTitle="Tadeas" />} rightContent={<SecondaryMenu />} />
-      <LoginForm />
+      <AuthEmailForm />
     </>
   );
 };
 
-export default LoginFormPage;
+export default AuthEmailFormPage;

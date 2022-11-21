@@ -2,7 +2,7 @@ import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListTh
 import { RootState, useDispatch } from '@/features/common';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
-import { useAuth } from '@/features/auth';
+import { useUser } from '@/features/auth';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -21,7 +21,7 @@ type HookDto = {
  * This hook depends on useListsLoader to load the data in the app context.
  */
 export const useLists = (): HookDto => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const dispatch = useDispatch();
   const userLists = useSelector((state: RootState) => state.lists.userLists);
   const userSharedLists = useSelector((state: RootState) => state.lists.userSharedLists);
