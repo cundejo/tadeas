@@ -1,4 +1,4 @@
-// You get this from the Firebase project -> Project Settings -> Service accounts -> Firebase Admin SDK -> Generate new private key
+// Firebase project -> Project Settings -> Service accounts -> Firebase Admin SDK -> Generate new private key
 export const SERVICE_ACCOUNT_OBJECT = {
   type: undefined,
   project_id: undefined,
