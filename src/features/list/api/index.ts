@@ -95,7 +95,7 @@ export const getListsByUser = async (userEmail: string): Promise<List[]> => {
 
   // Every user should have a default list, so we create it here if the user hasn't any list.
   if (querySnapshot.empty) {
-    await createDefaultUserList(userEmail);
+    await createDefaultUserLists(userEmail);
     querySnapshot = await getDocs(q);
   }
 
@@ -114,14 +114,29 @@ export const getSharedListsByUser = async (userEmail: string): Promise<List[]> =
   );
 };
 
-const createDefaultUserList = async (userEmail: string): Promise<void> => {
-  const newList: List = {
+const createDefaultUserLists = async (userEmail: string): Promise<void> => {
+  const newTodoList: List = {
     id: nanoid(),
     isDefault: true,
-    name: 'My List',
+    name: '✅ To Do',
+    owner: userEmail,
+    sharedWith: [],
+    tasks: [
+      {
+        id: nanoid(),
+        createdAt: new Date().toISOString(),
+        title: 'Create my first task',
+      },
+    ],
+  };
+  const newGroceriesList: List = {
+    id: nanoid(),
+    isDefault: false,
+    name: '🛍️ Groceries',
     owner: userEmail,
     sharedWith: [],
     tasks: [],
   };
-  await upsertList(newList);
+  await upsertList(newTodoList);
+  await upsertList(newGroceriesList);
 };
