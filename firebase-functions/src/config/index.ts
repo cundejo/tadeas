@@ -1,9 +1,9 @@
 import * as admin from 'firebase-admin';
-import { serviceAccountObject } from './service-account-object';
+import { SERVICE_ACCOUNT_OBJECT, SENDINGBLUE_API_KEY } from './env';
 
 // The Firebase Admin SDK to access Firestore.
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccountObject as any),
+  credential: admin.credential.cert(SERVICE_ACCOUNT_OBJECT as any),
 });
 
 const ALLOWED_ORIGINS = [
@@ -14,4 +14,4 @@ const ALLOWED_ORIGINS = [
   'http://192.168.0.20:3000',
 ];
 
-export { admin, ALLOWED_ORIGINS };
+export { admin, ALLOWED_ORIGINS, SENDINGBLUE_API_KEY };

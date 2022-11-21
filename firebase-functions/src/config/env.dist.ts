@@ -1,5 +1,5 @@
 // You get this from the Firebase project -> Project Settings -> Service accounts -> Firebase Admin SDK -> Generate new private key
-export const serviceAccountObject = {
+export const SERVICE_ACCOUNT_OBJECT = {
   type: 'type',
   project_id: 'project_id',
   private_key_id: 'private_key_id',
@@ -11,3 +11,5 @@ export const serviceAccountObject = {
   auth_provider_x509_cert_url: 'auth_provider_x509_cert_url',
   client_x509_cert_url: 'client_x509_cert_url',
 };
+
+export const SENDINGBLUE_API_KEY = 'SENDINGBLUE_API_KEY';

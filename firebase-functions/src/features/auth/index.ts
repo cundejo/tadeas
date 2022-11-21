@@ -8,6 +8,7 @@ import {
   saveAuthCode,
   validateUserExistence,
 } from './auth.service';
+import { sendEmail } from '../email';
 
 /**
  * AUTH PROCESS
@@ -49,7 +50,8 @@ export const generateAuthCode = onRequest(async (req, res) => {
   try {
     const { email } = generateAuthCodeBody.parse(req.body);
     const code = generateSixDigitNumber();
-    // ToDo Send Email with the code
+    const emailSent = await sendAuthCodeEmail(email, code);
+    if (!emailSent) throw new Error(`Error sending code to your email ${email}, please try again later.`);
     await saveAuthCode(email, code);
     send(res, 'AUTH_CODE_GENERATED', 'true');
   } catch (e: any) {
@@ -82,6 +84,24 @@ export const validateAuthCode = onRequest(async (req, res) => {
     send(res, 'AUTH_VALIDATION_ERROR', e.message);
   }
 });
+
+const sendAuthCodeEmail = async (email: string, code: string) => {
+  const subject = 'Sign in to Tadeas';
+  const content = `
+  <div>
+    <p>Hello,</p>
+    <p>We received a request to sign in to Tadeas using this email address.</p>
+    <p>This is your authentication code: <code>${code}</code></p>
+    <br/>
+    <p>If you did not request this, you can safely ignore this email.</p>
+    <br/>
+    <p>Thanks,</p>
+    <p>Your Tadeas team</p>
+  </div>
+  `;
+
+  return sendEmail(email, subject, content);
+};
 
 const generateSixDigitNumber = () => Math.floor(100000 + Math.random() * 900000).toString();
 
