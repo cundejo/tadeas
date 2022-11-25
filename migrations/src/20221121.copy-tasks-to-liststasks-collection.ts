@@ -12,13 +12,14 @@
  */
 
 import { admin } from './config';
-import { ListDocument } from '../../src/features/list';
-import { TaskDocument } from '../../src/features/task';
+import { ListTasksDocument, TaskDocument } from '../../src/features/task';
 
-// TODO move to frontend
-type ListTaskDocument = {
+type OldListDocument = {
+  name: string;
+  owner: string;
+  sharedWith: string[];
+  isDefault?: boolean;
   tasks: TaskDocument[];
-  tasksCompleted: TaskDocument[];
 };
 
 const listsCollectionRef = admin.firestore().collection('lists');
@@ -26,7 +27,7 @@ const listsTasksCollectionRef = admin.firestore().collection('listsTasks');
 
 const getLists = async () => {
   const snapshot = await listsCollectionRef.get();
-  return snapshot.docs.map((document) => ({ id: document.id, ...(document.data() as ListDocument) }));
+  return snapshot.docs.map((document) => ({ id: document.id, ...(document.data() as OldListDocument) }));
 };
 
 const isListsTasksCollectionEmpty = async () => {
@@ -35,9 +36,9 @@ const isListsTasksCollectionEmpty = async () => {
   throw new Error('Please, clean listsTasks collection first.');
 };
 
-const createListsTasks = (lists: (ListDocument & { id: string })[]) => {
+const createListsTasks = (lists: (OldListDocument & { id: string })[]) => {
   return lists.map((list) => {
-    const listTask: ListTaskDocument & { id: string } = {
+    const listTask: ListTasksDocument & { id: string } = {
       id: list.id,
       tasks: list.tasks.filter((t) => !t.completedAt),
       tasksCompleted: list.tasks.filter((t) => !!t.completedAt),
@@ -46,7 +47,7 @@ const createListsTasks = (lists: (ListDocument & { id: string })[]) => {
   });
 };
 
-const saveListsTasks = async (listsTasks: (ListTaskDocument & { id: string })[]) => {
+const saveListsTasks = async (listsTasks: (ListTasksDocument & { id: string })[]) => {
   const batch = admin.firestore().batch();
   listsTasks.forEach((listTask) => {
     const { id, tasks, tasksCompleted } = listTask;
