@@ -1,17 +1,4 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  Unsubscribe,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
-import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db, removeUndefined } from '@/common';
 import { List, ListDocument } from '@/features/list';
 import { orderBy } from 'lodash';
@@ -20,19 +7,19 @@ import { nanoid } from 'nanoid';
 const COLLECTION = 'lists';
 
 export const fromFirestore = (list: ListDocument & { id: string }): List => {
+  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
   const { tasks, ...unchanged } = list;
   return {
     ...unchanged,
-    tasks: tasks.map(taskFromFirestore),
   };
 };
 
 export const toFirestore = (list: List): ListDocument => {
+  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
   const { id, tasks, ...unchanged } = list;
 
   return removeUndefined({
     ...unchanged,
-    tasks: tasks.map(taskToFirestore),
   } as ListDocument);
 };
 
@@ -41,19 +28,6 @@ export const getList = async (id: string): Promise<List> => {
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) throw new Error(`Listing with id ${id} not found`);
   return fromFirestore({ id: docSnap.id, ...(docSnap.data() as ListDocument) });
-};
-
-export const getListListener = (listId: string, onListReceived: (list: List) => void): Unsubscribe => {
-  return onSnapshot(
-    doc(db, COLLECTION, listId),
-    (doc) => {
-      // If the listener is active for a list that is being deleted, do not follow up.
-      if (!doc.exists()) return;
-      const list = fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) });
-      onListReceived(list);
-    },
-    (e) => console.error(e)
-  );
 };
 
 /**
@@ -121,13 +95,6 @@ const createDefaultUserLists = async (userEmail: string): Promise<void> => {
     name: '✅ To Do',
     owner: userEmail,
     sharedWith: [],
-    tasks: [
-      {
-        id: nanoid(),
-        createdAt: new Date().toISOString(),
-        title: 'Create my first task',
-      },
-    ],
   };
   const newGroceriesList: List = {
     id: nanoid(),
@@ -135,8 +102,6 @@ const createDefaultUserLists = async (userEmail: string): Promise<void> => {
     name: '🛍️ Groceries',
     owner: userEmail,
     sharedWith: [],
-    tasks: [],
   };
-  await upsertList(newTodoList);
-  await upsertList(newGroceriesList);
+  await Promise.all([upsertList(newTodoList), upsertList(newGroceriesList)]);
 };

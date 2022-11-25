@@ -18,6 +18,7 @@ const initialState: ListSliceState = {
 export const getAllUserListsThunk = createAsyncThunk('lists/getAllUserLists', async (userEmail: string) =>
   Promise.all([getListsByUser(userEmail), getSharedListsByUser(userEmail)])
 );
+
 export const upsertListThunk = createAsyncThunk('lists/upsertList', async (list: List) => upsertList(list));
 
 export const renameListThunk = createAsyncThunk(
@@ -50,7 +51,7 @@ export const listsSlice = createSlice({
         const userLists = action.payload[0];
         const userSharedLists = action.payload[1];
 
-        // If there is a selected list but it doesn't exist in the user lists, we set the first user list.
+        // If there is a selected list, but it doesn't exist in the user lists, we set the first user list.
         if (state.selectedListId) {
           const list = find([...userLists, ...userSharedLists], { id: state.selectedListId });
           if (!list) {

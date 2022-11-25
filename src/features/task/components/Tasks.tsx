@@ -1,14 +1,13 @@
 import React from 'react';
-import { AddTaskButton, TasksList, useTasks } from '@/features/task';
-import { useListListener } from '@/features/list';
+import { AddTaskButton, TasksList, useTasks, useListTasksListener } from '@/features/task';
 
 export const Tasks: React.FC = () => {
-  const { list } = useListListener();
+  const { listTasks } = useListTasksListener();
   const { isSaving, completeTask, addTask, switchSelectedTask, taskInEdition, setTaskInEdition, getTasks } = useTasks(
-    list!
+    listTasks!
   );
 
-  if (!list) return null;
+  if (!listTasks) return null;
 
   return (
     <>
