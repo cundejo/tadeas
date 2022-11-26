@@ -1,7 +1,7 @@
+import { compact, find, findIndex, forEach, isEmpty } from 'lodash';
+import { deleteDoc, doc, onSnapshot, setDoc, Unsubscribe } from 'firebase/firestore';
 import { ListTasks, ListTasksDocument, Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, db, removeUndefined } from '@/common';
-import { compact, find, findIndex, forEach, isEmpty } from 'lodash';
-import { doc, onSnapshot, setDoc, Unsubscribe } from 'firebase/firestore';
 
 const COLLECTION = 'listsTasks';
 const DEFAULT_DATE = '1970-01-01';
@@ -76,6 +76,15 @@ export const upsertListTasks = async (listTasks: ListTasks): Promise<ListTasks> 
   }
 };
 
+export const deleteListTasks = async (listTasksId: string): Promise<string> => {
+  try {
+    await deleteDoc(doc(db, COLLECTION, listTasksId));
+  } catch (e) {
+    console.error(e);
+  }
+  return listTasksId;
+};
+
 /**
  * Update several tasks at once in a list
  */
@@ -107,8 +116,7 @@ export const taskHasChanges = (prevTaskData: Task, newTaskData: Task): boolean =
   return prevTaskData.title !== newTaskData.title;
 };
 
-// Todo Unit Test
-const updateTasks = (oldTasks: Task[], newTasks: Task[]): Task[] => {
+export const updateTasks = (oldTasks: Task[], newTasks: Task[]): Task[] => {
   if (isEmpty(newTasks)) return oldTasks;
   const tasks = [...oldTasks];
   forEach(compact(newTasks), (task) => {
@@ -119,11 +127,10 @@ const updateTasks = (oldTasks: Task[], newTasks: Task[]): Task[] => {
   return tasks;
 };
 
-// Todo Unit Test
-const removeTask = (tasks: Task[], task: Task): { tasks: Task[]; taskDeleted: Task } => {
+export const removeTask = (tasks: Task[], task: Task): { tasks: Task[]; taskDeleted: Task } => {
   if (isEmpty(tasks)) return { tasks, taskDeleted: task };
   const newTasks = [...tasks];
   const taskIndex = findIndex(newTasks, { id: task.id });
-  if (taskIndex === -1) return { tasks, taskDeleted: task };
-  return { tasks: newTasks.splice(taskIndex, 1), taskDeleted: task };
+  if (taskIndex >= 0) newTasks.splice(taskIndex, 1);
+  return { tasks: newTasks, taskDeleted: task };
 };

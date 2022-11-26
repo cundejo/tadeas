@@ -53,14 +53,13 @@ export const renameList = async (listId: string, name: string): Promise<List> =>
   }
 };
 
-export const deleteList = async (list: List): Promise<List> => {
+export const deleteList = async (listId: string): Promise<string> => {
   try {
-    await deleteDoc(doc(db, COLLECTION, list.id));
-    return list;
+    await deleteDoc(doc(db, COLLECTION, listId));
   } catch (e) {
     console.error(e);
-    return {} as List;
   }
+  return listId;
 };
 
 export const getListsByUser = async (userEmail: string): Promise<List[]> => {

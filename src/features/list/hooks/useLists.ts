@@ -5,6 +5,7 @@ import { find, isEmpty } from 'lodash';
 import { useUser } from '@/features/auth';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { deleteListTasks, upsertListTasks } from '@/features/task';
 
 type HookDto = {
   addList: (name: string) => Promise<void>;
@@ -31,14 +32,14 @@ export const useLists = (): HookDto => {
     throw new Error(`Hook useLists is being called without calling first useListsLoader.`);
 
   const addList = async (name: string) => {
-    const newList = {
+    const newList: List = {
       id: nanoid(),
-      tasks: [],
       name,
       owner: user!.email!,
       sharedWith: [],
     };
     await dispatch(upsertListThunk(newList));
+    await upsertListTasks({ id: newList.id, tasks: [], tasksCompleted: [] });
   };
 
   const editList = async (list: List) => {
@@ -52,7 +53,8 @@ export const useLists = (): HookDto => {
   const deleteList = async (list: List) => {
     // Avoid deleting the user default list.
     if (list.isDefault) return;
-    await dispatch(deleteListThunk(list));
+    await dispatch(deleteListThunk(list.id));
+    await deleteListTasks(list.id);
     toast.success(`List ${list.name} deleted`);
   };
 

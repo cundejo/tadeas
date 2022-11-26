@@ -26,7 +26,7 @@ export const renameListThunk = createAsyncThunk(
   async ({ listId, name }: { listId: string; name: string }) => renameList(listId, name)
 );
 
-export const deleteListThunk = createAsyncThunk('lists/deleteList', async (list: List) => deleteList(list));
+export const deleteListThunk = createAsyncThunk('lists/deleteList', async (listId: string) => deleteList(listId));
 
 export const listsSlice = createSlice({
   name: 'lists',
@@ -89,8 +89,8 @@ export const listsSlice = createSlice({
       })
 
       .addCase(deleteListThunk.fulfilled, (state, action) => {
-        const deletedList = action.payload;
-        const lists = state.userLists.filter(({ id }) => id !== deletedList.id);
+        const deletedListId = action.payload;
+        const lists = state.userLists.filter(({ id }) => id !== deletedListId);
         state.userLists = lists;
         state.selectedListId = lists[0].id;
         setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, lists[0].id);
