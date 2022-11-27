@@ -18,6 +18,7 @@ const Container = styled('div', {
   maxWidth: '650px',
   padding: '0 1.5em 2em',
   margin: '0 auto',
+  height: '100vh',
 });
 
 const Version = styled('div', {
