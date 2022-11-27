@@ -14,7 +14,7 @@ import {
 import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
 import { db, removeUndefined } from '@/features/common';
 import { List, ListDocument } from '@/features/list';
-import { orderBy } from 'lodash';
+import { map, orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 
 const COLLECTION = 'lists';
@@ -23,7 +23,7 @@ export const fromFirestore = (list: ListDocument & { id: string }): List => {
   const { tasks, ...unchanged } = list;
   return {
     ...unchanged,
-    tasks: tasks.map(taskFromFirestore),
+    tasks: map(tasks, taskFromFirestore),
   };
 };
 
@@ -32,7 +32,7 @@ export const toFirestore = (list: List): ListDocument => {
 
   return removeUndefined({
     ...unchanged,
-    tasks: tasks.map(taskToFirestore),
+    tasks: map(tasks, taskToFirestore),
   } as ListDocument);
 };
 
