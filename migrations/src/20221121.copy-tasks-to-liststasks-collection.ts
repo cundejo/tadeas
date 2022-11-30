@@ -11,6 +11,7 @@
  *          ├ tasksCompleted: Task[]
  */
 
+import { compact, filter, isEmpty } from 'lodash';
 import { admin } from './config';
 import { ListTasksDocument, TaskDocument } from '../../src/features/task';
 
@@ -37,14 +38,16 @@ const isListsTasksCollectionEmpty = async () => {
 };
 
 const createListsTasks = (lists: (OldListDocument & { id: string })[]) => {
-  return lists.map((list) => {
-    const listTask: ListTasksDocument & { id: string } = {
-      id: list.id,
-      tasks: list.tasks.filter((t) => !t.completedAt),
-      tasksCompleted: list.tasks.filter((t) => !!t.completedAt),
-    };
-    return listTask;
-  });
+  return compact(
+    lists.map((list) => {
+      const listTask: ListTasksDocument & { id: string } = {
+        id: list.id,
+        tasks: filter(list.tasks, (t) => !t.completedAt),
+        tasksCompleted: filter(list.tasks, (t) => !!t.completedAt && !isEmpty(t.title)),
+      };
+      return listTask;
+    })
+  );
 };
 
 const saveListsTasks = async (listsTasks: (ListTasksDocument & { id: string })[]) => {
