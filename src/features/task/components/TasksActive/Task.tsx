@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Checkbox, Input, styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
 import { sleep } from '@/common';
-import { toast } from 'react-toastify';
 
 type Props = {
   task: Task;

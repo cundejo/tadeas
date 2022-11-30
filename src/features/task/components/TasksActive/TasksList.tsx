@@ -1,6 +1,7 @@
 import React from 'react';
-import { Task, TaskComponent } from '@/features/task';
+import { Task } from '@/features/task';
 import { styled } from '@nextui-org/react';
+import { TaskComponent } from './Task';
 
 type Props = {
   tasks: Task[];

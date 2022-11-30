@@ -15,8 +15,8 @@ type HookDto = {
   getTasks: () => Task[];
   getTasksCompleted: () => Task[];
   isCompletedTasksVisible: boolean;
-  setIsCompletedTasksVisible: (visible: boolean) => void;
   isSaving: boolean;
+  setIsCompletedTasksVisible: (visible: boolean) => void;
   setTaskInEdition: (task?: Task) => void;
   switchSelectedTask: (taskId: string) => void;
   taskInEdition?: Task;
