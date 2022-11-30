@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
 import { TasksCompletedList } from './TasksCompletedList';
+import { isEmpty } from 'lodash';
 
 type Props = {
   completedTasks: Task[];
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, onChange }) => {
+  if (isEmpty(completedTasks)) return null;
+
   return (
     <Container>
       <Title tabIndex={0} onClick={() => onChange(!visible)}>
