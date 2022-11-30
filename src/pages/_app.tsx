@@ -4,7 +4,7 @@ import { CssBaseline, NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { darkTheme, GeneralLayout, lightTheme, store, WithChildren } from '@/common';
+import { darkTheme, GeneralLayout, store, WithChildren } from '@/common';
 import '../common/styles/globals.css';
 
 type Props = {
@@ -19,7 +19,7 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
     <NextThemesProvider
       attribute="class"
       value={{
-        light: lightTheme.className,
+        // light: lightTheme.className,
         dark: darkTheme.className,
       }}
     >
