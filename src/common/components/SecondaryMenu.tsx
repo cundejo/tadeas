@@ -13,7 +13,7 @@ export const SecondaryMenu: React.FC = () => {
   return (
     <>
       <Container>
-        <Dropdown>
+        <Dropdown disableAnimation>
           <Dropdown.Button light auto icon={<MdMenu size="2rem" />} />
           <Dropdown.Menu aria-label="App Actions" onAction={handleMenuAction}>
             <Dropdown.Item key="settings" icon={<MdSettings />}>

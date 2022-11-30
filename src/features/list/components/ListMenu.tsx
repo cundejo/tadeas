@@ -5,6 +5,7 @@ import {
   MdMenu,
   MdOutlineDeleteSweep,
   MdOutlineEditNote,
+  MdOutlineRemoveDone,
   MdOutlineShare,
   MdSettings,
 } from 'react-icons/md';
@@ -67,7 +68,7 @@ const useListMenu = () => {
         icon: <MdOutlineDeleteSweep />,
         description: listSelected?.isDefault && "Default list can't be deleted",
       },
-      // { key: 'deleteCompletedTasks', title: 'Delete completed tasks', icon: <MdOutlineRemoveDone /> },
+      { key: 'deleteCompletedTasks', title: 'Delete completed tasks', icon: <MdOutlineRemoveDone /> },
     ],
   };
 
@@ -108,7 +109,7 @@ export const ListMenu: React.FC = () => {
   return (
     <>
       <Container>
-        <Dropdown>
+        <Dropdown disableAnimation>
           <Dropdown.Button light auto icon={<MdMenu size="2rem" />} />
           <Dropdown.Menu
             aria-label="App Actions"
