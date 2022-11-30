@@ -15,6 +15,6 @@ fs.readFile(SW_FILEPATH, 'utf8', function (err, data) {
 });
 
 // Changing current version of the web application
-const VERSION_FILEPATH = `${__dirname}/../src/features/common/config/version.json`;
+const VERSION_FILEPATH = `${__dirname}/../src/common/config/version.json`;
 //Serialize as JSON and Write it to a file
 fs.writeFileSync(VERSION_FILEPATH, JSON.stringify({ version: new Date().getTime().toString() }));
