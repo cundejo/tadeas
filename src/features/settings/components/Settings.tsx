@@ -3,6 +3,7 @@ import { Button, ConfirmationModal, Description, List, ListItem } from '@/common
 import { MdLogin, MdLogout } from 'react-icons/md';
 import { useUser } from '@/features/auth';
 import { useRouter } from 'next/router';
+import { styled } from '@nextui-org/react';
 
 export const Settings: React.FC = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <List>
         <ListItem
           key="signed-user"
@@ -55,6 +56,10 @@ export const Settings: React.FC = () => {
         onConfirm={() => router.push(`/auth/signout`)}
         onCancel={() => setIsConfirmingSignout(false)}
       />
-    </>
+    </Container>
   );
 };
+
+const Container = styled('div', {
+  padding: '0 $lg',
+});

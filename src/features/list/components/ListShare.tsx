@@ -10,7 +10,7 @@ export const ListShare: React.FC = () => {
   if (!listSelected) throw new Error(`List not found.`);
 
   return (
-    <>
+    <Container>
       <Description subTitle="Here you can control who access to your list.">
         Sharing <TextColorful yellow>{listSelected.name}</TextColorful> with others
       </Description>
@@ -18,7 +18,7 @@ export const ListShare: React.FC = () => {
       <ListShareForm saveList={editList} list={listSelected} />
 
       <ListShareUsers list={listSelected} saveList={editList} />
-    </>
+    </Container>
   );
 };
 
@@ -96,4 +96,8 @@ const FormContainer = styled('div', {
   display: 'flex',
   gap: '$md',
   margin: '$xl 0 $lg',
+});
+
+const Container = styled('div', {
+  padding: '0 $lg',
 });

@@ -16,7 +16,7 @@ export const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
 
 const Container = styled('div', {
   maxWidth: '650px',
-  padding: '0 1.5em 2em',
+  padding: '0',
   margin: '0 auto',
   height: '100vh',
 });

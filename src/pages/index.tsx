@@ -20,7 +20,5 @@ const IndexPage: NextPage = () => {
 export default IndexPage;
 
 const Container = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
   height: '100%',
 });

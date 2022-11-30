@@ -66,5 +66,5 @@ export const AuthEmailForm: React.FC = () => {
 };
 
 const Container = styled('div', {
-  margin: '$lg 0',
+  padding: '$lg',
 });

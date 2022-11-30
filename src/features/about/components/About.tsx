@@ -40,7 +40,9 @@ export const About: React.FC = () => {
   );
 };
 
-const Container = styled('nav', {
+const Container = styled('div', {
+  padding: '0 $lg',
+
   '& h3': {
     mt: '1em',
   },
