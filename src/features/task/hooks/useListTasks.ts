@@ -13,6 +13,9 @@ type HookDto = {
   addTask: () => void;
   completeTask: (task: Task) => void;
   getTasks: () => Task[];
+  getTasksCompleted: () => Task[];
+  isCompletedTasksVisible: boolean;
+  setIsCompletedTasksVisible: (visible: boolean) => void;
   isSaving: boolean;
   setTaskInEdition: (task?: Task) => void;
   switchSelectedTask: (taskId: string) => void;
@@ -21,6 +24,7 @@ type HookDto = {
 
 export const useTasks = (listTasks: ListTasks): HookDto => {
   const [isSaving, setIsSaving] = useState(false);
+  const [isCompletedTasksVisible, setIsCompletedTasksVisible] = useState(false);
   const [taskInEdition, setTaskInEdition] = useState<Task>();
 
   const taskInEditionWithChanges = (): Task | undefined => {
@@ -73,11 +77,18 @@ export const useTasks = (listTasks: ListTasks): HookDto => {
     return orderBy(listTasks.tasks, ['createdAt'], ['desc']);
   };
 
+  const getTasksCompleted = (): Task[] => {
+    return orderBy(listTasks.tasksCompleted, ['completedAt'], ['desc']);
+  };
+
   return {
     addTask,
     completeTask,
     getTasks,
+    getTasksCompleted,
+    isCompletedTasksVisible,
     isSaving,
+    setIsCompletedTasksVisible,
     setTaskInEdition,
     switchSelectedTask,
     taskInEdition,

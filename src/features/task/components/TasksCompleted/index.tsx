@@ -1,30 +1,39 @@
 import React from 'react';
-import { Collapse, styled, Text } from '@nextui-org/react';
+import { styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
+import { TasksCompletedList } from './TasksCompletedList';
 
 type Props = {
   completedTasks: Task[];
+  visible: boolean;
+  onChange: (isVisible: boolean) => void;
 };
 
-export const TasksCompleted: React.FC<Props> = ({ completedTasks }) => {
+export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, onChange }) => {
   return (
     <Container>
-      <Collapse.Group accordion={false}>
-        <Collapse title="Option A">
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat.
-          </Text>
-        </Collapse>
-      </Collapse.Group>
+      <Title tabIndex={0} onClick={() => onChange(!visible)}>
+        Completed ({completedTasks.length})
+      </Title>
+      {visible && <TasksCompletedList tasks={completedTasks} />}
     </Container>
   );
 };
 
 const Container = styled('div', {
-  bg: 'red',
+  bg: '$gray50',
   display: 'block',
   position: 'sticky',
   bottom: 0,
+  zIndex: 200,
+});
+
+const Title = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  height: '50px',
+  padding: '0 $md',
+  fontSize: '$lg',
+  color: '$accents7',
+  cursor: 'pointer',
 });

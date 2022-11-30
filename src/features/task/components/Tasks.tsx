@@ -1,37 +1,61 @@
 import React from 'react';
 import { AddTaskButton, TasksList, useTasks, useListTasksListener } from '@/features/task';
-import { TasksCompleted } from '@/features/task/components/TasksCompleted';
 import { styled } from '@nextui-org/react';
+import { TaskCompletedPanel } from './TasksCompleted';
 
 export const Tasks: React.FC = () => {
   const { listTasks } = useListTasksListener();
-  const { isSaving, completeTask, addTask, switchSelectedTask, taskInEdition, setTaskInEdition, getTasks } = useTasks(
-    listTasks!
-  );
+  const {
+    addTask,
+    completeTask,
+    getTasks,
+    getTasksCompleted,
+    isCompletedTasksVisible,
+    isSaving,
+    setIsCompletedTasksVisible,
+    setTaskInEdition,
+    switchSelectedTask,
+    taskInEdition,
+  } = useTasks(listTasks!);
 
   if (!listTasks) return null;
 
-  console.log('listTasks', listTasks);
-
   return (
     <Container>
-      <AddTaskButton onClick={addTask} loading={isSaving} />
-      <TasksList
-        tasks={getTasks()}
-        taskInEdition={taskInEdition}
-        switchTaskSelected={switchSelectedTask}
-        onChangeTask={setTaskInEdition}
-        onComplete={completeTask}
+      <Content className="content" collapsed={isCompletedTasksVisible}>
+        <AddTaskButton onClick={addTask} loading={isSaving} />
+        <TasksList
+          tasks={getTasks()}
+          taskInEdition={taskInEdition}
+          switchTaskSelected={switchSelectedTask}
+          onChangeTask={setTaskInEdition}
+          onComplete={completeTask}
+        />
+      </Content>
+      <TaskCompletedPanel
+        visible={isCompletedTasksVisible}
+        completedTasks={getTasksCompleted()}
+        onChange={setIsCompletedTasksVisible}
       />
-      <TasksCompleted completedTasks={listTasks.tasksCompleted} />
     </Container>
   );
 };
 
 const Container = styled('div', {
-  // pt: '76px',
-  bg: 'green',
-  flexGrow: 1,
-  flexDirection: 'column',
-  overflow: 'auto',
+  height: 'calc(100% - 60px)',
+});
+
+const Content = styled('div', {
+  display: 'block',
+  padding: '0 $md',
+  height: 'calc(100% - 50px)',
+  overflow: 'scroll',
+
+  variants: {
+    collapsed: {
+      true: {
+        height: 'calc(100% - 50px - 30vh)',
+      },
+    },
+  },
 });
