@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Spacer, styled } from '@nextui-org/react';
 import { CodeFormValues, useAuth, validateCodeForm } from '@/features/auth';
-import { Button, Description, InputError, Note, TextColorful } from '@/features/common';
+import { Button, Description, InputError, Note, TextColorful } from '@/common';
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { MdOutlineCheckCircleOutline } from 'react-icons/md';
 
@@ -78,7 +78,7 @@ export const AuthCodeValidationForm: React.FC = () => {
 };
 
 const Container = styled('div', {
-  margin: '$lg 0',
+  margin: '$lg',
 
   '& input': {
     textAlign: 'center',

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteList, getListsByUser, getSharedListsByUser, List, renameList, upsertList } from '@/features/list';
-import { getLocalStorage, LOCAL_STORAGE_SELECTED_LIST_ID, setLocalStorage } from '@/features/common';
+import { getLocalStorage, LOCAL_STORAGE_SELECTED_LIST_ID, setLocalStorage } from '@/common';
 import { find, findIndex } from 'lodash';
 
 export interface ListSliceState {
@@ -18,6 +18,7 @@ const initialState: ListSliceState = {
 export const getAllUserListsThunk = createAsyncThunk('lists/getAllUserLists', async (userEmail: string) =>
   Promise.all([getListsByUser(userEmail), getSharedListsByUser(userEmail)])
 );
+
 export const upsertListThunk = createAsyncThunk('lists/upsertList', async (list: List) => upsertList(list));
 
 export const renameListThunk = createAsyncThunk(
@@ -25,7 +26,7 @@ export const renameListThunk = createAsyncThunk(
   async ({ listId, name }: { listId: string; name: string }) => renameList(listId, name)
 );
 
-export const deleteListThunk = createAsyncThunk('lists/deleteList', async (list: List) => deleteList(list));
+export const deleteListThunk = createAsyncThunk('lists/deleteList', async (listId: string) => deleteList(listId));
 
 export const listsSlice = createSlice({
   name: 'lists',
@@ -50,7 +51,7 @@ export const listsSlice = createSlice({
         const userLists = action.payload[0];
         const userSharedLists = action.payload[1];
 
-        // If there is a selected list but it doesn't exist in the user lists, we set the first user list.
+        // If there is a selected list, but it doesn't exist in the user lists, we set the first user list.
         if (state.selectedListId) {
           const list = find([...userLists, ...userSharedLists], { id: state.selectedListId });
           if (!list) {
@@ -88,8 +89,8 @@ export const listsSlice = createSlice({
       })
 
       .addCase(deleteListThunk.fulfilled, (state, action) => {
-        const deletedList = action.payload;
-        const lists = state.userLists.filter(({ id }) => id !== deletedList.id);
+        const deletedListId = action.payload;
+        const lists = state.userLists.filter(({ id }) => id !== deletedListId);
         state.userLists = lists;
         state.selectedListId = lists[0].id;
         setLocalStorage(LOCAL_STORAGE_SELECTED_LIST_ID, lists[0].id);

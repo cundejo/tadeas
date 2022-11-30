@@ -9,7 +9,7 @@ import {
   MdSettings,
 } from 'react-icons/md';
 import { ListEditModal, useLists } from '@/features/list';
-import { ConfirmationModal } from '@/features/common';
+import { ConfirmationModal } from '@/common';
 import { useRouter } from 'next/router';
 import { compact } from 'lodash';
 

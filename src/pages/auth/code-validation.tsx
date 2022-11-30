@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthCodeValidationForm, useAuth, useUser } from '@/features/auth';
 import { NextPage } from 'next';
-import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/features/common';
+import { Navbar, PageLoading, PageTitle, SecondaryMenu } from '@/common';
 import { useRouter } from 'next/router';
 
 const AuthCodeValidationFormPage: NextPage = () => {

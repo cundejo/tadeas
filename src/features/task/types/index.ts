@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat';
-import { DateISOString } from '@/features/common';
+import { DateISOString } from '@/common';
 import Timestamp = firebase.firestore.Timestamp;
 
 type TaskCore = {
@@ -15,4 +15,15 @@ export type TaskDocument = TaskCore & {
 export type Task = TaskCore & {
   createdAt: DateISOString;
   completedAt?: DateISOString;
+};
+
+export type ListTasksDocument = {
+  tasks: TaskDocument[];
+  tasksCompleted: TaskDocument[];
+};
+
+export type ListTasks = {
+  id: string; // Same id of the list
+  tasks: Task[];
+  tasksCompleted: Task[];
 };

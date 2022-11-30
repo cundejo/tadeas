@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, Text } from '@nextui-org/react';
-import { TextColorful } from '@/features/common';
+import { TextColorful } from '@/common';
 
 export const About: React.FC = () => {
   return (
@@ -40,7 +40,9 @@ export const About: React.FC = () => {
   );
 };
 
-const Container = styled('nav', {
+const Container = styled('div', {
+  padding: '0 $lg',
+
   '& h3': {
     mt: '1em',
   },

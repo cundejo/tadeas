@@ -1,17 +1,10 @@
-import { Task, TaskDocument } from '@/features/task';
-
-type ListCore = {
+export type ListDocument = {
   name: string;
   owner: string;
   sharedWith: string[];
   isDefault?: boolean;
 };
 
-export type ListDocument = ListCore & {
-  tasks: TaskDocument[];
-};
-
-export type List = ListCore & {
+export type List = ListDocument & {
   id: string;
-  tasks: Task[];
 };

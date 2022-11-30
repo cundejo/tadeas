@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { getLocalStorage, LOCAL_STORAGE_EMAIL_FOR_SIGNING, RootState, useDispatch } from '@/features/common';
+import { getLocalStorage, LOCAL_STORAGE_EMAIL_FOR_SIGNING, RootState, useDispatch } from '@/common';
 import {
   removeEmailForSigning,
   setEmailForSigning,

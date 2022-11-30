@@ -1,4 +1,4 @@
-import { auth, NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH } from '@/features/common';
+import { auth, NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH } from '@/common';
 import { signInWithCustomToken, signOut, User } from 'firebase/auth';
 import axios from 'axios';
 import { z } from 'zod';

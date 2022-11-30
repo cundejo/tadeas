@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@nextui-org/react';
-import { APP_VERSION, PageMeta, WithChildren } from '@/features/common';
+import { APP_VERSION, PageMeta, WithChildren } from '@/common';
 
 export type GeneralLayoutProps = WithChildren;
 
@@ -16,8 +16,9 @@ export const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
 
 const Container = styled('div', {
   maxWidth: '650px',
-  padding: '0 1.5em 2em',
+  padding: '0',
   margin: '0 auto',
+  height: '100vh',
 });
 
 const Version = styled('div', {

@@ -23,9 +23,9 @@ export const Navbar: React.FC<Props> = ({ leftContent, rightContent }) => {
 
 const Container = styled('nav', {
   top: 0,
-  height: '76px',
+  padding: '0 $md',
+  height: '60px',
   position: 'sticky',
-  background: 'transparent',
   zIndex: '$max',
   backdropFilter: 'saturate(180%) blur(10px)',
   boxShadow: '0px 5px 20px -5px rgba(2, 1, 1, 0.1)',
@@ -33,7 +33,7 @@ const Container = styled('nav', {
 
 const Content = styled('div', {
   maxWidth: '650px',
-  height: '100%',
+  height: '60px',
   padding: '0',
   margin: '0 auto',
   display: 'flex',

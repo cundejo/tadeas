@@ -1,38 +1,25 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  Unsubscribe,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
-import { fromFirestore as taskFromFirestore, toFirestore as taskToFirestore } from '@/features/task';
-import { db, removeUndefined } from '@/features/common';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { db, removeUndefined } from '@/common';
 import { List, ListDocument } from '@/features/list';
-import { map, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 
 const COLLECTION = 'lists';
 
 export const fromFirestore = (list: ListDocument & { id: string }): List => {
+  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
   const { tasks, ...unchanged } = list;
   return {
     ...unchanged,
-    tasks: map(tasks, taskFromFirestore),
   };
 };
 
 export const toFirestore = (list: List): ListDocument => {
+  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
   const { id, tasks, ...unchanged } = list;
 
   return removeUndefined({
     ...unchanged,
-    tasks: map(tasks, taskToFirestore),
   } as ListDocument);
 };
 
@@ -41,19 +28,6 @@ export const getList = async (id: string): Promise<List> => {
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) throw new Error(`Listing with id ${id} not found`);
   return fromFirestore({ id: docSnap.id, ...(docSnap.data() as ListDocument) });
-};
-
-export const getListListener = (listId: string, onListReceived: (list: List) => void): Unsubscribe => {
-  return onSnapshot(
-    doc(db, COLLECTION, listId),
-    (doc) => {
-      // If the listener is active for a list that is being deleted, do not follow up.
-      if (!doc.exists()) return;
-      const list = fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) });
-      onListReceived(list);
-    },
-    (e) => console.error(e)
-  );
 };
 
 /**
@@ -79,14 +53,13 @@ export const renameList = async (listId: string, name: string): Promise<List> =>
   }
 };
 
-export const deleteList = async (list: List): Promise<List> => {
+export const deleteList = async (listId: string): Promise<string> => {
   try {
-    await deleteDoc(doc(db, COLLECTION, list.id));
-    return list;
+    await deleteDoc(doc(db, COLLECTION, listId));
   } catch (e) {
     console.error(e);
-    return {} as List;
   }
+  return listId;
 };
 
 export const getListsByUser = async (userEmail: string): Promise<List[]> => {
@@ -121,13 +94,6 @@ const createDefaultUserLists = async (userEmail: string): Promise<void> => {
     name: '✅ To Do',
     owner: userEmail,
     sharedWith: [],
-    tasks: [
-      {
-        id: nanoid(),
-        createdAt: new Date().toISOString(),
-        title: 'Create my first task',
-      },
-    ],
   };
   const newGroceriesList: List = {
     id: nanoid(),
@@ -135,8 +101,6 @@ const createDefaultUserLists = async (userEmail: string): Promise<void> => {
     name: '🛍️ Groceries',
     owner: userEmail,
     sharedWith: [],
-    tasks: [],
   };
-  await upsertList(newTodoList);
-  await upsertList(newGroceriesList);
+  await Promise.all([upsertList(newTodoList), upsertList(newGroceriesList)]);
 };

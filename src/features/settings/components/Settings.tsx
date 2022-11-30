@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, ConfirmationModal, Description, List, ListItem } from '@/features/common';
+import { Button, ConfirmationModal, Description, List, ListItem } from '@/common';
 import { MdLogin, MdLogout } from 'react-icons/md';
 import { useUser } from '@/features/auth';
 import { useRouter } from 'next/router';
+import { styled } from '@nextui-org/react';
 
 export const Settings: React.FC = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <List>
         <ListItem
           key="signed-user"
@@ -46,16 +47,6 @@ export const Settings: React.FC = () => {
         {/*>*/}
         {/*  <Description title="Theme" subTitle="Light or dark" />*/}
         {/*</ListItem>*/}
-        {/*<ListItem*/}
-        {/*  key="feedback"*/}
-        {/*  extra={*/}
-        {/*    <Button auto color="primary" loading={isLoading} onClick={handleFeedbackEmail} icon={<MdOutlineMail />}>*/}
-        {/*      Email us*/}
-        {/*    </Button>*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  <Description title="Feedback" subTitle="If you find an issue, or have a good idea, please let us know" />*/}
-        {/*</ListItem>*/}
       </List>
 
       <ConfirmationModal
@@ -65,6 +56,10 @@ export const Settings: React.FC = () => {
         onConfirm={() => router.push(`/auth/signout`)}
         onCancel={() => setIsConfirmingSignout(false)}
       />
-    </>
+    </Container>
   );
 };
+
+const Container = styled('div', {
+  padding: '0 $lg',
+});

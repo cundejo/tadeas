@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Container, ModalProps, Row, Text } from '@nextui-org/react';
-import { Button, Modal } from '@/features/common';
+import { Button, Modal } from '@/common';
 
 type Props = Partial<ModalProps> & {
   confirmButtonText?: string;

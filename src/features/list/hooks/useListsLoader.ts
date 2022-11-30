@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { getAllUserListsThunk, setSelectedListIdFromLocalStorage } from '@/features/list';
-import { RootState, useDispatch } from '@/features/common';
+import { RootState, useDispatch } from '@/common';
 import { isEmpty } from 'lodash';
 import { useUser } from '@/features/auth';
 import { useRouter } from 'next/router';

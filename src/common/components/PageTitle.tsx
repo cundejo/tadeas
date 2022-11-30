@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { styled, Text } from '@nextui-org/react';
 import { MdOutlineArrowBack } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { Description, TextColorful } from '@/features/common';
+import { Description, TextColorful } from '@/common';
 
 interface Props {
   goBack?: boolean;
