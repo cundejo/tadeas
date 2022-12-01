@@ -6,14 +6,18 @@ export const About: React.FC = () => {
   return (
     <Container>
       <Text h3>
-        <TextColorful yellow>Why?</TextColorful>
+        <TextColorful yellow>What?</TextColorful>
       </Text>
       <Text>
         <TextColorful yellow>Tadeas</TextColorful> is a simple to-do list app to organize your day and share tasks with
         others.
       </Text>
+
+      <Text h3>
+        <TextColorful yellow>Why?</TextColorful>
+      </Text>
       <Text>
-        My wife and I were looking for something that let us share and update our things to do in real-time, but we
+        My wife and I were looking for something that let us share and update our to-do&apos;s in real-time, but we
         didn&apos;t find anything simple enough that meet our needs.
       </Text>
       <Text>
