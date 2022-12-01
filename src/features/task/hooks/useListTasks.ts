@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import {
   completeTask as completeTaskApi,
   ListTasks,
+  reactivateTask as reactivateTaskApi,
   Task,
   taskHasChanges,
   upsertTasks as upsertTasksApi,
@@ -12,6 +13,7 @@ import {
 type HookDto = {
   addTask: () => void;
   completeTask: (task: Task) => void;
+  reactivateTask: (task: Task) => void;
   getTasks: () => Task[];
   getTasksCompleted: () => Task[];
   isCompletedTasksVisible: boolean;
@@ -73,6 +75,12 @@ export const useTasks = (listTasks: ListTasks): HookDto => {
     setIsSaving(false);
   };
 
+  const reactivateTask = async (task: Task) => {
+    setIsSaving(true);
+    await reactivateTaskApi(task.id, listTasks);
+    setIsSaving(false);
+  };
+
   const getTasks = (): Task[] => {
     return orderBy(listTasks.tasks, ['createdAt'], ['desc']);
   };
@@ -84,6 +92,7 @@ export const useTasks = (listTasks: ListTasks): HookDto => {
   return {
     addTask,
     completeTask,
+    reactivateTask,
     getTasks,
     getTasksCompleted,
     isCompletedTasksVisible,

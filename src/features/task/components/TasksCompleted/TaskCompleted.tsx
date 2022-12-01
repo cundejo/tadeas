@@ -1,16 +1,24 @@
 import React from 'react';
 import { Checkbox, styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
+import { sleep } from '@/common';
 
 type Props = {
   task: Task;
+  onUnmark: (task: Task) => void;
 };
 
-export const TaskCompleted: React.FC<Props> = ({ task }) => {
+export const TaskCompleted: React.FC<Props> = ({ task, onUnmark }) => {
+  const handleCheckTask = (checked: boolean) => {
+    sleep(200).then(() => {
+      if (!checked) onUnmark(task);
+    });
+  };
+
   return (
     <Container>
       <div>
-        <Checkbox aria-label="complete" isRounded size="xl" defaultSelected={true} />
+        <Checkbox aria-label="complete" isRounded size="xl" defaultSelected={true} onChange={handleCheckTask} />
       </div>
       <div>
         <TitleContainer>
@@ -24,15 +32,11 @@ export const TaskCompleted: React.FC<Props> = ({ task }) => {
 const Container = styled('div', {
   display: 'flex',
   margin: '0 auto',
-  borderRadius: '$md',
   padding: '$sm',
   pb: '6px',
   gap: '$md',
   overflowX: 'hidden',
-
-  '&:hover': {
-    background: '$gray50',
-  },
+  opacity: '0.6',
 
   '& .content': {
     flexGrow: 1,
@@ -49,6 +53,5 @@ const TitleContainer = styled('div', {
     fontWeight: 'normal',
     letterSpacing: 'normal',
     margin: 0,
-    opacity: '0.6',
   },
 });

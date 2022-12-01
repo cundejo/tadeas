@@ -6,11 +6,12 @@ import { isEmpty } from 'lodash';
 
 type Props = {
   completedTasks: Task[];
-  visible: boolean;
   onChange: (isVisible: boolean) => void;
+  reactivateTask: (task: Task) => void;
+  visible: boolean;
 };
 
-export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, onChange }) => {
+export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, onChange, reactivateTask }) => {
   if (isEmpty(completedTasks)) return null;
 
   return (
@@ -18,13 +19,13 @@ export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, o
       <Title tabIndex={0} onClick={() => onChange(!visible)}>
         Completed ({completedTasks.length})
       </Title>
-      {visible && <TasksCompletedList tasks={completedTasks} />}
+      {visible && <TasksCompletedList tasks={completedTasks} onReactivate={reactivateTask} />}
     </Container>
   );
 };
 
 const Container = styled('div', {
-  bg: '$gray50',
+  bg: 'rgba(255,255,255,0.03)',
   display: 'block',
   position: 'sticky',
   bottom: 0,

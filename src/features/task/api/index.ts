@@ -110,6 +110,15 @@ export const completeTask = async (taskId: string, listTasks: ListTasks): Promis
   await upsertListTasks({ ...listTasks, tasks, tasksCompleted: updatedCompletedTasks });
 };
 
+export const reactivateTask = async (taskId: string, listTasks: ListTasks): Promise<void> => {
+  const task = find(listTasks.tasksCompleted, { id: taskId });
+  if (!task) throw new Error(`Task with id ${taskId} doesn't exist in completed tasks`);
+  const { tasks, taskDeleted } = removeTask(listTasks.tasksCompleted, task);
+  delete taskDeleted.completedAt;
+  const updatedTasks = updateTasks(listTasks.tasks, [taskDeleted]);
+  await upsertListTasks({ ...listTasks, tasks: updatedTasks, tasksCompleted: tasks });
+};
+
 export const taskHasChanges = (prevTaskData: Task, newTaskData: Task): boolean => {
   if (prevTaskData.id !== newTaskData.id)
     throw new Error(`Comparing 2 different tasks, Prev Task Id: ${prevTaskData.id}, New Task Id: ${newTaskData.id}`);
