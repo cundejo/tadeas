@@ -60,7 +60,7 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
 const Container = styled('div', {
   display: 'flex',
   margin: '0 auto',
-  borderRadius: '$md',
+  borderRadius: '$xl',
   padding: '$sm',
   pb: '6px',
   gap: '$md',
@@ -68,12 +68,12 @@ const Container = styled('div', {
   variants: {
     selected: {
       true: {
-        background: '$gray50',
+        bg: 'rgba(255,255,255,0.03)',
       },
     },
   },
   '&:hover': {
-    background: '$gray50',
+    bg: 'rgba(255,255,255,0.03)',
   },
 
   '& .content': {
@@ -82,6 +82,9 @@ const Container = styled('div', {
 });
 
 const TitleContainer = styled('div', {
+  '& label': {
+    bg: 'transparent',
+  },
   '& input': {
     fontSize: '$lg',
     fontWeight: 'normal',

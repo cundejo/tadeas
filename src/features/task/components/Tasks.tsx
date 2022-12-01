@@ -13,6 +13,7 @@ export const Tasks: React.FC = () => {
     getTasksCompleted,
     isCompletedTasksVisible,
     isSaving,
+    reactivateTask,
     setIsCompletedTasksVisible,
     setTaskInEdition,
     switchSelectedTask,
@@ -37,6 +38,7 @@ export const Tasks: React.FC = () => {
         completedTasks={getTasksCompleted()}
         onChange={setIsCompletedTasksVisible}
         visible={isCompletedTasksVisible}
+        reactivateTask={reactivateTask}
       />
     </Container>
   );
