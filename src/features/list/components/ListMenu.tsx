@@ -109,7 +109,7 @@ export const ListMenu: React.FC = () => {
   return (
     <>
       <Container>
-        <Dropdown disableAnimation>
+        <Dropdown>
           <Dropdown.Button light auto icon={<MdMenu size="2rem" />} />
           <Dropdown.Menu
             aria-label="App Actions"

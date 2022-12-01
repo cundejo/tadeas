@@ -33,7 +33,7 @@ export const ListsDropdown: React.FC = () => {
   return (
     <>
       <Container>
-        <Dropdown disableAnimation>
+        <Dropdown>
           <Dropdown.Button light>{listSelected?.name}</Dropdown.Button>
           <Dropdown.Menu aria-label="My Lists" onAction={handleMenuAction} disabledKeys={[listSelected?.id as Key]}>
             <Dropdown.Section title="All my lists" items={lists}>
