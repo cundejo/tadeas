@@ -9,8 +9,12 @@ export const About: React.FC = () => {
         <TextColorful yellow>Why?</TextColorful>
       </Text>
       <Text>
-        <TextColorful yellow>Tadeas</TextColorful> is a small to-do app that my wife and I created to share tasks with
-        the family, after looking without finding any that meet our needs.
+        <TextColorful yellow>Tadeas</TextColorful> is a simple to-do list app to organize your day and share tasks with
+        others.
+      </Text>
+      <Text>
+        My wife and I were looking for something that let us share and update our things to do in real-time, but we
+        didn&apos;t find anything simple enough that meet our needs.
       </Text>
       <Text>
         After sharing it with some friends, it became popular and there is a lot of people that found it useful, which

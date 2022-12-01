@@ -1,7 +1,7 @@
 {
   "name": "Tadeas",
   "short_name": "Tadeas",
-  "description": "A to-do list app by Teno Fdio Team",
+  "description": "A simple to-do list app to organize your day and share tasks with others.",
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
