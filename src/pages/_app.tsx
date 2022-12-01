@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import dynamic from 'next/dynamic';
 import { CssBaseline, NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ToastContainer } from 'react-toastify';
@@ -44,4 +45,5 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
   );
 };
 
-export default App;
+// Disabling SSR for the whole application
+export default dynamic(() => Promise.resolve(App), { ssr: false });
