@@ -9,5 +9,8 @@ if ('serviceWorker' in navigator) {
 }
 
 // Correct sizing for mobile vh, https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-let vh = window.innerHeight * 0.01;
-document.documentElement.style.setProperty('--vh', `${vh}px`);
+const setVh = () => {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+setVh()
+window.addEventListener('resize', setVh);
