@@ -19,6 +19,8 @@ const Container = styled('div', {
   padding: '0',
   margin: '0 auto',
   height: '100vh',
+  // @ts-ignore
+  height: 'calc(var(--vh, 1vh) * 100)',
 });
 
 const Version = styled('div', {

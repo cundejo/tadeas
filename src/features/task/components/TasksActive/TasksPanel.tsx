@@ -40,8 +40,7 @@ export const TasksPanel: React.FC<Props> = ({
 };
 
 const Container = styled('div', {
-  display: 'block',
-  padding: '0 $md 50px',
+  padding: '0 $md',
   height: 'calc(100% - 50px)',
   overflowY: 'auto',
 
