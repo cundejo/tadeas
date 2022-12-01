@@ -1,8 +1,9 @@
 import React from 'react';
+import { isEmpty } from 'lodash';
+import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
 import { styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
 import { TasksCompletedList } from './TasksCompletedList';
-import { isEmpty } from 'lodash';
 
 type Props = {
   completedTasks: Task[];
@@ -17,7 +18,8 @@ export const TaskCompletedPanel: React.FC<Props> = ({ visible, completedTasks, o
   return (
     <Container>
       <Title tabIndex={0} onClick={() => onChange(!visible)}>
-        Completed ({completedTasks.length})
+        <div>Completed ({completedTasks.length})</div>
+        <Icon>{visible ? <MdKeyboardArrowDown /> : <MdKeyboardArrowLeft />}</Icon>
       </Title>
       {visible && <TasksCompletedList tasks={completedTasks} onReactivate={reactivateTask} />}
     </Container>
@@ -35,9 +37,15 @@ const Container = styled('div', {
 const Title = styled('div', {
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   height: '50px',
   padding: '0 $md',
   fontSize: '$lg',
   color: '$accents7',
   cursor: 'pointer',
+});
+
+const Icon = styled('div', {
+  display: 'flex',
+  fontSize: '1.3em',
 });
