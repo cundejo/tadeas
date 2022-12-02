@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { compact, find, orderBy } from 'lodash';
+import { compact, debounce, find, orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 import {
   completeTask as completeTaskApi,
@@ -63,22 +63,24 @@ export const useTasks = (listTasks: ListTasks): HookDto => {
     setTaskInEdition(newTask);
   };
 
-  const upsertTasks = async (tasks: Task[]) => {
-    setIsSaving(true);
-    await upsertTasksApi(listTasks, tasks, []);
+  // Debouncing isSaving = true for some milliseconds to not make unnecessary UI re-renderings.
+  const savingWithDebounce = async (func: any) => {
+    const debounced = debounce(() => setIsSaving(true), 400);
+    await func();
+    debounced.cancel();
     setIsSaving(false);
+  };
+
+  const upsertTasks = async (tasks: Task[]) => {
+    savingWithDebounce(() => upsertTasksApi(listTasks, tasks, []));
   };
 
   const completeTask = async (task: Task) => {
-    setIsSaving(true);
-    await completeTaskApi(task.id, listTasks);
-    setIsSaving(false);
+    savingWithDebounce(() => completeTaskApi(task.id, listTasks));
   };
 
   const reactivateTask = async (task: Task) => {
-    setIsSaving(true);
-    await reactivateTaskApi(task.id, listTasks);
-    setIsSaving(false);
+    savingWithDebounce(() => reactivateTaskApi(task.id, listTasks));
   };
 
   const getTasks = (): Task[] => {

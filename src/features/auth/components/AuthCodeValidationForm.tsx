@@ -45,7 +45,6 @@ export const AuthCodeValidationForm: React.FC = () => {
       <form onSubmit={formik.handleSubmit}>
         <Input
           aria-label="code"
-          bordered
           fullWidth
           name="code"
           onChange={formik.handleChange}
