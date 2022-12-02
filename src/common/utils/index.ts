@@ -32,3 +32,14 @@ export function removeLocalStorage(key: string) {
     console.log('Error removing item from local storage', e);
   }
 }
+
+const ENTITY_MAP: Record<string, string> = {
+  '<': '&lt;',
+  '>': '&gt;',
+};
+
+export function escapeHtml(str: string) {
+  return String(str).replace(/[<>]/g, function (s) {
+    return ENTITY_MAP[s];
+  });
+}

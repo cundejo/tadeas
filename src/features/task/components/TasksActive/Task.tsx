@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Checkbox, Input, styled } from '@nextui-org/react';
 import { Task } from '@/features/task';
-import { sleep } from '@/common';
+import { escapeHtml, sleep } from '@/common';
+import { TaskText } from './TaskText';
 
 type Props = {
   task: Task;
@@ -45,11 +46,11 @@ export const TaskComponent: React.FC<Props> = ({ task, inEdition, onClick, onCha
               value={task.title}
               fullWidth
               animated={false}
-              onChange={(e) => handleChange(e.target.value)}
+              onChange={(e) => handleChange(escapeHtml(e.target.value))}
               onKeyDown={handleKeyDown}
             />
           ) : (
-            <h4 style={{ textDecorationLine: markAsCompleted ? 'line-through' : 'none' }}>{task.title}</h4>
+            <TaskText task={task} lineThrough={markAsCompleted} />
           )}
         </TitleContainer>
       </div>
@@ -89,11 +90,5 @@ const TitleContainer = styled('div', {
     fontSize: '$lg',
     fontWeight: 'normal',
     margin: '2px 0 0 !important',
-  },
-  '& h4': {
-    fontSize: '$lg',
-    fontWeight: 'normal',
-    letterSpacing: 'normal',
-    margin: 0,
   },
 });
