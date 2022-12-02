@@ -28,9 +28,10 @@ type MenuItem = {
 
 const useListMenu = () => {
   const router = useRouter();
-  const { deleteList, listSelected, isSelectedListMine } = useLists();
+  const { deleteList, listSelected, isSelectedListMine, deleteAllCompletedTasks } = useLists();
   const [isEditingList, setIsEditingList] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
+  const [isDeletingCompletedTasks, setIsDeletingCompletedTasks] = useState(false);
 
   const handleMenuAction = (key: Key) => {
     switch (key) {
@@ -42,6 +43,9 @@ const useListMenu = () => {
         break;
       case 'deleteList':
         setIsDeletingList(true);
+        break;
+      case 'deleteCompletedTasks':
+        setIsDeletingCompletedTasks(true);
         break;
       case 'settings':
       case 'about':
@@ -55,6 +59,11 @@ const useListMenu = () => {
   const handleDeleteList = () => {
     deleteList(listSelected!);
     setIsDeletingList(false);
+  };
+
+  const handleDeleteAllCompletedTasks = () => {
+    deleteAllCompletedTasks(listSelected!);
+    setIsDeletingCompletedTasks(false);
   };
 
   const listSection: MenuSection = {
@@ -83,13 +92,16 @@ const useListMenu = () => {
   const sections: MenuSection[] = compact([isSelectedListMine && listSection, appSection]);
 
   return {
+    handleDeleteAllCompletedTasks,
     handleDeleteList,
     handleMenuAction,
+    isDeletingCompletedTasks,
     isDeletingList,
     isEditingList,
     listSelected,
     sections,
     setIsDeletingList,
+    setIsDeletingCompletedTasks,
     setIsEditingList,
   };
 };
@@ -97,6 +109,8 @@ const useListMenu = () => {
 export const ListMenu: React.FC = () => {
   const {
     handleDeleteList,
+    handleDeleteAllCompletedTasks,
+    isDeletingCompletedTasks,
     handleMenuAction,
     isDeletingList,
     isEditingList,
@@ -104,6 +118,7 @@ export const ListMenu: React.FC = () => {
     sections,
     setIsDeletingList,
     setIsEditingList,
+    setIsDeletingCompletedTasks,
   } = useListMenu();
 
   return (
@@ -137,6 +152,14 @@ export const ListMenu: React.FC = () => {
         }
         onConfirm={handleDeleteList}
         onCancel={() => setIsDeletingList(false)}
+        confirmButtonText="Yes, delete"
+      />
+
+      <ConfirmationModal
+        visible={isDeletingCompletedTasks}
+        message={<>Are you sure you want to delete all completed tasks?</>}
+        onConfirm={handleDeleteAllCompletedTasks}
+        onCancel={() => setIsDeletingCompletedTasks(false)}
         confirmButtonText="Yes, delete"
       />
     </>

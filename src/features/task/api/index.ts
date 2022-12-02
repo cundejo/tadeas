@@ -1,5 +1,5 @@
 import { compact, find, findIndex, forEach, isEmpty } from 'lodash';
-import { deleteDoc, doc, onSnapshot, setDoc, Unsubscribe } from 'firebase/firestore';
+import { deleteDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from 'firebase/firestore';
 import { ListTasks, ListTasksDocument, Task, TaskDocument } from '@/features/task';
 import { dateToFirestore, db, removeUndefined } from '@/common';
 
@@ -142,4 +142,9 @@ export const removeTask = (tasks: Task[], task: Task): { tasks: Task[]; taskDele
   const taskIndex = findIndex(newTasks, { id: task.id });
   if (taskIndex >= 0) newTasks.splice(taskIndex, 1);
   return { tasks: newTasks, taskDeleted: task };
+};
+
+export const deleteAllCompletedTasks = async (listTaskId: string): Promise<void> => {
+  const docRef = doc(db, COLLECTION, listTaskId);
+  await updateDoc(docRef, { tasksCompleted: [] });
 };

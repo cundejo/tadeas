@@ -1,15 +1,20 @@
-import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
-import { RootState, useDispatch } from '@/common';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
+import { RootState, useDispatch } from '@/common';
 import { useUser } from '@/features/auth';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { deleteListTasks, upsertListTasks } from '@/features/task';
+import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
+import {
+  deleteAllCompletedTasks as deleteAllCompletedTasksApi,
+  deleteListTasks,
+  upsertListTasks,
+} from '@/features/task';
 
 type HookDto = {
   addList: (name: string) => Promise<void>;
   deleteList: (list: List) => Promise<void>;
+  deleteAllCompletedTasks: (list: List) => Promise<void>;
   editList: (list: List) => Promise<void>;
   isSelectedListMine: boolean;
   listSelected?: List;
@@ -58,6 +63,11 @@ export const useLists = (): HookDto => {
     toast.success(`List ${list.name} deleted`);
   };
 
+  const deleteAllCompletedTasks = async (list: List) => {
+    await deleteAllCompletedTasksApi(list.id);
+    toast.success(`Completed tasks deleted`);
+  };
+
   const selectList = async (list: List) => await dispatch(setSelectedListId({ selectedListId: list.id }));
 
   const listSelected = find([...userLists, ...userSharedLists], { id: selectedListId });
@@ -65,6 +75,7 @@ export const useLists = (): HookDto => {
 
   return {
     addList,
+    deleteAllCompletedTasks,
     deleteList,
     editList,
     isSelectedListMine,
