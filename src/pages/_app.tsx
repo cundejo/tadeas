@@ -19,10 +19,10 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
   return (
     <NextThemesProvider
       attribute="class"
-      value={{
-        // light: lightTheme.className,
-        dark: darkTheme.className,
-      }}
+      value={{ dark: darkTheme.className }}
+      defaultTheme="dark"
+      forcedTheme="dark"
+      themes={['dark']}
     >
       <NextUIProvider>
         <CssBaseline />
