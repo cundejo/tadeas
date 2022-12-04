@@ -1,6 +1,6 @@
 import { admin } from '../../config';
-import { onRequest, send } from '../../utils';
-import { AuthCode, generateAuthCodeBody, validateAuthCodeBody } from './auth.types';
+import { onInsecureRequest, send } from '../../utils';
+import { generateAuthCodeBody, validateAuthCodeBody } from './auth.types';
 import {
   decreaseAuthCodeAttempt,
   deleteAuthCode,
@@ -8,7 +8,7 @@ import {
   saveAuthCode,
   validateUserExistence,
 } from './auth.service';
-import { sendEmail } from '../email';
+import { generateSixDigitNumber, isValidCode, sendAuthCodeEmail } from './auth.utils';
 
 /**
  * AUTH PROCESS
@@ -46,7 +46,7 @@ import { sendEmail } from '../email';
  *    - Clean the email from wherever is saved
  */
 
-export const generateAuthCode = onRequest(async (req, res) => {
+export const generateAuthCode = onInsecureRequest(async (req, res) => {
   try {
     const { email } = generateAuthCodeBody.parse(req.body);
     const code = generateSixDigitNumber();
@@ -59,7 +59,7 @@ export const generateAuthCode = onRequest(async (req, res) => {
   }
 });
 
-export const validateAuthCode = onRequest(async (req, res) => {
+export const validateAuthCode = onInsecureRequest(async (req, res) => {
   try {
     const { code, email } = validateAuthCodeBody.parse(req.body);
     const codeObject = await getAuthCode(email);
@@ -84,25 +84,3 @@ export const validateAuthCode = onRequest(async (req, res) => {
     send(res, 'AUTH_VALIDATION_ERROR', e.message);
   }
 });
-
-const sendAuthCodeEmail = async (email: string, code: string) => {
-  const subject = 'Sign in to Tadeas';
-  const content = `
-  <div>
-    <p>Hello,</p>
-    <p>We received a request to sign in to Tadeas using this email address.</p>
-    <p>This is your authentication code: <code>${code}</code></p>
-    <br/>
-    <p>If you did not request this, you can safely ignore this email.</p>
-    <br/>
-    <p>Thanks,</p>
-    <p>Your Tadeas team</p>
-  </div>
-  `;
-
-  return sendEmail(email, subject, content);
-};
-
-const generateSixDigitNumber = () => Math.floor(100000 + Math.random() * 900000).toString();
-
-const isValidCode = (code: string, codeObject: AuthCode): boolean => codeObject.code === code;
