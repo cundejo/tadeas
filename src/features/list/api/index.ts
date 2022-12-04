@@ -6,18 +6,16 @@ import { nanoid } from 'nanoid';
 
 const COLLECTION = 'lists';
 
+// TODO fromFirestore should be in a core package
 export const fromFirestore = (list: ListDocument & { id: string }): List => {
-  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
-  const { tasks, ...unchanged } = list;
+  const { ...unchanged } = list;
   return {
     ...unchanged,
   };
 };
-
+// TODO toFirestore should be in a core package
 export const toFirestore = (list: List): ListDocument => {
-  // @ts-ignore TODO remove "tasks" from here after completed migration to listsTasks
-  const { id, tasks, ...unchanged } = list;
-
+  const { id, ...unchanged } = list;
   return removeUndefined({
     ...unchanged,
   } as ListDocument);
@@ -26,7 +24,7 @@ export const toFirestore = (list: List): ListDocument => {
 export const getList = async (id: string): Promise<List> => {
   const docRef = doc(db, COLLECTION, id);
   const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) throw new Error(`Listing with id ${id} not found`);
+  if (!docSnap.exists()) throw new Error(`List with id ${id} not found`);
   return fromFirestore({ id: docSnap.id, ...(docSnap.data() as ListDocument) });
 };
 

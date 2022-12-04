@@ -2,6 +2,8 @@ import { FormikHelpers, FormikProps, useFormik } from 'formik';
 import { List } from '@/features/list';
 import { useUser } from '@/features/auth';
 import { User } from 'firebase/auth';
+import { notifySharedList } from '@/common';
+import { toast } from 'react-toastify';
 
 type Values = {
   email: string;
@@ -24,6 +26,10 @@ export const useShareListForm = (list: List, saveList: (list: List) => Promise<v
     saveList(newList).then(() => {
       formik.resetForm();
       setSubmitting(false);
+    });
+
+    notifySharedList(values.email, newList.id).then((res) => {
+      toast.success(res.data);
     });
   };
 

@@ -1,3 +1,5 @@
+// TODO Types should be in a core package
+
 export type ListDocument = {
   name: string;
   owner: string;

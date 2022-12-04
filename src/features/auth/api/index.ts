@@ -1,24 +1,15 @@
-import { auth, NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH } from '@/common';
+import {
+  auth,
+  FunctionResponseBody,
+  generateAuthCode as functionGenerateAuthCode,
+  validateAuthCode as functionValidateAuthCode,
+} from '@/common';
 import { signInWithCustomToken, signOut, User } from 'firebase/auth';
-import axios from 'axios';
-import { z } from 'zod';
 
-const functionResponseBody = z.object({
-  code: z.string(),
-  data: z.string(),
-});
+export const generateAuthCode = async (email: string): Promise<FunctionResponseBody> => functionGenerateAuthCode(email);
 
-type FunctionResponseBody = z.infer<typeof functionResponseBody>;
-
-export const generateAuthCode = async (email: string): Promise<FunctionResponseBody> => {
-  const response = await axios.post(`${NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH}/generateAuthCode`, { email });
-  return functionResponseBody.parse(response.data);
-};
-
-export const validateAuthCode = async (email: string, code: string): Promise<FunctionResponseBody> => {
-  const response = await axios.post(`${NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH}/validateAuthCode`, { email, code });
-  return functionResponseBody.parse(response.data);
-};
+export const validateAuthCode = async (email: string, code: string): Promise<FunctionResponseBody> =>
+  functionValidateAuthCode(email, code);
 
 export const signIn = async (authToken: string): Promise<User> => {
   const userCredential = await signInWithCustomToken(auth, authToken);
@@ -32,6 +23,11 @@ export const getUser = (): Promise<User> =>
       reject(new Error('User not found.'));
     });
   });
+
+export const getUserAuthToken = async (): Promise<string> => {
+  const user = await getUser();
+  return user.getIdToken();
+};
 
 export const signOff = async (): Promise<void> => {
   try {
