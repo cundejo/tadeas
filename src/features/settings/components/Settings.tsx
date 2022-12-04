@@ -39,14 +39,6 @@ export const Settings: React.FC = () => {
             {user ? 'Signed in' : 'Signed off'}
           </Description>
         </ListItem>
-        {/*<ListItem*/}
-        {/*  key="theme"*/}
-        {/*  extra={*/}
-        {/*    <Switch initialChecked={theme === 'dark'} onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')} />*/}
-        {/*  }*/}
-        {/*>*/}
-        {/*  <Description title="Theme" subTitle="Light or dark" />*/}
-        {/*</ListItem>*/}
       </List>
 
       <ConfirmationModal
@@ -61,5 +53,7 @@ export const Settings: React.FC = () => {
 };
 
 const Container = styled('div', {
-  padding: '0 $lg',
+  padding: '0 $lg $lg',
+  height: 'calc(100% - 60px)',
+  overflow: 'auto',
 });

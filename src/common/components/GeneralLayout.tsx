@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@nextui-org/react';
-import { APP_VERSION, PageMeta, WithChildren } from '@/common';
+import { PageMeta, WithChildren } from '@/common';
 
 export type GeneralLayoutProps = WithChildren;
 
@@ -9,7 +9,6 @@ export const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
     <>
       <PageMeta />
       <Container>{children}</Container>
-      <Version>{APP_VERSION.slice(APP_VERSION.length - 5)}</Version>
     </>
   );
 };
@@ -21,13 +20,4 @@ const Container = styled('div', {
   height: '100vh',
   // @ts-ignore
   height: 'calc(var(--vh, 1vh) * 100)',
-});
-
-const Version = styled('div', {
-  position: 'fixed',
-  bottom: 5,
-  right: 5,
-  fontSize: 10,
-  color: '#7c7c7c',
-  opacity: 0.3,
 });

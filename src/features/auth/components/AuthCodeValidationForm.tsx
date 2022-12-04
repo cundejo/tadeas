@@ -77,7 +77,9 @@ export const AuthCodeValidationForm: React.FC = () => {
 };
 
 const Container = styled('div', {
-  margin: '$lg',
+  padding: '$lg',
+  height: 'calc(100% - 60px)',
+  overflow: 'auto',
 
   '& input': {
     textAlign: 'center',
