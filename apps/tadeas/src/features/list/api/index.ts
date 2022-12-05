@@ -1,8 +1,9 @@
+import { orderBy } from 'lodash';
+import { nanoid } from 'nanoid';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db, removeUndefined } from '@/common';
 import { List, ListDocument } from '@/features/list';
-import { orderBy } from 'lodash';
-import { nanoid } from 'nanoid';
+import { upsertListTasks } from '@/features/task';
 
 const COLLECTION = 'lists';
 
@@ -95,10 +96,16 @@ const createDefaultUserLists = async (userEmail: string): Promise<void> => {
   };
   const newGroceriesList: List = {
     id: nanoid(),
-    isDefault: false,
     name: '🛍️ Groceries',
     owner: userEmail,
     sharedWith: [],
   };
-  await Promise.all([upsertList(newTodoList), upsertList(newGroceriesList)]);
+
+  // Create the default lists and the correspondent lists tasks
+  await Promise.all([
+    upsertList(newTodoList),
+    upsertList(newGroceriesList),
+    upsertListTasks({ id: newTodoList.id, tasks: [], tasksCompleted: [] }),
+    upsertListTasks({ id: newGroceriesList.id, tasks: [], tasksCompleted: [] }),
+  ]);
 };
