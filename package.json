@@ -5,7 +5,7 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "cleanup": "rm -rf node_modules/; turbo run cleanup"
+    "cleanup": "turbo run cleanup && rm -rf node_modules/"
   },
   "devDependencies": {
     "prettier": "^2.7.1",

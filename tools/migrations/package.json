@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "execute": "./node_modules/.bin/ts-node",
-    "cleanup": "rm -rf node_modules/"
+    "cleanup": "rm -rf node_modules/; rm -rf .turbo/"
   },
   "dependencies": {
     "firebase-admin": "^11.3.0",
