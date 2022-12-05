@@ -51,8 +51,8 @@ const corsOptionsDelegate = (req: any, callback: any) => {
   callback(null, { origin: isAllowedOrigin(req) });
 };
 
-const getAuthorizationToken = (req: Request): string => {
-  if (req.headers.authorization) return req.headers.authorization;
+export const getAuthorizationToken = (req: Request): string => {
+  if (req?.headers?.authorization) return req?.headers?.authorization;
   throw new Error('Unauthorized');
 };
 
