@@ -13,7 +13,7 @@
 
 import { compact, filter, isEmpty } from 'lodash';
 import { admin } from './config';
-import { ListTasksDocument, TaskDocument } from '../../src/features/task';
+import { ListTasksDocument, TaskDocument } from '../../../apps/tadeas/src/features/task';
 
 type OldListDocument = {
   name: string;

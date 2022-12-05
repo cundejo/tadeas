@@ -4,7 +4,6 @@
   "author": "Oliver Sosa",
   "license": "ISC",
   "private": true,
-  "main": "index.js",
   "scripts": {
     "execute": "./node_modules/.bin/ts-node",
     "cleanup": "rm -rf node_modules/; rm -rf .turbo/"
@@ -14,6 +13,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.9",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
