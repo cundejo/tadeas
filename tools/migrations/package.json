@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "execute": "./node_modules/.bin/ts-node"
+    "execute": "./node_modules/.bin/ts-node",
+    "cleanup": "rm -rf node_modules/"
   },
   "keywords": [],
   "author": "",
