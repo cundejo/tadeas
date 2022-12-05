@@ -1,14 +1,23 @@
 ## Project Details
 
-- Next.js Project
-- Next UI as UI Library
-- Auth and DB from Firebase
-- Deployed in Cloudflare
-- Firebase functions used as backend
+- Monorepo tools
+  - [PNPM workspaces](https://pnpm.io/workspaces) 
+  - [Turborepo](https://turbo.build/repo/docs) 
+- Frontend
+  - [Next.js](https://nextjs.org/docs/getting-started)
+  - [Next UI](https://nextui.org/)
+- Backend
+  - [Firebase](https://firebase.google.com/docs)
+
+
+## Dependencies
+ - [PNPM](https://pnpm.io/)
+
+## Installation
+Install dependencies in the whole monorepo
+- `pnpm i`
 
 ## Frontend
-### Install
-- Run `pnpm i`
 
 ### Run dev 
 - Create `.env` based on `.env.dist` with all the environment variables
