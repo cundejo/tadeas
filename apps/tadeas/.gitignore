@@ -1,0 +1,27 @@
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.swc/
+
+# misc
+.DS_Store
+*.pem
+tsconfig.tsbuildinfo
+/.idea/
+/.firebase/
+
+# debug
+# Logs
+**/*.log*
+
+# vercel
+.vercel
+
+# local env files
+.env
+.env.local
