@@ -12,7 +12,7 @@
     "build-prod": "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run export",
     "export": "rm -rf dist/ && node ./scripts/pre-deploy.js && next build && next export -o dist/",
     "lint": "next lint",
-    "test": "jest --watch",
+    "test": "jest",
     "test:ci": "jest --ci"
   },
   "dependencies": {

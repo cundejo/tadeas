@@ -6,12 +6,9 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "dev": "tsc --watch",
-    "build": "rm -rf dist/ && pnpm lint && tsc",
+    "dev": "tsc --watch --preserveWatchOutput & firebase emulators:start --only functions",
+    "build": "tsc --build",
     "cleanup": "rm -rf dist/; rm -rf node_modules/; rm -rf .turbo/",
-    "serve": "pnpm run build && firebase emulators:start --only functions",
-    "shell": "pnpm run build && firebase functions:shell",
-    "start": "pnpm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },

@@ -5,7 +5,13 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "cleanup": "turbo run cleanup && rm -rf node_modules/"
+    "cleanup": "turbo run cleanup && rm -rf node_modules/",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "dev:fe": "turbo run dev --filter=@tadeas/webapp",
+    "dev:be": "turbo run dev --filter=@tadeas/functions",
+    "deploy:be": "turbo run deploy --filter=@tadeas/functions"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
