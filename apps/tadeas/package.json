@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "cleanup": "rm -rf dist/; rm -rf node_modules/; rm -rf .next/; rm -rf .swc/; rm -rf .turbo/",
-    "deploy": "node ./scripts/pre-deploy.js && next build && next export -o dist/",
+    "export": "node ./scripts/pre-deploy.js && next build && next export -o dist/",
     "lint": "next lint",
     "test": "jest"
   },
