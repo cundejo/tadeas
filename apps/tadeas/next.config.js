@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+// To transpile other packages in the monorepo
+const withTM = require('next-transpile-modules')(['@tadeas/firestore-converters']);
+
+// General Next configurations
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -10,4 +15,6 @@ const nextConfig = {
   poweredByHeader: false,
 };
 
-module.exports = nextConfig;
+module.exports = withTM({
+  ...nextConfig,
+});

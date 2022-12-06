@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache_version_1669788305554';
+const CACHE_NAME = 'cache_version_1670361877758';
 const OFFLINE_URL = 'offline.html';
 
 self.addEventListener('install', function (event) {

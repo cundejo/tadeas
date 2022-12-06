@@ -3,6 +3,7 @@
 - Monorepo tools
   - [PNPM workspaces](https://pnpm.io/workspaces) 
   - [Turborepo](https://turbo.build/repo/docs) 
+  - [Manypkg](https://turbo.build/repo/docs/handbook/troubleshooting#handling-mismatched-package-versions)
 - Frontend
   - [Next.js](https://nextjs.org/docs/getting-started)
   - [Next UI](https://nextui.org/)
