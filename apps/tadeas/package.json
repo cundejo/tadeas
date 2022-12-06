@@ -9,8 +9,7 @@
     "build": "next build",
     "start": "next start",
     "cleanup": "rm -rf dist/; rm -rf node_modules/; rm -rf .next/; rm -rf .swc/; rm -rf .turbo/",
-    "build-prod": "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run export",
-    "export": "rm -rf dist/ && node ./scripts/pre-deploy.js && next build && next export -o dist/",
+    "deploy": "node ./scripts/pre-deploy.js && next build && next export -o dist/",
     "lint": "next lint",
     "test": "jest"
   },

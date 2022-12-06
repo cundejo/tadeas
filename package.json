@@ -11,6 +11,7 @@
     "lint": "turbo run lint",
     "dev:fe": "turbo run dev --filter=@tadeas/webapp",
     "dev:be": "turbo run dev --filter=@tadeas/functions",
+    "deploy:fe": "turbo run deploy --filter=@tadeas/webapp",
     "deploy:be": "turbo run deploy --filter=@tadeas/functions"
   },
   "dependencies": {
