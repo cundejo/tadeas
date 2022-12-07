@@ -34,12 +34,11 @@ jobs:
         run: pnpm export:fe
 
       - name: 'Deploy Web App to Cloudflare'
-        working-directory: ./apps/tadeas
         uses: cloudflare/wrangler-action@2.0.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages publish dist --project-name=tadeas
+          command: pages publish ./apps/tadeas/dist --project-name=tadeas
 
     env:
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
