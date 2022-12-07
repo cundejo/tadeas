@@ -1,8 +1,8 @@
 name: 'Build and Test All'
 
-on:
-  pull_request:
-    types: [opened, synchronize]
+#on:
+#  pull_request:
+#    types: [opened, synchronize]
 
 env:
   SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
