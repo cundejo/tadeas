@@ -1,4 +1,4 @@
-name: 'Test All'
+name: 'Build and Test All'
 
 on:
   pull_request:
@@ -26,7 +26,7 @@ env:
 
 jobs:
   deploy:
-    name: 'Run Unit test in all Apps and Packages'
+    name: 'Build and Test every app and package'
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
