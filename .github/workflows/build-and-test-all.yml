@@ -1,8 +1,8 @@
-name: 'Deploy Web App'
+name: 'Build and Test All'
 
 on:
-  push:
-    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
 
 env:
   SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
@@ -26,7 +26,7 @@ env:
 
 jobs:
   deploy:
-    name: 'Deploy Web App to Cloudinary'
+    name: 'Build and Test every app and package'
     timeout-minutes: 15
     runs-on: ubuntu-latest
 

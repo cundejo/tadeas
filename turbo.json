@@ -6,7 +6,8 @@
       "outputs": [".next/**", "dist/**"]
     },
     "test": {
-      "inputs": ["src/**/*.test.ts"]
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.ts"]
     },
     "lint": {
       "outputs": []
@@ -19,6 +20,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["^dev"],
       "cache": false
     }
   }

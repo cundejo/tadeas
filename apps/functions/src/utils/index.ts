@@ -4,6 +4,7 @@ import * as cors from 'cors';
 import { auth } from 'firebase-admin';
 import DecodedIdToken = auth.DecodedIdToken;
 import { admin, ALLOWED_ORIGINS } from '../config';
+import { subtract } from '@tadeas/firestore-converters';
 
 export type Request = functions.https.Request;
 export type RequestSecure = functions.https.Request & { user: DecodedIdToken };
@@ -52,6 +53,8 @@ const corsOptionsDelegate = (req: any, callback: any) => {
 };
 
 export const getAuthorizationToken = (req: Request): string => {
+  console.log('BITCHES', subtract(10, 4));
+
   if (req?.headers?.authorization) return req?.headers?.authorization;
   throw new Error('Unauthorized');
 };
