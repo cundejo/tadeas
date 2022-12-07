@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "cleanup": "rm -rf node_modules/",
+    "cleanup": "rm -rf node_modules/; rm -rf dist/; rm -rf .turbo/",
     "dev": "tsup src/index.ts --watch --dts --sourcemap",
     "build": "tsup src/index.ts --dts --sourcemap"
   },
