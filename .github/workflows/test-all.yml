@@ -1,12 +1,12 @@
-name: 'Deploy Web App'
+name: 'Test All'
 
 on:
-  push:
-    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   deploy:
-    name: 'Deploy Web App to Cloudinary'
+    name: 'Run Unit test in all Apps and Packages'
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
