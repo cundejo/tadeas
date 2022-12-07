@@ -6,7 +6,7 @@
       "outputs": [".next/**", "dist/**"]
     },
     "test": {
-      "inputs": ["src/**/*.test.ts"]
+      "inputs": ["src/**/*.ts"]
     },
     "lint": {
       "outputs": []
@@ -20,7 +20,7 @@
     },
     "dev": {
       "dependsOn": ["^dev"],
-      "outputs": [".next/**", "dist/**"]
+      "cache": false
     }
   }
 }
