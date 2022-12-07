@@ -9,10 +9,10 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "dev:fe": "turbo run dev --filter=@tadeas/webapp",
-    "dev:be": "turbo run dev --filter=@tadeas/functions",
-    "export:fe": "turbo run export --filter=@tadeas/webapp",
-    "deploy:be": "turbo run deploy --filter=@tadeas/functions"
+    "dev:fe": "turbo run dev --filter=@tadeas/webapp... --parallel",
+    "dev:be": "turbo run dev --filter=@tadeas/functions... --parallel",
+    "export:fe": "turbo run export --filter=@tadeas/webapp...",
+    "deploy:be": "turbo run deploy --filter=@tadeas/functions..."
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.2",

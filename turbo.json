@@ -19,7 +19,8 @@
       "outputs": []
     },
     "dev": {
-      "cache": false
+      "dependsOn": ["^dev"],
+      "outputs": [".next/**", "dist/**"]
     }
   }
 }
