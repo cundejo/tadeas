@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, Timestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { DateISOString } from '@tadeas/types';
 import * as environment from './environment';
-import { DateISOString } from '../types';
 
 const firebaseConfig = {
   apiKey: environment.NEXT_PUBLIC_FIREBASE_API_KEY,

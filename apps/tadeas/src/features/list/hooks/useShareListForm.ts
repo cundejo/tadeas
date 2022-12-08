@@ -1,5 +1,5 @@
 import { FormikHelpers, FormikProps, useFormik } from 'formik';
-import { List } from '@/features/list';
+import { List } from '@tadeas/types';
 import { useUser } from '@/features/auth';
 import { User } from 'firebase/auth';
 import { notifySharedList } from '@/common';

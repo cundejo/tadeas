@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { compact, debounce, find, orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
+import { ListTasks, Task } from '@tadeas/types';
 import {
   completeTask as completeTaskApi,
-  ListTasks,
   reactivateTask as reactivateTaskApi,
-  Task,
   taskHasChanges,
   upsertTasks as upsertTasksApi,
 } from '@/features/task';

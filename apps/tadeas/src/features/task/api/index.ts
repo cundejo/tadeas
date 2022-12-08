@@ -1,6 +1,6 @@
 import { compact, find, findIndex, forEach, isEmpty } from 'lodash';
 import { deleteDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from 'firebase/firestore';
-import { ListTasks, ListTasksDocument, Task, TaskDocument } from '@/features/task';
+import { ListTasks, ListTasksDocument, Task, TaskDocument } from '@tadeas/types';
 import { dateToFirestore, db, removeUndefined } from '@/common';
 
 const COLLECTION = 'listsTasks';

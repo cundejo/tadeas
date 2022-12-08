@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ListTasks } from '@tadeas/types';
 import { RootState } from '@/common';
-import { getListTasksListener, ListTasks } from '@/features/task';
+import { getListTasksListener } from '@/features/task';
 
 type HookDto = {
   listTasks?: ListTasks;

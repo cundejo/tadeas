@@ -2,7 +2,7 @@ import React from 'react';
 import { isEmpty } from 'lodash';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
 import { styled } from '@nextui-org/react';
-import { Task } from '@/features/task';
+import { Task } from '@tadeas/types';
 import { TasksCompletedList } from './TasksCompletedList';
 
 type Props = {

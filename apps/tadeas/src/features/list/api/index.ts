@@ -1,8 +1,8 @@
 import { orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { List, ListDocument } from '@tadeas/types';
 import { db, removeUndefined } from '@/common';
-import { List, ListDocument } from '@/features/list';
 import { upsertListTasks } from '@/features/task';
 
 const COLLECTION = 'lists';

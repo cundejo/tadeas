@@ -2,9 +2,10 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { find, isEmpty } from 'lodash';
+import { List } from '@tadeas/types';
 import { RootState, useDispatch } from '@/common';
 import { useUser } from '@/features/auth';
-import { deleteListThunk, List, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
+import { deleteListThunk, renameListThunk, setSelectedListId, upsertListThunk } from '@/features/list';
 import {
   deleteAllCompletedTasks as deleteAllCompletedTasksApi,
   deleteListTasks,

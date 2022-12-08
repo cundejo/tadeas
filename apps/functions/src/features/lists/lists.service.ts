@@ -1,6 +1,6 @@
+import { List, ListDocument } from '@tadeas/types';
 import { admin } from '../../config';
 import { removeUndefined } from '../../utils';
-import { List, ListDocument } from './lists.types';
 
 const collectionRef = admin.firestore().collection('lists');
 

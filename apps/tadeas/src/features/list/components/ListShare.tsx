@@ -1,7 +1,8 @@
 import React from 'react';
-import { Grid, Input, styled, Text } from '@nextui-org/react';
+import { Input, styled, Text } from '@nextui-org/react';
 import { toast } from 'react-toastify';
-import { List, useLists, useShareListForm } from '@/features/list';
+import { List } from '@tadeas/types';
+import { useLists, useShareListForm } from '@/features/list';
 import { Button, Description, InputError, List as ListComponent, ListItem, TextColorful } from '@/common';
 
 export const ListShare: React.FC = () => {

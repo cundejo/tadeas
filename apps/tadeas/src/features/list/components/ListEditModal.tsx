@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import { Input, Spacer } from '@nextui-org/react';
 import { Button, Modal } from '@/common';
-import { List, useLists } from '@/features/list';
+import { useLists } from '@/features/list';
 
 interface Props {
   onClose: () => void;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Task } from '@/features/task';
 import { styled } from '@nextui-org/react';
+import { Task } from '@tadeas/types';
 import { TaskCompleted } from './TaskCompleted';
 
 type Props = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, styled } from '@nextui-org/react';
-import { Task } from '@/features/task';
+import { Task } from '@tadeas/types';
 import { sleep } from '@/common';
 import { TaskText } from '@/features/task/components/TasksActive';
 
