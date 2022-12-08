@@ -8,7 +8,7 @@ import { add } from '@tadeas/firestore-converters';
 const IndexPage: NextPage = () => {
   const { isLoading } = useListsLoader();
 
-  console.log('add', add(5, 5));
+  console.log(add(5, 5));
 
   if (isLoading) return <PageLoading />;
 
