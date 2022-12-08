@@ -9,7 +9,7 @@
     "dev": "tsup src/index.ts --format cjs --sourcemap --watch & firebase emulators:start --only functions",
     "build": "tsup src/index.ts --format cjs --sourcemap",
     "cleanup": "rm -rf dist/; rm -rf node_modules/; rm -rf .turbo/",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "echo \"Deploy defined in github workflow\" && exit 0",
     "logs": "firebase functions:log",
     "test": "jest"
   },
