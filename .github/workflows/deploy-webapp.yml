@@ -2,7 +2,12 @@ name: 'Deploy Web App'
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+    paths:
+      - 'apps/tadeas/**'
+      - 'packages/firestore-converters/**'
+      - 'packages/types/**'
 
 jobs:
   deploy:
