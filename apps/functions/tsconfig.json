@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2021"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "outDir": "./dist",
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2021",
   },
   "compileOnSave": true,
   "include": [
