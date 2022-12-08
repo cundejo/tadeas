@@ -53,7 +53,7 @@ const corsOptionsDelegate = (req: any, callback: any) => {
 };
 
 export const getAuthorizationToken = (req: Request): string => {
-  console.log('BITCHES', subtract(10, 4));
+  console.log('testing subtract', subtract(10, 4));
 
   if (req?.headers?.authorization) return req?.headers?.authorization;
   throw new Error('Unauthorized');
