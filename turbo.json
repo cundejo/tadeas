@@ -16,7 +16,7 @@
       "outputs": []
     },
     "export": {
-      "dependsOn": ["build", "lint", "test"]
+      "dependsOn": ["build", "lint"]
     },
     "dev": {
       "dependsOn": ["^dev"],
