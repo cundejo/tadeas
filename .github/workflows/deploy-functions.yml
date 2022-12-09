@@ -72,6 +72,6 @@ jobs:
       - name: 'Checking gcloud.json file'
         run: cat $HOME/gcloud.json
 #
-#      - name: Deploy Cloud Functions
-#        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions
+      - name: Deploy Cloud Functions
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions
 #
