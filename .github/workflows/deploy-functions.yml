@@ -19,27 +19,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-#      - name: 'Check out code'
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 2
-#
-#      - name: 'Setup PNPM'
-#        uses: pnpm/action-setup@v2.2.4
-#        with:
-#          version: 7.3.0
-#
-#      - name: 'Setup Node.js environment'
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 16
-#          cache: 'pnpm'
-#
-#      - name: 'Install dependencies'
-#        run: pnpm i
-#
-#      - name: 'Testing Functions and generating /dist'
-#        run: pnpm export:be
+      - name: 'Check out code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: 'Setup PNPM'
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7.3.0
+
+      - name: 'Setup Node.js environment'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+
+      - name: 'Install dependencies'
+        run: pnpm i
+
+      - name: 'Testing Functions and generating /dist'
+        run: pnpm export:be
 
       - name: Create .env file
         uses: ozaytsev86/create-env-file@v1
