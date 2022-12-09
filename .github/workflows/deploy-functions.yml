@@ -41,6 +41,22 @@ jobs:
       - name: 'Testing Functions and generating /dist'
         run: pnpm export:be
 
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          fail_on_empty: true
+          envkey_SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
+          envkey_SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL }}
+          envkey_SERVICE_ACCOUNT_AUTH_URI: ${{ secrets.SERVICE_ACCOUNT_AUTH_URI }}
+          envkey_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_EMAIL }}
+          envkey_SERVICE_ACCOUNT_CLIENT_ID: ${{ secrets.SERVICE_ACCOUNT_CLIENT_ID }}
+          envkey_SERVICE_ACCOUNT_CLIENT_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_X509_CERT_URL }}
+          envkey_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}
+          envkey_SERVICE_ACCOUNT_PRIVATE_KEY_ID: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY_ID }}
+          envkey_SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SERVICE_ACCOUNT_PROJECT_ID }}
+          envkey_SERVICE_ACCOUNT_TOKEN_URI: ${{ secrets.SERVICE_ACCOUNT_TOKEN_URI }}
+          envkey_SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
+
 #      - name: Create .env file
 #        uses: ozaytsev86/create-env-file@v1
 #        with:
@@ -56,8 +72,8 @@ jobs:
 #          SERVICE_ACCOUNT_TOKEN_URI: ${{ secrets.SERVICE_ACCOUNT_TOKEN_URI }}
 #          SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
 #
-#      - name: 'Checking env file'
-#        run: cat .env
+      - name: 'Checking env file'
+        run: cat .env
 
 #      - name: 'Deploying Functions to Firebase'
 #        uses: w9jds/firebase-action@master
@@ -75,15 +91,15 @@ jobs:
       - name: Deploy Cloud Functions
         run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions
 #
-    env:
-      SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
-      SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL }}
-      SERVICE_ACCOUNT_AUTH_URI: ${{ secrets.SERVICE_ACCOUNT_AUTH_URI }}
-      SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_EMAIL }}
-      SERVICE_ACCOUNT_CLIENT_ID: ${{ secrets.SERVICE_ACCOUNT_CLIENT_ID }}
-      SERVICE_ACCOUNT_CLIENT_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_X509_CERT_URL }}
-      SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}
-      SERVICE_ACCOUNT_PRIVATE_KEY_ID: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY_ID }}
-      SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SERVICE_ACCOUNT_PROJECT_ID }}
-      SERVICE_ACCOUNT_TOKEN_URI: ${{ secrets.SERVICE_ACCOUNT_TOKEN_URI }}
-      SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
+#    env:
+#      SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
+#      SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL }}
+#      SERVICE_ACCOUNT_AUTH_URI: ${{ secrets.SERVICE_ACCOUNT_AUTH_URI }}
+#      SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_EMAIL }}
+#      SERVICE_ACCOUNT_CLIENT_ID: ${{ secrets.SERVICE_ACCOUNT_CLIENT_ID }}
+#      SERVICE_ACCOUNT_CLIENT_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_X509_CERT_URL }}
+#      SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}
+#      SERVICE_ACCOUNT_PRIVATE_KEY_ID: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY_ID }}
+#      SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SERVICE_ACCOUNT_PROJECT_ID }}
+#      SERVICE_ACCOUNT_TOKEN_URI: ${{ secrets.SERVICE_ACCOUNT_TOKEN_URI }}
+#      SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
