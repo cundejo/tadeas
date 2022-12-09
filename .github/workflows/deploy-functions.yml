@@ -57,16 +57,16 @@ jobs:
           SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
 
 
-      - name: 'Deploying Functions to Firebase'
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy -P tadeas-teno-fdio --only functions
-        env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+#      - name: 'Deploying Functions to Firebase'
+#        uses: w9jds/firebase-action@master
+#        with:
+#          args: deploy -P tadeas-teno-fdio --only functions
+#        env:
+#          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
-#      - name: Create SA key
-#        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
-#
-#      - name: Deploy Cloud Functions
-#        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions --json
+      - name: Create SA key
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
+
+      - name: Deploy Cloud Functions
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions
 #
