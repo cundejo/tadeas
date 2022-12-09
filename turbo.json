@@ -15,10 +15,6 @@
     "cleanup": {
       "outputs": []
     },
-    "deploy": {
-      "dependsOn": ["build", "lint", "test"],
-      "outputs": []
-    },
     "export": {
       "dependsOn": ["build", "lint", "test"]
     },
