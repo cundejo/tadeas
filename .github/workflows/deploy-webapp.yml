@@ -1,4 +1,4 @@
-name: 'Deploy Web App'
+name: Deploy Web App
 
 on:
   push:
@@ -11,34 +11,34 @@ on:
 
 jobs:
   deploy:
-    name: 'Deploy Web App to Cloudinary'
+    name: Deploy Web App to Cloudinary
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'Check out code'
+      - name: Check out code
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - name: 'Setup PNPM'
+      - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
         with:
           version: 7.3.0
 
-      - name: 'Setup Node.js environment'
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'pnpm'
 
-      - name: 'Install dependencies'
+      - name: Install dependencies
         run: pnpm i
 
-      - name: 'Testing Web App and generating /dist'
+      - name: Testing Web App and generating /dist
         run: pnpm export:fe
 
-      - name: 'Deploy Web App to Cloudflare'
+      - name: Deploy Web App to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -46,10 +46,5 @@ jobs:
           command: pages publish ./apps/tadeas/dist --project-name=tadeas
 
     env:
-      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
-      NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
-      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+      NEXT_PUBLIC_FIREBASE_CONFIG: ${{ secrets.NEXT_PUBLIC_FIREBASE_CONFIG }}
       NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH: ${{ secrets.NEXT_PUBLIC_FIREBASE_FUNCTIONS_BASE_PATH }}
-      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
-      NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
