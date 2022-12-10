@@ -1,6 +1,6 @@
-import { onRequest, send } from '../../utils';
-import { notifySharedListBody } from './notifications.types';
+import { onRequest, send } from '@/utils';
 import { getList } from '../lists/lists.service';
+import { notifySharedListBody } from './notifications.types';
 import { sendNotificationEmail } from './notifications.utils';
 
 export const notifySharedList = onRequest(async (req, res) => {

@@ -17,6 +17,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@tadeas/types": "workspace:*",
     "lodash": "^4.17.21"
   }
 }

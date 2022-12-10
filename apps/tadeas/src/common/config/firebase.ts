@@ -9,8 +9,3 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 export { auth, db };
-
-export const dateToFirestore = (date?: DateISOString): Timestamp | undefined => {
-  if (!date) return undefined;
-  return Timestamp.fromDate(new Date(date));
-};
