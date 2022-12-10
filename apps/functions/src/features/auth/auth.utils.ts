@@ -1,4 +1,4 @@
-import { sendEmail } from '../../libs';
+import { sendEmail } from '@/libs';
 import { AuthCode } from './auth.types';
 
 export const sendAuthCodeEmail = async (email: string, code: string) => {

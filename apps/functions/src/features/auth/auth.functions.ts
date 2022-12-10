@@ -1,5 +1,5 @@
-import { admin } from '../../config';
-import { onInsecureRequest, send } from '../../utils';
+import { admin } from '@/config';
+import { onInsecureRequest, send } from '@/utils';
 import { generateAuthCodeBody, validateAuthCodeBody } from './auth.types';
 import {
   decreaseAuthCodeAttempt,
