@@ -1,54 +1,10 @@
 import { compact, find, findIndex, forEach, isEmpty } from 'lodash';
 import { deleteDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from 'firebase/firestore';
-import { ListTasks, ListTasksDocument, Task, TaskDocument } from '@tadeas/types';
-import { dateToFirestore, db, removeUndefined } from '@/common';
+import { ListTasks, ListTasksDocument, Task } from '@tadeas/types';
+import { db } from '@/common';
+import { listTasksFromFirestore, listTasksToFirestore } from '@tadeas/firestore-converters';
 
 const COLLECTION = 'listsTasks';
-const DEFAULT_DATE = '1970-01-01';
-
-const taskFromFirestore = (taskDocument: TaskDocument): Task => {
-  const { createdAt, completedAt, ...unchanged } = taskDocument;
-
-  // If not created date, put a default one.
-  const createdAtIso = createdAt?.toDate().toISOString() ?? new Date(DEFAULT_DATE).toISOString();
-  const completedAtIso = completedAt?.toDate().toISOString();
-
-  return {
-    ...unchanged,
-    createdAt: createdAtIso,
-    completedAt: completedAtIso,
-  };
-};
-
-const taskToFirestore = (task: Task): TaskDocument => {
-  const { createdAt, completedAt, ...unchanged } = task;
-
-  return removeUndefined({
-    ...unchanged,
-    createdAt: dateToFirestore(createdAt),
-    completedAt: dateToFirestore(completedAt),
-  } as TaskDocument);
-};
-
-export const fromFirestore = (listTasksDocument: ListTasksDocument & { id: string }): ListTasks => {
-  const { tasks, tasksCompleted, ...unchanged } = listTasksDocument;
-
-  return {
-    ...unchanged,
-    tasks: tasks.map(taskFromFirestore),
-    tasksCompleted: tasksCompleted.map(taskFromFirestore),
-  };
-};
-
-export const toFirestore = (listTasks: ListTasks): ListTasksDocument => {
-  const { id, tasks, tasksCompleted, ...unchanged } = listTasks;
-
-  return removeUndefined({
-    ...unchanged,
-    tasks: tasks.map(taskToFirestore),
-    tasksCompleted: tasksCompleted.map(taskToFirestore),
-  });
-};
 
 export const getListTasksListener = (listId: string, onListReceived: (listTasks: ListTasks) => void): Unsubscribe => {
   return onSnapshot(
@@ -56,7 +12,7 @@ export const getListTasksListener = (listId: string, onListReceived: (listTasks:
     (doc) => {
       // If the listener is active for a list that is being deleted, do not follow up.
       if (!doc.exists()) return;
-      const listTasks = fromFirestore({ id: doc.id, ...(doc.data() as ListTasksDocument) });
+      const listTasks = listTasksFromFirestore({ id: doc.id, ...(doc.data() as ListTasksDocument) });
       onListReceived(listTasks);
     },
     (e) => console.error(e)
@@ -68,7 +24,7 @@ export const getListTasksListener = (listId: string, onListReceived: (listTasks:
  */
 export const upsertListTasks = async (listTasks: ListTasks): Promise<ListTasks> => {
   try {
-    await setDoc(doc(db, COLLECTION, listTasks.id), toFirestore(listTasks));
+    await setDoc(doc(db, COLLECTION, listTasks.id), listTasksToFirestore(listTasks));
     return listTasks;
   } catch (e) {
     console.error(e);

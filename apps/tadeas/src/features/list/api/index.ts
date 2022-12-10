@@ -2,31 +2,17 @@ import { orderBy } from 'lodash';
 import { nanoid } from 'nanoid';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { List, ListDocument } from '@tadeas/types';
-import { db, removeUndefined } from '@/common';
+import { db } from '@/common';
 import { upsertListTasks } from '@/features/task';
+import { listFromFirestore, listToFirestore } from '@tadeas/firestore-converters';
 
 const COLLECTION = 'lists';
-
-// TODO fromFirestore should be in a core package
-export const fromFirestore = (list: ListDocument & { id: string }): List => {
-  const { ...unchanged } = list;
-  return {
-    ...unchanged,
-  };
-};
-// TODO toFirestore should be in a core package
-export const toFirestore = (list: List): ListDocument => {
-  const { id, ...unchanged } = list;
-  return removeUndefined({
-    ...unchanged,
-  } as ListDocument);
-};
 
 export const getList = async (id: string): Promise<List> => {
   const docRef = doc(db, COLLECTION, id);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) throw new Error(`List with id ${id} not found`);
-  return fromFirestore({ id: docSnap.id, ...(docSnap.data() as ListDocument) });
+  return listFromFirestore({ id: docSnap.id, ...(docSnap.data() as ListDocument) });
 };
 
 /**
@@ -34,7 +20,7 @@ export const getList = async (id: string): Promise<List> => {
  */
 export const upsertList = async (list: List): Promise<List> => {
   try {
-    await setDoc(doc(db, COLLECTION, list.id), toFirestore(list));
+    await setDoc(doc(db, COLLECTION, list.id), listToFirestore(list));
     return list;
   } catch (e) {
     console.error(e);
@@ -72,7 +58,7 @@ export const getListsByUser = async (userEmail: string): Promise<List[]> => {
   }
 
   return orderBy(
-    querySnapshot.docs.map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
+    querySnapshot.docs.map((doc) => listFromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
     ['name']
   );
 };
@@ -81,7 +67,7 @@ export const getSharedListsByUser = async (userEmail: string): Promise<List[]> =
   const q = query(collection(db, COLLECTION), where('sharedWith', 'array-contains', userEmail));
   const querySnapshot = await getDocs(q);
   return orderBy(
-    querySnapshot.docs.map((doc) => fromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
+    querySnapshot.docs.map((doc) => listFromFirestore({ id: doc.id, ...(doc.data() as ListDocument) })),
     ['name']
   );
 };

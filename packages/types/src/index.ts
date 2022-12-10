@@ -1,5 +1,3 @@
-import firebase from 'firebase/compat';
-
 export type DateISOString = string;
 
 export type TaskCore = {
@@ -8,8 +6,8 @@ export type TaskCore = {
 };
 
 export type TaskDocument = TaskCore & {
-  createdAt: firebase.firestore.Timestamp;
-  completedAt?: firebase.firestore.Timestamp;
+  createdAt: Timestamp;
+  completedAt?: Timestamp;
 };
 
 export type Task = TaskCore & {
@@ -38,3 +36,29 @@ export type ListDocument = {
 export type List = ListDocument & {
   id: string;
 };
+
+// This class is from firebase, but just to be sure that it will not
+// raise any error because we use different firebase implementations in
+// different projects, we decided to duplicate here the interface.
+export class Timestamp {
+  // @ts-ignore
+  static now(): Timestamp;
+  // @ts-ignore
+  static fromDate(date: Date): Timestamp;
+  // @ts-ignore
+  static fromMillis(milliseconds: number): Timestamp;
+  // @ts-ignore
+  constructor(seconds: number, nanoseconds: number);
+  // @ts-ignore
+  readonly seconds: number;
+  // @ts-ignore
+  readonly nanoseconds: number;
+  // @ts-ignore
+  toDate(): Date;
+  // @ts-ignore
+  toMillis(): number;
+  // @ts-ignore
+  isEqual(other: Timestamp): boolean;
+  // @ts-ignore
+  valueOf(): string;
+}
