@@ -1,16 +1,13 @@
 name: Deploy Functions
 
 on:
-#  TODO ROLL BACK
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - 'apps/functions/**'
-#      - 'packages/firestore-converters/**'
-#      - 'packages/types/**'
-  pull_request:
-    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/functions/**'
+      - 'packages/firestore-converters/**'
+      - 'packages/types/**'
 
 jobs:
   deploy:
