@@ -1,12 +1,21 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2021"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "outDir": "./dist",
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2021",
+    "paths": {
+      "@tadeas/firestore-converters": ["../../../packages/firestore-converters/src/index.ts"],
+      "@tadeas/types": ["../../../packages/types/src/index.ts"],
+      "@/*": ["./*"]
+    }
   },
   "compileOnSave": true,
   "include": [

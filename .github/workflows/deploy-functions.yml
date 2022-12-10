@@ -1,4 +1,4 @@
-name: 'Deploy Functions'
+name: Deploy Functions
 
 on:
   push:
@@ -11,49 +11,43 @@ on:
 
 jobs:
   deploy:
-    name: 'Deploy Functions to Firebase'
+    name: Deploy Functions to Firebase
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'Check out code'
+      - name: Check out code
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - name: 'Setup PNPM'
+      - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
         with:
           version: 7.3.0
 
-      - name: 'Setup Node.js environment'
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'pnpm'
 
-      - name: 'Install dependencies'
+      - name: Install dependencies
         run: pnpm i
 
-      - name: 'Testing Functions and generating /dist'
+      - name: Testing Functions and generating /dist
         run: pnpm export:be
 
-      - name: 'Deploying Functions to Firebase'
-        uses: w9jds/firebase-action@master
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3
         with:
-          args: deploy -P tadeas-teno-fdio --only functions
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          directory: apps/functions
+          fail_on_empty: true
+          envkey_SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
+          envkey_GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
-    env:
-      SENDINGBLUE_API_KEY: ${{ secrets.SENDINGBLUE_API_KEY }}
-      SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL }}
-      SERVICE_ACCOUNT_AUTH_URI: ${{ secrets.SERVICE_ACCOUNT_AUTH_URI }}
-      SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_EMAIL }}
-      SERVICE_ACCOUNT_CLIENT_ID: ${{ secrets.SERVICE_ACCOUNT_CLIENT_ID }}
-      SERVICE_ACCOUNT_CLIENT_X509_CERT_URL: ${{ secrets.SERVICE_ACCOUNT_CLIENT_X509_CERT_URL }}
-      SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}
-      SERVICE_ACCOUNT_PRIVATE_KEY_ID: ${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY_ID }}
-      SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SERVICE_ACCOUNT_PROJECT_ID }}
-      SERVICE_ACCOUNT_TOKEN_URI: ${{ secrets.SERVICE_ACCOUNT_TOKEN_URI }}
-      SERVICE_ACCOUNT_TYPE: ${{ secrets.SERVICE_ACCOUNT_TYPE }}
+      - name: Create json file with GCP Service Account Key
+        run: echo '${{ secrets.GCP_SA_KEY }}' > $HOME/gcp-sa-key.json
+#
+      - name: Deploy Cloud Functions
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcp-sa-key.json && npx firebase-tools deploy --only functions

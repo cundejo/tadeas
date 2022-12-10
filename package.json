@@ -10,7 +10,7 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "dev:fe": "turbo run dev --filter=@tadeas/webapp... --parallel",
-    "dev:be": "turbo run dev --filter=@tadeas/functions... --parallel",
+    "dev:be": "turbo run dev --filter=@tadeas/functions --parallel",
     "export:fe": "turbo run export --filter=@tadeas/webapp...",
     "export:be": "turbo run export --filter=@tadeas/functions..."
   },

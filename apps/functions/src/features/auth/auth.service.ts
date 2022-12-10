@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { admin } from '../../config';
-import { AuthCode, AuthCodeDocument } from './auth.types';
 import { UserRecord } from 'firebase-functions/lib/common/providers/identity';
+import { admin } from '@/config';
+import { AuthCode, AuthCodeDocument } from './auth.types';
 
 const USER_NOT_FOUND = 'auth/user-not-found';
 

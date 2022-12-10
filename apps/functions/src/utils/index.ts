@@ -1,10 +1,11 @@
 import { isUndefined, negate, pickBy } from 'lodash';
 import * as functions from 'firebase-functions';
-import * as cors from 'cors';
 import { auth } from 'firebase-admin';
+import { admin, ALLOWED_ORIGINS } from '@/config';
 import DecodedIdToken = auth.DecodedIdToken;
-import { admin, ALLOWED_ORIGINS } from '../config';
-import { subtract } from '@tadeas/firestore-converters';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cors = require('cors');
 
 export type Request = functions.https.Request;
 export type RequestSecure = functions.https.Request & { user: DecodedIdToken };
@@ -53,8 +54,6 @@ const corsOptionsDelegate = (req: any, callback: any) => {
 };
 
 export const getAuthorizationToken = (req: Request): string => {
-  console.log('testing subtract', subtract(10, 4));
-
   if (req?.headers?.authorization) return req?.headers?.authorization;
   throw new Error('Unauthorized');
 };

@@ -1,5 +1,5 @@
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
-import { SENDINGBLUE_API_KEY } from '../../config';
+import { SENDINGBLUE_API_KEY } from '@/config';
 SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = SENDINGBLUE_API_KEY;
 
 export const sendEmail = async (email: string, subject: string, htmlContent: string): Promise<boolean> => {
