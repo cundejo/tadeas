@@ -1,0 +1,22 @@
+name: Generate
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  diff-map:
+    name: Generates Diff Map
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Executing Diff Map Action
+        id: hello
+        uses: cundejo/diff-map@v1.0
+        with:
+          who-to-greet: 'Oliver Sosa Cano'
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
