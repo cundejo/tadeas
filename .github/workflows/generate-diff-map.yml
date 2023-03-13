@@ -1,7 +1,7 @@
 name: Generate
 
 on:
-  push:
+#  push:
   pull_request:
     types: [opened, synchronize]
 
@@ -14,9 +14,8 @@ jobs:
     steps:
       - name: Executing Diff Map Action
         id: hello
-        uses: cundejo/diff-map@v1.0
+        # ToDo use a specific version
+        uses: cundejo/diff-map@main
         with:
           who-to-greet: 'Oliver Sosa Cano'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+

@@ -3,7 +3,8 @@ name: Deploy Web App
 on:
   push:
     branches:
-      - main
+      # TODO change back to main
+      - mainZZZZ
     paths:
       - 'apps/tadeas/**'
       - 'packages/firestore-converters/**'
