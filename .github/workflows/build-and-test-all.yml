@@ -2,6 +2,9 @@ name: Build and Test All
 
 on:
   pull_request:
+    # TODO change back to main
+    branches:
+      - mainZZZZ
     types: [opened, synchronize]
 
 env:

@@ -1,7 +1,7 @@
 name: Generate
 
 on:
-  push:
+#  push:
   pull_request:
     types: [opened, synchronize]
 
