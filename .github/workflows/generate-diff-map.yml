@@ -14,7 +14,8 @@ jobs:
     steps:
       - name: Executing Diff Map Action
         id: hello
-        uses: cundejo/diff-map@v1.0.1
+        # ToDo Change this to a specific version created with a tag
+        uses: cundejo/diff-map@main
         with:
           who-to-greet: 'Oliver Sosa Cano'
       # Use the output from the `hello` step
